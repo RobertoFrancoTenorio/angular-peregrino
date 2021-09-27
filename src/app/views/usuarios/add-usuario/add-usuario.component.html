@@ -1,0 +1,36 @@
+<div *ngIf="!done">
+    cargando...
+</div>
+
+<div class='contenedor-principal' *ngIf="done">
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand">Agregar usuario</a>
+        </div>
+    </nav>
+
+    <form [formGroup]="userForm" (ngSubmit)="addUser()">
+        <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">Nombre de Usuario</label>
+            <div class="col-sm-9">
+                <input type="text" formControlName="userName" class="form-control">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">Correo Electrónico</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.errors }">
+                <div *ngIf="f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">El correo electrónico es requerido</div>
+                    <div *ngIf="f.email.errors.email">Formato de correo invalido</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button *ngIf="!currentUser" class="btn btn-success me-md-2" type="submit" [disabled]="!userForm.valid" >Guardar</button>
+            <button *ngIf="currentUser" class="btn btn-success me-md-2" (click)="updateUser()" type="button" [disabled]="!userForm.valid" >Actualizar</button>
+            <button class="btn btn-danger" type="button" (click)="goToUsers()">Cancelar</button>
+          </div>
+    </form>
+</div>

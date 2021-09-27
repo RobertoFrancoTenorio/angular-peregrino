@@ -9,6 +9,13 @@ import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 
+import { AuthGuard } from './guard/auth/auth.guard';
+import { UsuariosComponent } from './views/usuarios/usuarios.component';
+import { AddUsuarioComponent } from './views/usuarios/add-usuario/add-usuario.component'
+import { PacientesComponent } from './views/pacientes/pacientes.component';
+import { ErrorAuthComponent } from './views/error/error-auth/error-auth.component';
+import { LogoutComponent } from './views/logout/logout.component';
+
 export const routes: Routes = [
   {
     path: '',
@@ -64,8 +71,53 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard',
-        loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
+        loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule),
+        canActivate: [AuthGuard],
+        data: {
+          cat: true,
+          categoria: 'Inicio',
+          pagina: '' 
+       } 
       },
+      {
+        path: '403',
+        component: ErrorAuthComponent,
+        data: {
+          title: 'Error 403'
+        }
+      },
+      {
+        path: 'usuarios',
+        component: UsuariosComponent,
+        canActivate: [AuthGuard],
+        data: {
+          cat: false,
+          categoria: 'Catalogos',
+          pagina: 'Usuarios' 
+       }
+      },
+      {
+        path: 'add-user',
+        component: AddUsuarioComponent,
+        data: {
+          title: 'Error 403'
+        }
+      },
+      {
+        path: 'pacientes',
+        component: PacientesComponent,
+        canActivate: [AuthGuard],
+        data: {
+          cat: false,
+          categoria: 'Catalogos',
+          pagina: 'Pacientes' 
+       }
+      },
+      {
+        path: 'logout',
+        component: LogoutComponent,
+      },
+
       {
         path: 'icons',
         loadChildren: () => import('./views/icons/icons.module').then(m => m.IconsModule)

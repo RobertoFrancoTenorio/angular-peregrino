@@ -2,6 +2,45 @@ import { INavData } from '@coreui/angular';
 
 export const navItems: INavData[] = [
   {
+    name: 'Inicio',
+    icon: 'fa fa-home',
+    url: '/dashboard'
+  },
+  {
+    title: true,
+    name: 'Menu Principal'
+  },
+  {
+    name: 'Catalogos',
+    icon: 'fa fa-book',
+    variant: 'true',
+    children: [
+      {
+        name: 'Usuarios',
+        icon: 'fa fa-user-md',
+        url: '/usuarios'
+      },
+      {
+        name: 'Pacientes',
+        icon: 'fa fa-users',
+        url: '/pacientes'
+      },
+    ]
+  },
+  {
+    name: 'Salir',
+    icon: 'fa fa-sign-out',
+    url: '/logout'
+  },
+
+];
+
+
+
+
+/*
+
+  {
     name: 'Dashboard',
     url: '/dashboard',
     icon: 'icon-speedometer',
@@ -124,41 +163,6 @@ export const navItems: INavData[] = [
     icon: 'icon-pie-chart'
   },
   {
-    name: 'Icons',
-    url: '/icons',
-    icon: 'icon-star',
-    children: [
-      {
-        name: 'CoreUI Icons',
-        url: '/icons/coreui-icons',
-        icon: 'icon-star',
-        badge: {
-          variant: 'success',
-          text: 'NEW'
-        }
-      },
-      {
-        name: 'Flags',
-        url: '/icons/flags',
-        icon: 'icon-star'
-      },
-      {
-        name: 'Font Awesome',
-        url: '/icons/font-awesome',
-        icon: 'icon-star',
-        badge: {
-          variant: 'secondary',
-          text: '4.7'
-        }
-      },
-      {
-        name: 'Simple Line Icons',
-        url: '/icons/simple-line-icons',
-        icon: 'icon-star'
-      }
-    ]
-  },
-  {
     name: 'Notifications',
     url: '/notifications',
     icon: 'icon-bell',
@@ -249,3 +253,4 @@ export const navItems: INavData[] = [
     attributes: { target: '_blank', rel: 'noopener' }
   }
 ];
+*/

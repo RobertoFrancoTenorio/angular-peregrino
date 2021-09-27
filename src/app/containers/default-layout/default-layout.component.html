@@ -43,30 +43,30 @@
         <a class="dropdown-item" href="#"><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></a>
         <div class="divider"></div>
         <a class="dropdown-item" href="#"><i class="fa fa-shield"></i> Lock account</a>
-        <a class="dropdown-item" href="#"><i class="fa fa-lock"></i> Logout</a>
+        <a class="dropdown-item" href="#" (click)="logout()"><i class="fa fa-lock"></i> Logout</a>
       </div>
     </li>
   </ul>
 </app-header>
 <div class="app-body">
   <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized" (minimizedChange)="toggleMinimize($event)">
-    <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
+    <app-sidebar-nav [navItems]="navItems" *ngIf="loadMenu" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
     <app-sidebar-minimizer></app-sidebar-minimizer>
   </app-sidebar>
   <!-- Main content -->
   <main class="main">
     <!-- Breadcrumb -->
     <!-- breaking change 'cui-breadcrumb' -->
-    <cui-breadcrumb>
+    <!-- <cui-breadcrumb> -->
       <!-- Breadcrumb Menu-->
-      <li class="breadcrumb-menu d-md-down-none">
+     <!-- <li class="breadcrumb-menu d-md-down-none">
         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
           <a class="btn" href="#"><i class="icon-speech"></i></a>
           <a class="btn" [routerLink]="['/dashboard']"><i class="icon-graph"></i> &nbsp;Dashboard</a>
           <a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a>
         </div>
       </li>
-    </cui-breadcrumb>
+    </cui-breadcrumb> -->
     <!-- deprecation warning for 'app-breadcrumb' -->
     <!--<ol class="breadcrumb">-->
       <!--<app-breadcrumb></app-breadcrumb>-->

@@ -45,7 +45,20 @@ import { ChartsModule } from 'ng2-charts';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireAuthModule } from "@angular/fire/auth";
 import { environment } from './../environments/environment';
+
+import { AuthService } from './service/auth/auth.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UsuariosComponent } from './views/usuarios/usuarios.component';
+import { PacientesComponent } from './views/pacientes/pacientes.component';
+import { ErrorAuthComponent } from './views/error/error-auth/error-auth.component';
+import { LogoutComponent } from './views/logout/logout.component';
+
+import { AgGridModule } from 'ag-grid-angular';
+import { AddUsuarioComponent } from './views/usuarios/add-usuario/add-usuario.component';
+import { UsuarioService } from './service/usuario/usuario.service';
+import { AccionesUsuariosComponent } from './views/usuarios/acciones-usuarios/acciones-usuarios.component';
 
 @NgModule({
   imports: [
@@ -53,9 +66,11 @@ import { environment } from './../environments/environment';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
+    AngularFireAuthModule,
     AppRoutingModule,
     AppAsideModule,
     AppBreadcrumbModule.forRoot(),
+    AgGridModule.withComponents([]),
     AppFooterModule,
     AppHeaderModule,
     AppSidebarModule,
@@ -65,6 +80,8 @@ import { environment } from './../environments/environment';
     ChartsModule,
     IconModule,
     IconSetModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AppComponent,
@@ -72,7 +89,13 @@ import { environment } from './../environments/environment';
     P404Component,
     P500Component,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    UsuariosComponent,
+    PacientesComponent,
+    ErrorAuthComponent,
+    LogoutComponent,
+    AddUsuarioComponent,
+    AccionesUsuariosComponent
   ],
   providers: [
     {
@@ -80,6 +103,8 @@ import { environment } from './../environments/environment';
       useClass: HashLocationStrategy
     },
     IconSetService,
+    AuthService,
+    UsuarioService
   ],
   bootstrap: [ AppComponent ]
 })

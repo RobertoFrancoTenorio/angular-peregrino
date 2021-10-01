@@ -25,6 +25,11 @@ export const navItems: INavData[] = [
         icon: 'fa fa-users',
         url: '/pacientes'
       },
+      {
+        name: 'Doctores',
+        icon: 'fa fa-user-md',
+        url: '/doctores'
+      },
     ]
   },
   {

@@ -1,0 +1,67 @@
+<div *ngIf="!done">
+  cargando...
+</div>
+
+<div *ngIf="!done">
+  cargando...
+</div>
+
+<div class='contenedor-principal' *ngIf="done">
+  <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+          <a class="navbar-brand">Agregar Doctor</a>
+      </div>
+  </nav>
+  <div class="card">
+    <h5 class="card-header">Llena todos los campos del Doctor</h5>
+    <div class="card-body">
+      <form [formGroup]="doctorForm" (ngSubmit)="addDoctor()">
+        <div class="mb-3 row">
+            <label class="form-floating col-sm-3 col-form-label">Nombre de Doctor</label>
+            <div class="col-sm-9">
+                <input type="text" formControlName="userName" class="form-control">
+            </div>
+        </div>
+        <div class="mb-3 row">
+          <label class="col-sm-3 col-form-label">Cédula Profesional</label>
+          <div class="col-sm-9">
+              <input type="number" formControlName="cedula" class="form-control">
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label class="col-3 col-form-label">Teléfono:</label>
+          <div class="col-sm-9">
+              <input type="number" formControlName="telefono" class="form-control">
+            </div>
+          </div>
+        <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">Correo Electrónico</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.errors }">
+                <div *ngIf="f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">El correo electrónico es requerido</div>
+                    <div *ngIf="f.email.errors.email">Formato de correo invalido</div>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 row" *ngIf="currentUser">
+          <label class="col-sm-3 col-form-label">Estado del Doctor</label>
+          <div class="col-sm-9">
+                <select class="form-control" formControlName="activo" [(ngModel)]="varActivo">
+                  <option [ngValue]="true" >Activo</option>
+                  <option [ngValue]="false">Inactivo</option>
+                </select>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button *ngIf="!currentUser" class="btn btn-success me-md-2" type="submit" [disabled]="!doctorForm.valid" >Guardar</button>
+            <button *ngIf="currentUser" class="btn btn-success me-md-2" (click)="updateDoctor()" type="button" [disabled]="!doctorForm.valid" >Actualizar</button>
+            <button class="btn btn-danger" type="button" (click)="goToDoctors()">Cancelar</button>
+          </div>
+    </form>
+    </div>
+  </div>
+
+</div>

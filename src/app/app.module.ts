@@ -60,6 +60,10 @@ import { AddUsuarioComponent } from './views/usuarios/add-usuario/add-usuario.co
 import { UsuarioService } from './service/usuario/usuario.service';
 import { AccionesUsuariosComponent } from './views/usuarios/acciones-usuarios/acciones-usuarios.component';
 
+import { DoctoresComponent } from './views/doctores/doctores.component';
+import {DoctorService } from './service/doctor/doctor.service';
+import { AddDoctorComponent } from './views/doctores/add-doctor/add-doctor.component';
+import { AccionesDoctoresComponent } from './views/doctores/acciones-doctores/acciones-doctores.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -95,7 +99,10 @@ import { AccionesUsuariosComponent } from './views/usuarios/acciones-usuarios/ac
     ErrorAuthComponent,
     LogoutComponent,
     AddUsuarioComponent,
-    AccionesUsuariosComponent
+    AccionesUsuariosComponent,
+    DoctoresComponent,
+    AddDoctorComponent,
+    AccionesDoctoresComponent
   ],
   providers: [
     {
@@ -104,7 +111,8 @@ import { AccionesUsuariosComponent } from './views/usuarios/acciones-usuarios/ac
     },
     IconSetService,
     AuthService,
-    UsuarioService
+    UsuarioService,
+    DoctorService,
   ],
   bootstrap: [ AppComponent ]
 })

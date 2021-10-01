@@ -17,7 +17,7 @@ export class UsuarioService {
   crearUsuario(post: any) {
     return new Promise<void>((resolve) => {
       this.afs.doc('/SegMedico/peregrino/usuarios/counter').valueChanges().pipe(take(1)).subscribe(data => {
-        console.log(data)
+        //console.log(data)
         var idNum = data['counter'] + 1;
 
         post['activo'] = true;

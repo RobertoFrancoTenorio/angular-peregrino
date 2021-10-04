@@ -1,1 +1,14 @@
-<p>pacientes works!</p>
+<div *ngIf="!done">
+    cargando...
+</div>
+
+<div class='contenedor-principal' *ngIf="done">
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand">Pacientes</a>
+            <form class="d-flex">
+                <button class="btn btn-primary" type="button" (click)="goToAddPaciente()">Agregar Titular</button>
+            </form>
+        </div>
+    </nav>
+</div>

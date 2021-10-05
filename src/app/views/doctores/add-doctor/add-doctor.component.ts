@@ -9,6 +9,10 @@ import { faEraser } from '@fortawesome/free-solid-svg-icons';
 import { faRoute } from '@fortawesome/free-solid-svg-icons';
 import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import { faCommentMedical } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { faAt } from '@fortawesome/free-solid-svg-icons';
+import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-add-doctor',
@@ -35,6 +39,10 @@ export class AddDoctorComponent implements OnInit {
   faRoute = faRoute;
   faUserEdit = faUserEdit;
   faCommentMedical = faCommentMedical;
+  alert = faExclamationCircle;
+  at = faAt;
+  fa = faPhoneAlt;
+  clock = faClock;
 
   metodoForm = this.fb.group({
     metodo: ['', []],
@@ -54,10 +62,11 @@ export class AddDoctorComponent implements OnInit {
       primerApellido: ['', [Validators.required]],
       segundoApellido: ['', [Validators.required]],
       email: ['',[Validators.required, Validators.email]],
+      telefono: ['',[Validators.required]],
       activo: [this.varActivo, [Validators.required]],
-      cedula: ['', [Validators.required]],
+      cedula: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]],
       especialidad: ['', [Validators.required]],
-      curp: ['', [Validators.required]],
+      curp: ['', [Validators.required, Validators.minLength(18)]],
       estado: ['', [Validators.required]],
       municipio: ['', [Validators.required]],
       colonia: ['', [Validators.required]],
@@ -105,15 +114,22 @@ export class AddDoctorComponent implements OnInit {
       colonia: this.currentUser.colonia,
       calle: this.currentUser.calle,
       no: this.currentUser.no,
-      cp: this.currentUser.cp,
-
+      cp: this.currentUser.cp
     })
-  }
 
+    /*CurrentUser carga la información, en este caso accede al campo metodos y lo carga como un map,
+    con la función flecha carga los datos en los campos necesarios con la variable data
+    */
+    this.currentUser.metodos.map(data => {
+      this.metodos.push(
+        this.fb.group({
+          metodo: [data.metodo, [Validators.required]],
+          telefonoAux: [data.telefonoAux, [Validators.required, Validators.minLength(10)]],
+          horario: [data.horario, [Validators.required]]
+        })
+      )
+    })
 
-  //Metodo para obtener los controles del formulario de Doctor
-  get f(){
-    return this.doctorForm.controls;
   }
 
   /*Metodo para dar de alta doctores*/
@@ -172,29 +188,38 @@ export class AddDoctorComponent implements OnInit {
     }
   }
 
+  //Metodo para obtener los controles del formulario de Doctor
+  get f(){
+    return this.doctorForm.controls;
+  }
+
+  get camposMetodos(){
+    return this.f.metodos as FormArray;
+  }
+
   get metodos() {
     return this.doctorForm.controls["metodos"] as FormArray;
   }
 
-  loadMetodosData(){
-    this.metodoForm.patchValue({
-      metodo: this.currentUser.metodo,
-      telefono: this.currentUser.telefono,
-      horario: this.currentUser.horario,
-    })
-  }
-
   addMetodo(){
     const metodoForm = this.fb.group({
-      metodo: ['', []],
-      telefono: ['', []],
-      horario: ['',[]]
+      metodo: ['', [Validators.required]],
+      telefonoAux: ['', [Validators.required, Validators.minLength(10)]],
+      horario: ['',[Validators.required]]
     });
     this.metodos.push(metodoForm);
   }
 
   deleteMetodo(metodoId: number){
     this.metodos.removeAt(metodoId);
+  }
+
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
   }
 
 }

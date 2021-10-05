@@ -35,21 +35,29 @@
         <div class="row" id="curpCedula">
           <div class="col-6">
             <label for="">CURP</label>
-            <input type="text" formControlName="curp" class="form-control">
+            <input type="text" formControlName="curp" class="form-control" [ngClass]="">
           </div>
 
           <div class="col-6">
             <label class="">Cédula Profesional</label>
-              <input type="number" formControlName="cedula" class="form-control">
+              <input type="text" formControlName="cedula" class="form-control" (keypress)="numberOnly($event)">
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" id="especialidad">
           <div class="col-5">
             <label for="">Especialidad</label>
             <input type="text" formControlName="especialidad" class="form-control">
           </div>
-        </div>
+          <div class="col-4" *ngIf="currentUser">
+            <label class="">Estado del Doctor</label>
+                <select class="form-control" formControlName="activo" [(ngModel)]="varActivo">
+                  <option [ngValue]="true" >Activo</option>
+                  <option [ngValue]="false">Inactivo</option>
+                </select>
+                <small id="notificacion" class="form-text"><fa-icon [icon]="alert"></fa-icon> Este campo es para indicar si el doctor se encuentra activo en la clínica o no.</small>
+            </div>
+          </div>
         <br>
         <hr>
 
@@ -88,13 +96,24 @@
         <h5 class="titulo"><fa-icon [icon]="faCommentMedical"></fa-icon> Contacto</h5>
 
           <div class="row">
-            <div class="col-12">
+            <div class="col-6">
               <label class="">Correo Electrónico</label>
-              <input type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.errors }">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="at"></fa-icon></span>
+                <input type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.errors }">
                 <div *ngIf="f.email.errors" class="invalid-feedback">
                     <div *ngIf="f.email.errors.required">El correo electrónico es requerido</div>
                     <div *ngIf="f.email.errors.email">Formato de correo invalido</div>
                 </div>
+              </div>
+
+            </div>
+            <div class="col-6">
+              <label class="">Teléfono</label>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="fa"></fa-icon></span>
+                <input type="text" class="form-control" formControlName="telefono" (keypress)="numberOnly($event)">
+              </div>
             </div>
           </div>
           <button type="button" class="btn btn-success" (click)="addMetodo()" id="addMetodo"><fa-icon [icon]="faPlus"></fa-icon></button><spans>Agregar Metodo de Contacto</spans>
@@ -107,11 +126,17 @@
                   </div>
                   <div class="col-3">
                     <label for="" class="labelMetodo">Telefono</label>
-                    <input type="text" formControlName="telefono" class="form-control" id="#inputMetodo">
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="fa"></fa-icon></span>
+                      <input type="text" formControlName="telefonoAux" class="form-control" id="#inputMetodo" (keypress)="numberOnly($event)">
+                    </div>
                   </div>
                   <div class="col-3">
                     <label for="" class="labelMetodo">Horario</label>
-                    <input type="text" formControlName="horario" class="form-control" id="#inputMetodo">
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="clock"></fa-icon></span>
+                      <input type="text" formControlName="horario" class="form-control" id="#inputMetodo">
+                    </div>
                   </div>
                   <div class="col-2">
                     <div class="row">
@@ -122,15 +147,7 @@
             </ng-container>
           </ng-container>
 
-        <div class="mb-3 row" *ngIf="currentUser">
-          <label class="col-sm-3 col-form-label">Estado del Doctor</label>
-          <div class="col-sm-9">
-                <select class="form-control" formControlName="activo" [(ngModel)]="varActivo">
-                  <option [ngValue]="true" >Activo</option>
-                  <option [ngValue]="false">Inactivo</option>
-                </select>
-          </div>
-        </div>
+
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <button *ngIf="!currentUser" class="btn btn-success me-md-2" type="submit" [disabled]="!doctorForm.valid" >Guardar</button>

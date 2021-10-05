@@ -53,7 +53,7 @@ export class DoctoresComponent implements OnInit {
   {
     headerName: 'Teléfono',
     field: 'telefono',
-    width: 180,
+    width: 300,
     filter: "agTextColumnFilter"
   },
   {
@@ -118,7 +118,4 @@ export class DoctoresComponent implements OnInit {
   goToAddDoc(){
     this.router.navigate(['add-doctor']);
   }
-
-
-
 }

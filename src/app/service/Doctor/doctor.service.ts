@@ -49,12 +49,12 @@ export class DoctorService {
         console.log(post);
         /*En esta parte se envia el id del doctor que se acaba de crear y todos los datos capturados
         una vez agregados a la colección setea el valor del contador con el idNumerico del ultimo doctor que se agregó,
-        este id siempre va incrementando
+        este id siempre va incrementando*/
         this.afs.doc('/SegMedico/peregrino/Doctores/' + post['id']).set(post).then(() => {
           this.afs.doc('/SegMedico/peregrino/Doctores/counter').set({ counter: idNum }).then(()=>{
             resolve();
           })
-        })*/
+        })
       })
     })
   }

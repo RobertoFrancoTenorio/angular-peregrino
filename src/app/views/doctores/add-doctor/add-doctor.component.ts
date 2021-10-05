@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DoctorService } from './../../../service/Doctor/doctor.service';
+import { faUserMd } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faEraser } from '@fortawesome/free-solid-svg-icons';
+import { faRoute } from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
+import { faCommentMedical } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-add-doctor',
@@ -23,6 +29,19 @@ export class AddDoctorComponent implements OnInit {
   //Variable que switchea el valor de activo
   varActivo: boolean = true;
 
+  faUserMd = faUserMd;
+  faPlus = faPlus;
+  faEraser = faEraser;
+  faRoute = faRoute;
+  faUserEdit = faUserEdit;
+  faCommentMedical = faCommentMedical;
+
+  metodoForm = this.fb.group({
+    metodo: ['', []],
+    telefono: ['', []],
+    horario: ['',[]]
+  });
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -32,11 +51,23 @@ export class AddDoctorComponent implements OnInit {
     /*Siempre que vaya a manipular un dato hay que incluir la variable */
     this.doctorForm = this.fb.group({
       userName: ['', Validators.required],
+      primerApellido: ['', [Validators.required]],
+      segundoApellido: ['', [Validators.required]],
       email: ['',[Validators.required, Validators.email]],
       activo: [this.varActivo, [Validators.required]],
-      cedula: ['', [Validators.required, Validators.min(7)]],
-      telefono: ['', [Validators.required, Validators.min(10)]]
+      cedula: ['', [Validators.required]],
+      especialidad: ['', [Validators.required]],
+      curp: ['', [Validators.required]],
+      estado: ['', [Validators.required]],
+      municipio: ['', [Validators.required]],
+      colonia: ['', [Validators.required]],
+      calle: ['', [Validators.required]],
+      no: ['', [Validators.required]],
+      cp: ['', [Validators.required]],
+
+      metodos: this.fb.array([]),
     })
+
 
     if(this.router.getCurrentNavigation() != null){
       /*queryParams: parámetro muy útil para enviar objetos complejos utilizando la navegación de ruta.
@@ -62,10 +93,20 @@ export class AddDoctorComponent implements OnInit {
     //↓↓↓↓Se encarga de rellenar el formulario con los datos que pueden ser modificados
     this.doctorForm.patchValue({
       userName: this.currentUser.userName,
+      primerApellido: this.currentUser.primerApellido,
+      segundoApellido: this.currentUser.segundoApellido,
+      especialidad: this.currentUser.especialidad,
       email: this.currentUser.email,
       activo: this.currentUser.activo,
       cedula: this.currentUser.cedula,
-      telefono: this.currentUser.telefono,
+      curp: this.currentUser.curp,
+      estado: this.currentUser.estado,
+      municipio: this.currentUser.municipio,
+      colonia: this.currentUser.colonia,
+      calle: this.currentUser.calle,
+      no: this.currentUser.no,
+      cp: this.currentUser.cp,
+
     })
   }
 
@@ -130,4 +171,30 @@ export class AddDoctorComponent implements OnInit {
       event.preventDefault();
     }
   }
+
+  get metodos() {
+    return this.doctorForm.controls["metodos"] as FormArray;
+  }
+
+  loadMetodosData(){
+    this.metodoForm.patchValue({
+      metodo: this.currentUser.metodo,
+      telefono: this.currentUser.telefono,
+      horario: this.currentUser.horario,
+    })
+  }
+
+  addMetodo(){
+    const metodoForm = this.fb.group({
+      metodo: ['', []],
+      telefono: ['', []],
+      horario: ['',[]]
+    });
+    this.metodos.push(metodoForm);
+  }
+
+  deleteMetodo(metodoId: number){
+    this.metodos.removeAt(metodoId);
+  }
+
 }

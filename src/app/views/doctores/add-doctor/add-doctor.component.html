@@ -9,42 +9,119 @@
 <div class='contenedor-principal' *ngIf="done">
   <nav class="navbar navbar-light bg-light">
       <div class="container-fluid">
-          <a class="navbar-brand">Agregar Doctor</a>
+          <a class="navbar-brand"><fa-icon [icon]="faUserMd"></fa-icon> Agregar Doctor</a>
       </div>
   </nav>
   <div class="card">
     <h5 class="card-header">Llena todos los campos del Doctor</h5>
     <div class="card-body">
+      <h5><fa-icon [icon]="faUserEdit"></fa-icon> Datos Doctor</h5>
       <form [formGroup]="doctorForm" (ngSubmit)="addDoctor()">
-        <div class="mb-3 row">
-            <label class="form-floating col-sm-3 col-form-label">Nombre de Doctor</label>
-            <div class="col-sm-9">
-                <input type="text" formControlName="userName" class="form-control">
+        <div class="row">
+            <div class="col-6">
+              <label for="">Nombre</label>
+              <input type="text" formControlName="userName" class="form-control">
             </div>
+            <div class="col-3">
+              <label for="">Primer Apellido</label>
+              <input type="text" formControlName="primerApellido" class="form-control">
+            </div>
+          <div class="col-3">
+              <label for="">Segundo Apellido</label>
+              <input type="text" formControlName="segundoApellido" class="form-control">
+          </div>
         </div>
-        <div class="mb-3 row">
-          <label class="col-sm-3 col-form-label">Cédula Profesional</label>
-          <div class="col-sm-9">
+
+        <div class="row" id="curpCedula">
+          <div class="col-6">
+            <label for="">CURP</label>
+            <input type="text" formControlName="curp" class="form-control">
+          </div>
+
+          <div class="col-6">
+            <label class="">Cédula Profesional</label>
               <input type="number" formControlName="cedula" class="form-control">
           </div>
         </div>
 
-        <div class="mb-3 row">
-          <label class="col-3 col-form-label">Teléfono:</label>
-          <div class="col-sm-9">
-              <input type="number" formControlName="telefono" class="form-control">
-            </div>
+        <div class="row">
+          <div class="col-5">
+            <label for="">Especialidad</label>
+            <input type="text" formControlName="especialidad" class="form-control">
           </div>
-        <div class="mb-3 row">
-            <label class="col-sm-3 col-form-label">Correo Electrónico</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.errors }">
+        </div>
+        <br>
+        <hr>
+
+        <h5 class="direccionH5"><fa-icon [icon]="faRoute"></fa-icon> Dirección</h5>
+        <div class="row" >
+          <div class="col-6">
+            <label for="" class="exampleFormControlInput1">Estado</label>
+            <input type="text" formControlName="estado" class="form-control">
+          </div>
+
+          <div class="col-6">
+            <label for="">Municipio</label>
+            <input type="text" formControlName="municipio" class="form-control">
+          </div>
+        </div>
+
+        <div class="row" id="direccion" >
+          <div class="col-4">
+            <label for="" class="input">Colonia</label>
+            <input type="text" formControlName="colonia" class="form-control">
+          </div>
+          <div class="col-4">
+            <label for="">Calle</label>
+            <input type="text" formControlName="calle" class="form-control">
+          </div>
+          <div class="col-2">
+            <label for="">Número</label>
+            <input type="text" formControlName="no" class="form-control">
+          </div>
+          <div class="col-2">
+            <label for="">Código Postal</label>
+            <input type="text" formControlName="cp" class="form-control">
+          </div>
+        </div>
+        <hr>
+        <h5 class="titulo"><fa-icon [icon]="faCommentMedical"></fa-icon> Contacto</h5>
+
+          <div class="row">
+            <div class="col-12">
+              <label class="">Correo Electrónico</label>
+              <input type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.errors }">
                 <div *ngIf="f.email.errors" class="invalid-feedback">
                     <div *ngIf="f.email.errors.required">El correo electrónico es requerido</div>
                     <div *ngIf="f.email.errors.email">Formato de correo invalido</div>
                 </div>
             </div>
-        </div>
+          </div>
+          <button type="button" class="btn btn-success" (click)="addMetodo()" id="addMetodo"><fa-icon [icon]="faPlus"></fa-icon></button><spans>Agregar Metodo de Contacto</spans>
+          <ng-container formArrayName="metodos">
+            <ng-container *ngFor="let metodoForm of metodos.controls; let i = index">
+              <div class="row" [formGroup]="metodoForm">
+                  <div class="col-3">
+                    <label for="" class="labelMetodo">Tipo de Contacto</label>
+                    <input type="text" formControlName="metodo" class="form-control" id="#inputMetodo">
+                  </div>
+                  <div class="col-3">
+                    <label for="" class="labelMetodo">Telefono</label>
+                    <input type="text" formControlName="telefono" class="form-control" id="#inputMetodo">
+                  </div>
+                  <div class="col-3">
+                    <label for="" class="labelMetodo">Horario</label>
+                    <input type="text" formControlName="horario" class="form-control" id="#inputMetodo">
+                  </div>
+                  <div class="col-2">
+                    <div class="row">
+                      <button type="button" class="btn btn-danger" (click)="deleteMetodo(i)" id="delete"><fa-icon [icon]="faEraser"></fa-icon> Eliminar</button>
+                    </div>
+                  </div>
+              </div>
+            </ng-container>
+          </ng-container>
+
         <div class="mb-3 row" *ngIf="currentUser">
           <label class="col-sm-3 col-form-label">Estado del Doctor</label>
           <div class="col-sm-9">

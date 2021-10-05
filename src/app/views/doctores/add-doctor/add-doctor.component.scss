@@ -1,3 +1,58 @@
 .card{
   margin-top: 20px;
 }
+
+#cancelarArray{
+  margin-top: 20px;
+}
+
+.datosDeContacto{
+  background-color: rgb(202, 202, 202);
+}
+
+.titulo{
+  margin-top: 20px;
+}
+
+.labelMetodo{
+  margin-top:20px;
+}
+
+#inputMetodo{
+}
+
+.form-control{
+  border: 1px solid #6b6b6b8a;
+}
+
+#curpCedula{
+  margin-top: 10px;
+}
+
+#direccion{
+  margin-top: 10px;
+}
+
+.direccionH5{
+  margin-top: 10px;
+}
+
+#addMetodo{
+  border-radius: 50px;
+  margin-right: 10px;
+}
+
+hr{
+  text-align:left;
+  margin-left:0;
+  border: rgba(0, 0, 0, 0.486) 1px solid;
+}
+
+#delete{
+  margin-top: 49px;
+  width: 80%;
+}
+
+.d-grid{
+  margin-top: 49px;
+}

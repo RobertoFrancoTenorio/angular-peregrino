@@ -13,6 +13,7 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-doctor',
@@ -50,23 +51,31 @@ export class AddDoctorComponent implements OnInit {
     horario: ['',[]]
   });
 
+  estadosymunicipios : any;
+  municipios : any;
+
+  valueNombre: string = '^([A-ZÀ-ÿ]{2,20})*( [A-ZÀ-ÿ]{2,20}){0,3}$';
+  valueCURP: string = '[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}';
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private DoctorService: DoctorService
+    private DoctorService: DoctorService,
+    private httpClient: HttpClient,
   ) {
     /*Siempre que vaya a manipular un dato hay que incluir la variable */
     this.doctorForm = this.fb.group({
-      userName: ['', Validators.required],
+      userName: ['', [Validators.required]],
       primerApellido: ['', [Validators.required]],
       segundoApellido: ['', [Validators.required]],
-      email: ['',[Validators.required, Validators.email]],
-      telefono: ['',[Validators.required]],
-      activo: [this.varActivo, [Validators.required]],
+
       cedula: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]],
+      curp: ['', [Validators.required, Validators.pattern(this.valueCURP)]],
+
       especialidad: ['', [Validators.required]],
-      curp: ['', [Validators.required, Validators.minLength(18)]],
+      activo: [this.varActivo, [Validators.required]],
+
       estado: ['', [Validators.required]],
       municipio: ['', [Validators.required]],
       colonia: ['', [Validators.required]],
@@ -74,6 +83,8 @@ export class AddDoctorComponent implements OnInit {
       no: ['', [Validators.required]],
       cp: ['', [Validators.required]],
 
+      email: ['',[Validators.required, Validators.email]],
+      telefono: ['',[Validators.required]],
       metodos: this.fb.array([]),
     })
 
@@ -96,6 +107,10 @@ export class AddDoctorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.httpClient.get<any>("assets/docs/estadosymunicipios.json").subscribe( data => {
+      this.estadosymunicipios = data,
+      console.log(this.estadosymunicipios)
+    })
   }
 
   loadUserData() {
@@ -114,7 +129,8 @@ export class AddDoctorComponent implements OnInit {
       colonia: this.currentUser.colonia,
       calle: this.currentUser.calle,
       no: this.currentUser.no,
-      cp: this.currentUser.cp
+      cp: this.currentUser.cp,
+      telefono: this.currentUser.telefono,
     })
 
     /*CurrentUser carga la información, en este caso accede al campo metodos y lo carga como un map,
@@ -193,6 +209,7 @@ export class AddDoctorComponent implements OnInit {
     return this.doctorForm.controls;
   }
 
+  //Este metodo hace exactamente lo mismo que get metodos
   get camposMetodos(){
     return this.f.metodos as FormArray;
   }
@@ -201,6 +218,7 @@ export class AddDoctorComponent implements OnInit {
     return this.doctorForm.controls["metodos"] as FormArray;
   }
 
+  /*Agrega el nmetodo de contacto al formArray */
   addMetodo(){
     const metodoForm = this.fb.group({
       metodo: ['', [Validators.required]],
@@ -210,16 +228,24 @@ export class AddDoctorComponent implements OnInit {
     this.metodos.push(metodoForm);
   }
 
+  /*Elimina el metodo que recibe como parametro*/
   deleteMetodo(metodoId: number){
     this.metodos.removeAt(metodoId);
   }
 
+  /*Evento para validar que solo se capturen caracteres númericos */
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
     }
     return true;
+  }
+
+  getMunicipios(value: number){
+    this.municipios = [],
+    console.log(this.estadosymunicipios)
+    this.municipios = this.estadosymunicipios[value]
   }
 
 }

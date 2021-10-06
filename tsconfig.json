@@ -11,6 +11,8 @@
     "experimentalDecorators": true,
     "module": "es2020",
     "target": "es2015",
+    "resolveJsonModule": true,
+"esModuleInterop": true,
     "typeRoots": [
       "node_modules/@types"
     ],

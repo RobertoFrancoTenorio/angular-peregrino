@@ -18,7 +18,11 @@ import { DoctoresComponent } from './views/doctores/doctores.component';
 import { PacientesComponent } from './views/pacientes/pacientes.component';
 import { ErrorAuthComponent } from './views/error/error-auth/error-auth.component';
 import { LogoutComponent } from './views/logout/logout.component';
+//<<<<<<< HEAD
 import { AddDoctorComponent } from './views/doctores/add-doctor/add-doctor.component';
+//=======
+import { AddPacienteComponent } from './views/pacientes/add-paciente/add-paciente.component';
+//>>>>>>> 646e0a5990f8e9dfed8b34d580d5d8243745abb5
 
 export const routes: Routes = [
   {
@@ -135,6 +139,13 @@ export const routes: Routes = [
           categoria: 'Catalogos',
           pagina: 'Pacientes'
        }
+      },
+      {
+        path: 'add-paciente',
+        component: AddPacienteComponent,
+        data: {
+          title: 'Error 403'
+        }
       },
       {
         path: 'logout',

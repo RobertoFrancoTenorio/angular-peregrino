@@ -33,6 +33,18 @@ export const navItems: INavData[] = [
     ]
   },
   {
+    name: 'Utilidades',
+    icon: 'fa fa-folder-open',
+    variant: 'true',
+    children: [
+      {
+        name: 'Agenda',
+        icon: 'fa fa-calendar',
+        url: '/'
+      },
+    ]
+  },
+  {
     name: 'Salir',
     icon: 'fa fa-sign-out',
     url: '/logout'

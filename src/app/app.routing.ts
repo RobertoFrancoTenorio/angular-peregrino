@@ -22,6 +22,7 @@ import { LogoutComponent } from './views/logout/logout.component';
 import { AddDoctorComponent } from './views/doctores/add-doctor/add-doctor.component';
 //=======
 import { AddPacienteComponent } from './views/pacientes/add-paciente/add-paciente.component';
+import { CalendarComponent } from './views/calendar/calendar.component';
 //>>>>>>> 646e0a5990f8e9dfed8b34d580d5d8243745abb5
 
 export const routes: Routes = [
@@ -56,6 +57,13 @@ export const routes: Routes = [
     component: RegisterComponent,
     data: {
       title: 'Register Page'
+    }
+  },
+  {
+    path: 'calendario',
+    component: CalendarComponent,
+    data: {
+      title: 'Calendar Page'
     }
   },
   {

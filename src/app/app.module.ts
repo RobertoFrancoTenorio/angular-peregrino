@@ -70,6 +70,7 @@ import {DoctorService } from './service/doctor/doctor.service';
 import { AddDoctorComponent } from './views/doctores/add-doctor/add-doctor.component';
 import { AccionesDoctoresComponent } from './views/doctores/acciones-doctores/acciones-doctores.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CalendarComponent } from './views/calendar/calendar.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -116,7 +117,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     AccionesDoctoresComponent,
 
     AddPacienteComponent,
-    AccionesPacienteComponent
+    AccionesPacienteComponent,
+    CalendarComponent
 
   ],
   providers: [

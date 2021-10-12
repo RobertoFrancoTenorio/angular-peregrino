@@ -65,6 +65,13 @@ import { AccionesUsuariosComponent } from './views/usuarios/acciones-usuarios/ac
 import { AddPacienteComponent } from './views/pacientes/add-paciente/add-paciente.component';
 import { AccionesPacienteComponent } from './views/pacientes/acciones-paciente/acciones-paciente.component';
 
+import { DoctoresComponent } from './views/doctores/doctores.component';
+import {DoctorService } from './service/doctor/doctor.service';
+import { AddDoctorComponent } from './views/doctores/add-doctor/add-doctor.component';
+import { AccionesDoctoresComponent } from './views/doctores/acciones-doctores/acciones-doctores.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CalendarComponent } from './views/calendar/calendar.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -89,7 +96,8 @@ import { AccionesPacienteComponent } from './views/pacientes/acciones-paciente/a
     IconModule,
     IconSetModule.forRoot(),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FontAwesomeModule
   ],
   declarations: [
     AppComponent,
@@ -104,8 +112,13 @@ import { AccionesPacienteComponent } from './views/pacientes/acciones-paciente/a
     LogoutComponent,
     AddUsuarioComponent,
     AccionesUsuariosComponent,
+    DoctoresComponent,
+    AddDoctorComponent,
+    AccionesDoctoresComponent,
     AddPacienteComponent,
-    AccionesPacienteComponent
+    AccionesPacienteComponent,
+    CalendarComponent
+
   ],
   providers: [
     {
@@ -114,7 +127,8 @@ import { AccionesPacienteComponent } from './views/pacientes/acciones-paciente/a
     },
     IconSetService,
     AuthService,
-    UsuarioService
+    UsuarioService,
+    DoctorService,
   ],
   bootstrap: [ AppComponent ]
 })

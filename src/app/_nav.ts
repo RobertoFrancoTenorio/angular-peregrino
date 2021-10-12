@@ -25,6 +25,23 @@ export const navItems: INavData[] = [
         icon: 'fa fa-users',
         url: '/pacientes'
       },
+      {
+        name: 'Doctores',
+        icon: 'fa fa-user-md',
+        url: '/doctores'
+      },
+    ]
+  },
+  {
+    name: 'Utilidades',
+    icon: 'fa fa-folder-open',
+    variant: 'true',
+    children: [
+      {
+        name: 'Agenda',
+        icon: 'fa fa-calendar',
+        url: '/'
+      },
     ]
   },
   {

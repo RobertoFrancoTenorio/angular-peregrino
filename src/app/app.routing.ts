@@ -12,10 +12,16 @@ import { RegisterComponent } from './views/register/register.component';
 import { AuthGuard } from './guard/auth/auth.guard';
 import { UsuariosComponent } from './views/usuarios/usuarios.component';
 import { AddUsuarioComponent } from './views/usuarios/add-usuario/add-usuario.component'
+
+import { DoctoresComponent } from './views/doctores/doctores.component';
+
 import { PacientesComponent } from './views/pacientes/pacientes.component';
 import { ErrorAuthComponent } from './views/error/error-auth/error-auth.component';
 import { LogoutComponent } from './views/logout/logout.component';
+import { AddDoctorComponent } from './views/doctores/add-doctor/add-doctor.component';
 import { AddPacienteComponent } from './views/pacientes/add-paciente/add-paciente.component';
+import { CalendarComponent } from './views/calendar/calendar.component';
+//>>>>>>> 646e0a5990f8e9dfed8b34d580d5d8243745abb5
 
 export const routes: Routes = [
   {
@@ -52,6 +58,13 @@ export const routes: Routes = [
     }
   },
   {
+    path: 'calendario',
+    component: CalendarComponent,
+    data: {
+      title: 'Calendar Page'
+    }
+  },
+  {
     path: '',
     component: DefaultLayoutComponent,
     data: {
@@ -77,8 +90,8 @@ export const routes: Routes = [
         data: {
           cat: true,
           categoria: 'Inicio',
-          pagina: '' 
-       } 
+          pagina: ''
+       }
       },
       {
         path: '403',
@@ -94,16 +107,35 @@ export const routes: Routes = [
         data: {
           cat: false,
           categoria: 'Catalogos',
-          pagina: 'Usuarios' 
+          pagina: 'Usuarios'
        }
       },
+
       {
         path: 'add-user',
         component: AddUsuarioComponent,
         data: {
-          title: 'Error 403'
+          cat: false,
+          categoria: 'Catalogos',
+          pagina: 'Usuarios'
         }
       },
+      {
+        path: 'doctores',
+        component: DoctoresComponent,
+        data: {
+          title: 'Doctores'
+        }
+      },
+
+      {
+        path: 'add-doctor',
+        component: AddDoctorComponent,
+        data: {
+          title: 'Agregar Doctores'
+        }
+      },
+
       {
         path: 'pacientes',
         component: PacientesComponent,
@@ -111,7 +143,7 @@ export const routes: Routes = [
         data: {
           cat: false,
           categoria: 'Catalogos',
-          pagina: 'Pacientes' 
+          pagina: 'Pacientes'
        }
       },
       {

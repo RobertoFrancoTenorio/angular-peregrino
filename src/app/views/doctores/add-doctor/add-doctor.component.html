@@ -1,0 +1,196 @@
+<div *ngIf="!done">
+  cargando...
+</div>
+
+<div *ngIf="!done">
+  cargando...
+</div>
+
+<div class='contenedor-principal' *ngIf="done">
+  <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+          <a class="navbar-brand"><fa-icon [icon]="faUserMd"></fa-icon> Agregar Doctor</a>
+      </div>
+  </nav>
+  <div class="card">
+    <h5 class="card-header">Llena todos los campos del Doctor</h5>
+    <div class="card-body">
+      <h5><fa-icon [icon]="faUserEdit"></fa-icon> Datos Doctor</h5>
+      <form [formGroup]="doctorForm" (ngSubmit)="addDoctor()">
+        <div class="row">
+            <div class="col-6">
+              <label for="">Nombre</label>
+              <input type="text" formControlName="userName" class="form-control" placeholder="Nombre">
+            </div>
+            <div class="col-3">
+              <label for="">Primer Apellido</label>
+              <input type="text" formControlName="primerApellido" class="form-control" placeholder="Primer Apellido">
+            </div>
+          <div class="col-3">
+              <label for="">Segundo Apellido</label>
+              <input type="text" formControlName="segundoApellido" class="form-control" placeholder="Segundo Apellido">
+          </div>
+        </div>
+
+        <div class="row" id="curpCedula">
+          <div class="col-6">
+            <label for="">CURP</label>
+            <input type="text" formControlName="curp" class="form-control" placeholder="C.U.R.P">
+          </div>
+
+          <div class="col-6">
+            <label class="">Cédula Profesional</label>
+              <input type="text" formControlName="cedula" class="form-control" (keypress)="numberOnly($event)" placeholder="CEDULA">
+          </div>
+        </div>
+
+        <div class="row" id="especialidad">
+          <div class="col-5">
+            <label for="">Especialidad</label>
+            <input type="text" formControlName="especialidad" class="form-control" placeholder="Nutrición, Optometría, Odontologia, etc ...">
+          </div>
+          <div class="col-4" *ngIf="currentUser">
+            <label class="">Estado del Doctor</label>
+                <select class="form-control" formControlName="activo" [(ngModel)]="varActivo">
+                  <option [ngValue]="true" >Activo</option>
+                  <option [ngValue]="false">Inactivo</option>
+                </select>
+                <small id="notificacion" class="form-text"><fa-icon [icon]="alert"></fa-icon> Este campo es para indicar si el doctor se encuentra activo en la clínica o no.</small>
+            </div>
+          </div>
+        <br>
+        <hr>
+
+        <h5 class="direccionH5"><fa-icon [icon]="faRoute"></fa-icon> Dirección</h5>
+        <div class="row" >
+          <div class="col-6">
+            <label class="col-form-label col-form-label-lg" for="estado">Estado</label>
+            <select id="estado" #estados formControlName="estado"
+                (change)="getMunicipios(estados.value)" class="form-control">
+                <option value="" disabled="true">Selecciona una opcion</option>
+                <option value="Aguascalientes">Aguascalientes</option>
+                <option value="Baja California">Baja California</option>
+                <option value="Baja California Sur">Baja California Sur</option>
+                <option value="Campeche">Campeche</option>
+                <option value="Ciudad de México">Ciudad de México</option>
+                <option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>
+                <option value="Colima">Colima</option>
+                <option value="Chiapas">Chiapas</option>
+                <option value="Chihuahua">Chihuahua</option>
+                <option value="Durango">Durango</option>
+                <option value="Guanajuato">Guanajuato</option>
+                <option value="Guerrero">Guerrero</option>
+                <option value="Hidalgo">Hidalgo</option>
+                <option value="Jalisco">Jalisco</option>
+                <option value="México">México</option>
+                <option value="Michoacán de Ocampo">Michoacán de Ocampo</option>
+                <option value="Morelos">Morelos</option>
+                <option value="Nayarit">Nayarit</option>
+                <option value="Nuevo León">Nuevo León</option>
+                <option value="Oaxaca">Oaxaca</option>
+                <option value="Puebla">Puebla</option>
+                <option value="Querétaro">Querétaro</option>
+                <option value="Quintana Roo">Quintana Roo</option>
+                <option value="San Luis Potosí">San Luis Potosí</option>
+                <option value="Sinaloa">Sinaloa</option>
+                <option value="Sonora">Sonora</option>
+                <option value="Tabasco">Tabasco</option>
+                <option value="Tamaulipas">Tamaulipas</option>
+                <option value="Tlaxcala">Tlaxcala</option>
+                <option value="Veracruz de Ignacio de la Llave">Veracruz de Ignacio de la Llave</option>
+                <option value="Yucatán">Yucatán</option>
+                <option value="Zacatecas">Zacatecas</option>
+            </select>
+        </div>
+          <div class="col-4">
+              <label class="col-form-label col-form-label-lg" for="municipio">Municipio</label>
+              <select id="municipio" formControlName="municipio" class="form-control">
+                  <option value="" disabled="true">Selecciona una opcion</option>
+                  <option *ngFor="let x of municipios" value="{{x}}">{{x}}</option>
+              </select>
+          </div>
+        </div>
+
+        <div class="row" id="direccion" >
+          <div class="col-4">
+            <label for="" class="input">Colonia</label>
+            <input type="text" formControlName="colonia" class="form-control" placeholder="COLONIA">
+          </div>
+          <div class="col-4">
+            <label for="">Calle</label>
+            <input type="text" formControlName="calle" class="form-control" placeholder="CALLE">
+          </div>
+          <div class="col-2">
+            <label for="">Número</label>
+            <input type="text" formControlName="no" class="form-control" placeholder="Número del dominio">
+          </div>
+          <div class="col-2">
+            <label for="">Código Postal</label>
+            <input type="text" formControlName="cp" class="form-control" placeholder="Cod. Postal">
+          </div>
+        </div>
+        <hr>
+        <h5 class="titulo"><fa-icon [icon]="faCommentMedical"></fa-icon> Contacto</h5>
+
+          <div class="row">
+            <div class="col-6">
+              <label class="">Correo Electrónico</label>
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="at"></fa-icon></span>
+                <input type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.errors }" placeholder="ejemplo@dominio.com">
+                <div *ngIf="f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">El correo electrónico es requerido</div>
+                    <div *ngIf="f.email.errors.email">Formato de correo invalido</div>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-6">
+              <label class="">Teléfono</label>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="fa"></fa-icon></span>
+                <input type="text" class="form-control" formControlName="telefono" (keypress)="numberOnly($event)" placeholder="(000) 000 0000">
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-success" (click)="addMetodo()" id="addMetodo"><fa-icon [icon]="faPlus"></fa-icon></button><span>Agregar Metodo de Contacto</span>
+          <ng-container formArrayName="metodos">
+            <ng-container *ngFor="let metodoForm of metodos.controls; let i = index">
+              <div class="row" [formGroup]="metodoForm">
+                  <div class="col-3">
+                    <label for="" class="labelMetodo">Tipo de Contacto</label>
+                    <input type="text" formControlName="metodo" class="form-control" id="#inputMetodo" placeholder="Celular, Telefono Fijo, Whatsapp, telegram, etc...">
+                  </div>
+                  <div class="col-3">
+                    <label for="" class="labelMetodo">Telefono</label>
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="fa"></fa-icon></span>
+                      <input type="text" formControlName="telefonoAux" class="form-control" id="#inputMetodo" (keypress)="numberOnly($event)" placeholder="(000) 000 0000">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <label for="" class="labelMetodo">Horario</label>
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="clock"></fa-icon></span>
+                      <input type="text" formControlName="horario" class="form-control" id="#inputMetodo" placeholder="Matutino, Vespertino, Nocturno, 8am-12pm, etc...">
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <div class="row">
+                      <button type="button" class="btn btn-danger" (click)="deleteMetodo(i)" id="delete"><fa-icon [icon]="faEraser"></fa-icon> Eliminar</button>
+                    </div>
+                  </div>
+              </div>
+            </ng-container>
+          </ng-container>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button *ngIf="!currentUser" class="btn btn-success me-md-2" type="submit" [disabled]="!doctorForm.valid" >Guardar</button>
+            <button *ngIf="currentUser" class="btn btn-success me-md-2" (click)="updateDoctor()" type="button" [disabled]="!doctorForm.valid" >Actualizar</button>
+            <button class="btn btn-danger" type="button" (click)="goToDoctors()">Cancelar</button>
+          </div>
+    </form>
+    </div>
+  </div>
+
+</div>

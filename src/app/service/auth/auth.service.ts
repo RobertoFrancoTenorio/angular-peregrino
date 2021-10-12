@@ -76,7 +76,7 @@ export class AuthService {
     })
   }
 
-  // Sign out 
+  // Sign out
   SignOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.setItem('user', null);

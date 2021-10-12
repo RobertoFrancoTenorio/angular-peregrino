@@ -1,0 +1,80 @@
+.card{
+  margin-top: 20px;
+}
+
+#cancelarArray{
+  margin-top: 20px;
+}
+
+.datosDeContacto{
+  background-color: rgb(202, 202, 202);
+}
+
+.titulo{
+  margin-top: 20px;
+}
+
+.labelMetodo{
+  margin-top:20px;
+}
+
+.form-control{
+  border: 1px solid #6b6b6b8a;
+}
+
+#curpCedula{
+  margin-top: 10px;
+}
+
+#direccion{
+  margin-top: 10px;
+}
+
+.direccionH5{
+  margin-top: 10px;
+}
+
+#addMetodo{
+  margin-right: 10px;
+  background-color: rgb(21, 133, 21);
+}
+
+#addMetodo:hover{
+  background-color:white;
+  border: solid 1px rgb(21, 133, 21);
+  color: rgb(21, 133, 21);
+  border-radius: 10px;
+}
+
+hr{
+  text-align:left;
+  margin-left:0;
+  border: rgba(0, 0, 0, 0.486) 1px solid;
+}
+
+#delete{
+  margin-top: 49px;
+  width: 80%;
+  background-color: rgb(190, 3, 3);
+  font-weight:bold;
+}
+
+#delete:hover{
+  background-color: #ffffff;
+  color: red;
+  border: solid 1px red;
+  border-radius: 30px;
+  font-weight:bold;
+}
+
+.d-grid{
+  margin-top: 49px;
+}
+
+#especialidad{
+  margin-top: 10px;
+}
+
+#notificacion{
+  color: rgb(0, 7, 110);
+}

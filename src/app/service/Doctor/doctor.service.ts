@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { cibTheMovieDatabase } from '@coreui/icons';
 import { take } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 

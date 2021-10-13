@@ -54,15 +54,18 @@ export class PacientesComponent implements OnInit {
       filter: "agTextColumnFilter"
     },
     {
-      headerName: "Acciones",
-      cellRendererFramework: AccionesPacienteComponent,
-      width: 200,
-      pinned: 'right'
+      headerName: 'Tipo de Paciente',
+      field: 'pac_tipo',
+      width: 180, 
+      filter: "agTextColumnFilter"
     },
     {
-      width: 100, headerName: 'Tipo de Paciente',
-
+      headerName: "Acciones",
+      cellRendererFramework: AccionesPacienteComponent,
+      width: 500,
+      pinned: 'right'
     }
+    
   ]
 
   constructor(

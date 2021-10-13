@@ -14,22 +14,39 @@ export class AccionesPacienteComponent implements ICellRendererAngularComp {
     private router: Router
   ) { }
   async agInit(params: any): Promise<void> {
-    this.params=params;
+    console.log(params);
+    this.params=params.data;
     this.activo= params.data.pac_status;
   }
 
   refresh(params): boolean {
     if (params.value !== this.params.value){
-      this.params = params;
+      this.params = params.data;
       this.activo = params.data.activo
     }
     return true;
   }
 
   editarUserShow(){
+    let caso='';
+
+    if(this.params.pac_tipo == 'titular') caso='editar titular';
+    else caso='editar adicional';
+
     const navigationExtras: NavigationExtras = {
       state: {
-        userData: this.params.data,
+        caso: caso,
+        userData: this.params,
+      }
+    };
+    this.router.navigate(['add-paciente'], navigationExtras);
+  }
+
+  addUserAdicional(){
+    const navigationExtras: NavigationExtras = {
+      state: {
+        caso: 'agregar adicional',
+        userTitularData: this.params,
       }
     };
     this.router.navigate(['add-paciente'], navigationExtras);

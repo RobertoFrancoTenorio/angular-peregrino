@@ -12,14 +12,18 @@ export class PacienteService {
     public authService: AuthService,
   ) { }
 
-  getPacientes(){
-    return this.afs.collection('/SegMedico/peregrino/Pacientes', ref=>
-    ref
-      .orderBy('idNumerico','asc')).valueChanges();
+  getPacientes() {
+    return this.afs.collection('/SegMedico/peregrino/Pacientes', ref =>
+      ref
+        .orderBy('idNumerico', 'asc')).valueChanges();
   }
 
-  creaPaciente(post: any){
-    return new Promise<void>((resolve)=>{
+  getPacienteData(id:string) {
+    return this.afs.collection('/SegMedico/peregrino/Pacientes/'+id).valueChanges();
+  }
+
+  creaPaciente(post: any) {
+    return new Promise((resolve) => {
       /*accede a la coleccion */
       this.afs.doc('/SegMedico/peregrino/Pacientes/counter').valueChanges().pipe(take(1)).subscribe(data => {
         //Incrementa el contador
@@ -32,6 +36,7 @@ export class PacienteService {
         /*Este id se genera automaticamente mediante un metodo de afs */
         post['id'] = this.afs.createId();
         post['idNumerico'] = idNum;
+        post['activo']=true;
 
         console.log("vALOR post");
         console.log(post);
@@ -39,17 +44,21 @@ export class PacienteService {
         una vez agregados a la colección setea el valor del contador con el idNumerico del ultimo doctor que se agregó,
         este id siempre va incrementando*/
         this.afs.doc('/SegMedico/peregrino/Pacientes/' + post['id']).set(post).then(() => {
-          this.afs.doc('/SegMedico/peregrino/Pacientes/counter').set({ counter: idNum }).then(()=>{
-            resolve();
+          this.afs.doc('/SegMedico/peregrino/Pacientes/counter').set({ counter: idNum }).then(() => {
+            resolve({
+              id: post['id'],
+              nombre_completo: post['pac_nombre_completo'],
+              parentesco: post['pac_parentesco']
+            });
           })
         })
       })
     })
   }
 
-  updatePaciente(post: any){
+  updatePaciente(post: any) {
     return new Promise<void>(resolve => {
-      this.afs.doc('SegMedico/peregrino/Pacientes/' + post['id']).update(post).then(()=>{
+      this.afs.doc('SegMedico/peregrino/Pacientes/' + post['id']).update(post).then(() => {
         resolve()
       })
     })

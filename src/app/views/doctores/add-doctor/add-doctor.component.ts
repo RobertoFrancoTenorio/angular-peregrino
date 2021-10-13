@@ -150,11 +150,13 @@ export class AddDoctorComponent implements OnInit {
 
   /*Metodo para dar de alta doctores*/
   async addDoctor(){
-    /*↓↓↓Esta parte recibe el formulario y lo pasa como parametro
+    console.log(this.doctorForm.value);
+    /*
+    ↓↓↓Esta parte recibe el formulario y lo pasa como parametro
     al servicio en su metodo crearDoctor↓↓↓*/
     await this.DoctorService.crearDoctor(this.doctorForm.value);
     console.log(this.doctorForm.value);
-    /*Ejecución de Sweet Alert con los parametros necesarios */
+    /*Ejecución de Sweet Alert con los parametros necesarios*/
     Swal.fire({
       title: 'Usuario Registrado',
       text: 'El usuario ha sido registrado correctamente.',
@@ -162,7 +164,7 @@ export class AddDoctorComponent implements OnInit {
       confirmButtonText: 'OK'
     })
     /*Una vez ejecutado el Sweet alert limpia el formulario
-    y redirige al componente de doctores */
+    y redirige al componente de doctores*/
     .then(()=>{
       this.doctorForm.reset();
       this.router.navigate(['doctores']);

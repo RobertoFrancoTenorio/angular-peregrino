@@ -1,235 +1,253 @@
+
 <div class="card">
-    <div class="card-header">
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <h3>Agregar paciente</h3>
-                <form class="d-flex">
-                    <button class="btn btn-danger" type="button" (click)="goToPacientes()">Cancelar</button>
-                </form>
-            </div>
-        </nav>
-    </div>
-    <div class="card-body">
-        <form [formGroup]="pacienteForm">
-
-            <div class="form-row">
-                <div class="col-6">
-                    <label class="col-form-label col-form-label-lg" for="pac_nombres">Nombre (S)</label>
-                    <input id="pac_nombres" formControlName="pac_nombres" placeholder="Nombre (s)" type="text"
-                        class="form-control form-control-lg">
-                </div>
-                <div class="col-3">
-                    <label class="col-form-label col-form-label-lg" for="pac_primer_apellido">Primer apellido</label>
-                    <input id="pac_primer_apellido" formControlName="pac_primer_apellido" placeholder="Primer apellido"
-                        type="text" class="form-control form-control-lg">
-                </div>
-                <div class="col-3">
-                    <label class="col-form-label col-form-label-lg" for="pac_segundo_apellido">Segundo apellido</label>
-                    <input id="pac_segundo_apellido" formControlName="pac_segundo_apellido"
-                        placeholder="Segundo apellido" type="text" class="form-control form-control-lg">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="col-6">
-                    <label class="col-form-label col-form-label-lg" for="pac_curp">CURP</label>
-                    <input id="pac_curp" formControlName="pac_curp" placeholder="C U R P" type="text"
-                        class="form-control form-control-lg">
-                </div>
-
-                <div class="col-4">
-                    <label class="col-form-label col-form-label-lg" for="pac_f_nacimiento">Fecha de nacimiento</label>
-                    <input id="pac_f_nacimiento" formControlName="pac_f_nacimiento" placeholder="DD/MM/AAAA" type="text"
-                        class="form-control form-control-lg">
-                </div>
-
-            </div>
-
-            <div class="form-row">
-
-                <div class="col-4">
-                    <label class="col-form-label col-form-label-lg" for="pac_email">Correo electrónico</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">@</div>
-                        </div>
-                        <input id="pac_email" formControlName="pac_email" placeholder="ejemplo@dominio.com" type="text"
-                            class="form-control form-control-lg">
-                    </div>
-                </div>
-
-                <div class="col-4">
-                    <label class="col-form-label col-form-label-lg" for="pac_telefono">Teléfono fijo</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <i class="fa fa-phone"></i>
-                            </div>
-                        </div>
-                        <input id="pac_telefono" formControlName="pac_telefono" placeholder="(000)-000-000" type="text"
-                            class="form-control form-control-lg">
-                    </div>
-                </div>
-
-                <div class="col-4">
-                    <label class="col-form-label col-form-label-lg" for="pac_celular">Teléfono celular</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <i class="fa fa-mobile-phone"></i>
-                            </div>
-                        </div>
-                        <input id="pac_celular" formControlName="pac_celular" placeholder="(000)-000-000" type="text"
-                            class="form-control form-control-lg">
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="form-row">
-
-                <div class="col-4">
-                    <label class="col-form-label col-form-label-lg" for="pac_estado_civil">Estado Civil</label>
-                    <select id="pac_estado_civil" formControlName="pac_estado_civil"
-                        class="form-control form-control-lg">
-                        <option value="" selected>Elige una opción...</option>
-                        <option value="Soltero">Soltero(a)</option>
-                        <option value="Casado">Casado(a)</option>
-                        <option value="Separado">Separado(a)</option>
-                        <option value="Divorciado">Divorciado(a)</option>
-                        <option value="Union Libre">Union Libre</option>
-                        <option value="Viudo">Viudo(a)</option>
-                    </select>
-                </div>
-
-                <div class="col-4">
-                    <label class="col-form-label col-form-label-lg" for="pac_escolaridad">Escolaridad</label>
-                    <select id="pac_escolaridad" formControlName="pac_escolaridad"
-                        class="form-control col-form-label-lg">
-                        <option selected value="">Elige una opción</option>
-                        <option value="Primaria">Primaria</option>
-                        <option value="Secundaria">Secundaria</option>
-                        <option value="Bachillerato">Bachillerato</option>
-                        <option value="Carrera Tecnica">Carrera Técnica</option>
-                        <option value="Licenciatura">Licenciatura</option>
-                        <option value="Posgrado">Posgrado</option>
-                    </select>
-                </div>
-
-                <div class="col-4">
-                    <div class="">
-                        <label class="col-form-label col-form-label-lg" for="inputG"> Genero/Sexo </label>
-                    </div>
-                    <div class="form-row text-center">
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="radioMale" formControlName="pac_sexo"
-                                value="M">
-                            <label class="custom-control-label" for="radioMale"><span class="fa fa-male"></span></label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="radiofemale" formControlName="pac_sexo"
-                                value="F">
-                            <label class="custom-control-label" for="radiofemale"><span
-                                    class="fa fa-female"></span></label>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="form-row">
-                <div class="col-4">
-                    <label class="col-form-label col-form-label-lg" for="pac_pais">País</label>
-                    <input id="pac_pais" formControlName="pac_pais" readonly placeholder="Nombre (s)" type="text"
-                        class="form-control form-control-lg">
-                </div>
-                <div class="col-4">
-                    <label class="col-form-label col-form-label-lg" for="pac_estado">Estado</label>
-                    <select id="pac_estado" #estados formControlName="pac_estado"
-                        (change)="getMunicipios(estados.value)" class="form-control col-form-label-lg">
-                        <option value="" disabled="true">Selecciona una opcion</option>
-                        <option value="Aguascalientes">Aguascalientes</option>
-                        <option value="Baja California">Baja California</option>
-                        <option value="Baja California Sur">Baja California Sur</option>
-                        <option value="Campeche">Campeche</option>
-                        <option value="Ciudad de México">Ciudad de México</option>
-                        <option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>
-                        <option value="Colima">Colima</option>
-                        <option value="Chiapas">Chiapas</option>
-                        <option value="Chihuahua">Chihuahua</option>
-                        <option value="Durango">Durango</option>
-                        <option value="Guanajuato">Guanajuato</option>
-                        <option value="Guerrero">Guerrero</option>
-                        <option value="Hidalgo">Hidalgo</option>
-                        <option value="Jalisco">Jalisco</option>
-                        <option value="México">México</option>
-                        <option value="Michoacán de Ocampo">Michoacán de Ocampo</option>
-                        <option value="Morelos">Morelos</option>
-                        <option value="Nayarit">Nayarit</option>
-                        <option value="Nuevo León">Nuevo León</option>
-                        <option value="Oaxaca">Oaxaca</option>
-                        <option value="Puebla">Puebla</option>
-                        <option value="Querétaro">Querétaro</option>
-                        <option value="Quintana Roo">Quintana Roo</option>
-                        <option value="San Luis Potosí">San Luis Potosí</option>
-                        <option value="Sinaloa">Sinaloa</option>
-                        <option value="Sonora">Sonora</option>
-                        <option value="Tabasco">Tabasco</option>
-                        <option value="Tamaulipas">Tamaulipas</option>
-                        <option value="Tlaxcala">Tlaxcala</option>
-                        <option value="Veracruz de Ignacio de la Llave">Veracruz de Ignacio de la Llave</option>
-                        <option value="Yucatán">Yucatán</option>
-                        <option value="Zacatecas">Zacatecas</option>
-                    </select>
-                </div>
-                <div class="col-4">
-                    <label class="col-form-label col-form-label-lg" for="pac_municipio">Municipio</label>
-                    <select id="pac_municipio" formControlName="pac_municipio" class="form-control col-form-label-lg">
-                        <option value="" disabled="true">Selecciona una opcion</option>
-                        <option *ngFor="let x of municipios" value="{{x}}">{{x}}</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="col-4">
-                    <label class="col-form-label col-form-label-lg" for="pac_localidad">Localdad</label>
-                    <input id="pac_localidad" formControlName="pac_localidad" placeholder="Localidad" type="text"
-                        class="form-control form-control-lg">
-                </div>
-                <div class="col-4">
-                    <label class="col-form-label col-form-label-lg" for="pac_dir_cp">Código postal</label>
-                    <input id="pac_dir_cp" formControlName="pac_dir_cp" placeholder="Código postal" type="text"
-                        class="form-control form-control-lg">
-                </div>
-                <div class="col-4">
-                    <label class="col-form-label col-form-label-lg" for="pac_dir_colonia">Colonia</label>
-                    <input id="pac_dir_colonia" formControlName="pac_dir_colonia" placeholder="Colonia..." type="text"
-                        class="form-control form-control-lg">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="col-6">
-                    <label class="col-form-label col-form-label-lg" for="pac_dir_calle">Calle</label>
-                    <input id="pac_dir_calle" formControlName="pac_dir_calle" placeholder="Calle" type="text"
-                        class="form-control form-control-lg">
-                </div>
-                <div class="col-6">
-                    <label class="col-form-label col-form-label-lg" for="pac_dir_comentarios">Comentarios
-                        Generales</label>
-                    <input id="pac_dir_comentarios" formControlName="pac_dir_comentarios"
-                        placeholder="Comentarios Generales" type="text" class="form-control form-control-lg">
-                </div>
-            </div>
-
-
-
-            <br>
-            <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-success btn-lg">Guardar</button>
-            </div>
+  <div class="card-header">
+    <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+        <h3>Agregar Paciente</h3>
+        <form class="d-flex">
+          <button class="btn btn-danger" type="button" (click)="goToPacientes()">Cancelar</button>
         </form>
+      </div>
+    </nav>
+  </div>
+
+  <div class="card-body">
+    <form [formGroup]="pacienteForm" (ngSubmit)="addPaciente()">
+      <div class="form-row">
+        <div class="col-6">
+          <label class="col-form-label col-form-label-lg" for="pac_nombres">Nombre (S)</label>
+          <input id="pac_nombres" formControlName="pac_nombres" placeholder="Nombre (s)" type="text"
+            class="form-control form-control-lg">
+        </div>
+
+        <div class="col-3">
+          <label class="col-form-label col-form-label-lg" for="pac_primer_apellido">Primer apellido</label>
+          <input id="pac_primer_apellido" formControlName="pac_primer_apellido" placeholder="Primer apellido"
+              type="text" class="form-control form-control-lg">
+        </div>
+        <div class="col-3">
+            <label class="col-form-label col-form-label-lg" for="pac_segundo_apellido">Segundo apellido</label>
+            <input id="pac_segundo_apellido" formControlName="pac_segundo_apellido"
+                placeholder="Segundo apellido" type="text" class="form-control form-control-lg">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col-6">
+            <label class="col-form-label col-form-label-lg" for="pac_curp">CURP</label>
+            <input id="pac_curp" formControlName="pac_curp" placeholder="C U R P" type="text"
+                class="form-control form-control-lg">
+        </div>
+
+        <div class="col-4">
+            <label class="col-form-label col-form-label-lg" for="pac_f_nacimiento">Fecha de nacimiento</label>
+            <input id="pac_f_nacimiento" formControlName="pac_f_nacimiento" placeholder="DD/MM/AAAA" type="text"
+                class="form-control form-control-lg">
+        </div>
+
+        <div class="col-2" *ngIf="currentUser">
+          <label class="col-form-label col-form-label-lg">Estado del Paciente</label>
+          <select class="form-control form-control-lg" formControlName="pac_status">
+            <option [ngValue]="true" >Activo</option>
+            <option [ngValue]="false">Inactivo</option>
+          </select>
+          <small id="notificacion" class="form-text">Este campo es para indicar si el doctor se encuentra activo en la clínica o no.</small>
+        </div>
     </div>
+
+    <div class="form-row">
+      <div class="col-4">
+        <label class="col-form-label col-form-label-lg" for="pac_email">Correo electrónico</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">@</div>
+          </div>
+          <input id="pac_email" formControlName="pac_email" placeholder="ejemplo@dominio.com" type="text"
+            class="form-control form-control-lg">
+          </div>
+      </div>
+
+      <div class="col-4">
+        <label class="col-form-label col-form-label-lg" for="pac_telefono">Teléfono fijo</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="fa fa-phone"></i>
+            </div>
+          </div>
+          <input id="pac_telefono" formControlName="pac_telefono" placeholder="(000)-000-000" type="text"
+            class="form-control form-control-lg">
+        </div>
+      </div>
+
+      <div class="col-4">
+        <label class="col-form-label col-form-label-lg" for="pac_celular">Teléfono celular</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <i class="fa fa-mobile-phone"></i>
+              </div>
+            </div>
+            <input id="pac_celular" formControlName="pac_celular" placeholder="(000)-000-000" type="text"
+                class="form-control form-control-lg">
+          </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-4">
+          <label class="col-form-label col-form-label-lg" for="pac_estado_civil">Estado Civil</label>
+          <select id="pac_estado_civil" formControlName="pac_estado_civil"
+              class="form-control form-control-lg">
+              <option value="" selected>Elige una opción...</option>
+              <option value="Soltero">Soltero(a)</option>
+              <option value="Casado">Casado(a)</option>
+              <option value="Separado">Separado(a)</option>
+              <option value="Divorciado">Divorciado(a)</option>
+              <option value="Union Libre">Union Libre</option>
+              <option value="Viudo">Viudo(a)</option>
+          </select>
+      </div>
+
+      <div class="col-4">
+          <label class="col-form-label col-form-label-lg" for="pac_escolaridad">Escolaridad</label>
+          <select id="pac_escolaridad" formControlName="pac_escolaridad"
+              class="form-control col-form-label-lg">
+              <option selected value="">Elige una opción</option>
+              <option value="Primaria">Primaria</option>
+              <option value="Secundaria">Secundaria</option>
+              <option value="Bachillerato">Bachillerato</option>
+              <option value="Carrera Tecnica">Carrera Técnica</option>
+              <option value="Licenciatura">Licenciatura</option>
+              <option value="Posgrado">Posgrado</option>
+          </select>
+      </div>
+
+      <div class="col-2">
+          <div class="">
+              <label class="col-form-label col-form-label-lg" for="inputG"> Genero/Sexo </label>
+          </div>
+          <div class="form-row text-center">
+              <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" class="custom-control-input" id="radioMale" formControlName="pac_sexo"
+                      value="M">
+                  <label class="custom-control-label" for="radioMale"><span class="fa fa-male"></span></label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" class="custom-control-input" id="radiofemale" formControlName="pac_sexo"
+                      value="F">
+                  <label class="custom-control-label" for="radiofemale"><span
+                          class="fa fa-female"></span></label>
+              </div>
+        </div>
+      </div>
+
+      <div class="col-2" >
+        <label class="col-form-label col-form-label-lg">Tipo de Paciente</label>
+        <select class="form-control form-control-lg" formControlName="pac_tipo">
+          <option value="titular" >Titular</option>
+          <option value="adiciona">Adicional</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="form-row">
+      <div class="col-4">
+          <label class="col-form-label col-form-label-lg" for="pac_pais">País</label>
+          <input id="pac_pais" formControlName="pac_pais" readonly placeholder="Nombre (s)" type="text"
+              class="form-control form-control-lg">
+      </div>
+      <div class="col-4">
+          <label class="col-form-label col-form-label-lg" for="pac_estado">Estado</label>
+          <select id="pac_estado" #estados formControlName="pac_estado"
+              (change)="getMunicipios(estados.value)" class="form-control col-form-label-lg">
+              <option value="" disabled="true">Selecciona una opcion</option>
+              <option value="Aguascalientes">Aguascalientes</option>
+              <option value="Baja California">Baja California</option>
+              <option value="Baja California Sur">Baja California Sur</option>
+              <option value="Campeche">Campeche</option>
+              <option value="Ciudad de México">Ciudad de México</option>
+              <option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>
+              <option value="Colima">Colima</option>
+              <option value="Chiapas">Chiapas</option>
+              <option value="Chihuahua">Chihuahua</option>
+              <option value="Durango">Durango</option>
+              <option value="Guanajuato">Guanajuato</option>
+              <option value="Guerrero">Guerrero</option>
+              <option value="Hidalgo">Hidalgo</option>
+              <option value="Jalisco">Jalisco</option>
+              <option value="México">México</option>
+              <option value="Michoacán de Ocampo">Michoacán de Ocampo</option>
+              <option value="Morelos">Morelos</option>
+              <option value="Nayarit">Nayarit</option>
+              <option value="Nuevo León">Nuevo León</option>
+              <option value="Oaxaca">Oaxaca</option>
+              <option value="Puebla">Puebla</option>
+              <option value="Querétaro">Querétaro</option>
+              <option value="Quintana Roo">Quintana Roo</option>
+              <option value="San Luis Potosí">San Luis Potosí</option>
+              <option value="Sinaloa">Sinaloa</option>
+              <option value="Sonora">Sonora</option>
+              <option value="Tabasco">Tabasco</option>
+              <option value="Tamaulipas">Tamaulipas</option>
+              <option value="Tlaxcala">Tlaxcala</option>
+              <option value="Veracruz de Ignacio de la Llave">Veracruz de Ignacio de la Llave</option>
+              <option value="Yucatán">Yucatán</option>
+              <option value="Zacatecas">Zacatecas</option>
+          </select>
+      </div>
+      <div class="col-4">
+          <label class="col-form-label col-form-label-lg" for="pac_municipio">Municipio</label>
+          <select id="pac_municipio" formControlName="pac_municipio" class="form-control col-form-label-lg">
+              <option value="" disabled="true">Selecciona una opcion</option>
+              <option *ngFor="let x of municipios" value="{{x}}">{{x}}</option>
+          </select>
+      </div>
+  </div>
+
+    <div class="form-row">
+      <div class="col-4">
+          <label class="col-form-label col-form-label-lg" for="pac_localidad">Localdad</label>
+          <input id="pac_localidad" formControlName="pac_localidad" placeholder="Localidad" type="text"
+              class="form-control form-control-lg">
+      </div>
+      <div class="col-4">
+          <label class="col-form-label col-form-label-lg" for="pac_dir_cp">Código postal</label>
+          <input id="pac_dir_cp" formControlName="pac_dir_cp" placeholder="Código postal" type="text"
+              class="form-control form-control-lg">
+      </div>
+      <div class="col-4">
+          <label class="col-form-label col-form-label-lg" for="pac_dir_colonia">Colonia</label>
+          <input id="pac_dir_colonia" formControlName="pac_dir_colonia" placeholder="Colonia..." type="text"
+              class="form-control form-control-lg">
+      </div>
+  </div>
+
+  <div class="form-row">
+      <div class="col-6">
+          <label class="col-form-label col-form-label-lg" for="pac_dir_calle">Calle</label>
+          <input id="pac_dir_calle" formControlName="pac_dir_calle" placeholder="Calle" type="text"
+              class="form-control form-control-lg">
+      </div>
+      <div class="col-6">
+          <label class="col-form-label col-form-label-lg" for="pac_dir_comentarios">Comentarios
+              Generales</label>
+          <input id="pac_dir_comentarios" formControlName="pac_dir_comentarios"
+              placeholder="Comentarios Generales" type="text" class="form-control form-control-lg">
+      </div>
+  </div>
+
+      <div class="d-flex justify-content-center">
+        <button *ngIf="!currentUser" class="btn btn-success me-md-2" type="submit" [disabled]="!doctorForm.valid" >Guardar</button>
+            <button *ngIf="currentUser" class="btn btn-success me-md-2" (click)="updatePaciente()" type="button" [disabled]="!doctorForm.valid" >Actualizar</button>
+            <button class="btn btn-danger" type="button" (click)="goToPacientes()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
 </div>
+
+
+
+

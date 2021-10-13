@@ -89,8 +89,8 @@ export class DoctoresComponent implements OnInit {
         this.tablaDoctores.api.setRowData(this.doctoresList);
       }
     };
-   }
-   /*Siempre que usamos una función asincrona debemos colocar el async
+  }
+  /*Siempre que usamos una función asincrona debemos colocar el async
    y se complementa con un await*/
   async ngOnInit() {
     await new Promise<void>(resolve => {

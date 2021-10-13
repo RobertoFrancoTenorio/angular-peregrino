@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GridOptions } from 'ag-grid-community';
+import { PacienteService } from '../../service/paciente/paciente.service';
+import { AccionesPacienteComponent } from './acciones-paciente/acciones-paciente.component';
 
 @Component({
   selector: 'app-pacientes',
@@ -9,15 +12,98 @@ import { Router } from '@angular/router';
 export class PacientesComponent implements OnInit {
 
   done: boolean=true;
-  
-  constructor(
-    private router: Router
-  ) { }
 
-  ngOnInit(): void {
+  tablaPacientes: GridOptions
+  pacientesList : any;
+  columnDefsFilter = [
+    {
+      headerName: 'No.',
+      field: 'idNumerico',
+      width: 70,
+      sort: 'asc',
+      filter: "agNumberColumnFilter"
+    },
+    {
+      headerName: 'Nombres',
+      field: 'pac_nombres',
+      width: 100,
+      filter: "agTextColumnFilter"
+    },
+    {
+      headerName: 'Primer Apellido',
+      field: 'pac_primer_apellido',
+      width: 100,
+      filter: "agTextColumnFilter"
+    },
+    {
+      headerName: 'Primer Apellido',
+      field: 'pac_segundo_apellido',
+      width: 100,
+      filter: "agTextColumnFilter"
+    },
+    {
+      headerName: 'Correo electrónico',
+      field: 'pac_email',
+      width: 180,
+      filter: "agTextColumnFilter"
+    },
+    {
+      headerName: 'Celular',
+      field: 'pac_celular',
+      width: 180,
+      filter: "agTextColumnFilter"
+    },
+    {
+      headerName: "Acciones",
+      cellRendererFramework: AccionesPacienteComponent,
+      width: 200,
+      pinned: 'right'
+    },
+    {
+      width: 100, headerName: 'Estado', field: 'pac_status',
+      cellRenderer: (params => {
+        var div = document.createElement('div');
+        if(params.value){
+          div.innerHTML = '<span style="text-align: center; width: 40px; height: 40px; background-color: #5cb85c; color: white; border-radius: 50%; display: inline-block;" > <i class="fa fa-check"></i> </span>';
+        } else {
+          div.innerHTML = '<span style="text-align: center; width: 40px; height: 40px; background-color: #d9534f; color: white; border-radius: 50%; display: inline-block;" > <i class="fa fa-times"></i> </span>';
+        }
+        return div;
+      })
+    }
+  ]
+
+  constructor(
+    private router: Router,
+    private pacienteService: PacienteService,
+  ) {
+    this.tablaPacientes = <GridOptions>{
+      columnDefs: this.columnDefsFilter,
+      rowData: null,
+      onGridReady: () =>{
+        this.tablaPacientes.api.setRowData(this.pacientesList)
+      }
+    }
+  }
+
+  async ngOnInit() {
+    await new Promise<void>(resolve => {
+      this.pacienteService.getPacientes().subscribe(pacientes =>{
+        this.pacientesList = pacientes;
+        if(this.tablaPacientes.api){
+          this.tablaPacientes.api.setRowData(this.pacientesList);
+        }
+        resolve();
+      })
+    })
   }
 
   goToAddPaciente(){
     this.router.navigate(['add-paciente']);
+  }
+
+  /*Metodo para filtrar a los doctores*/
+  onQuickFilterChanged($event) {
+    this.tablaPacientes.api.setQuickFilter($event.target.value);
   }
 }

@@ -32,13 +32,13 @@ export class PacientesComponent implements OnInit {
     {
       headerName: 'Primer Apellido',
       field: 'pac_primer_apellido',
-      width: 100,
+      width: 150,
       filter: "agTextColumnFilter"
     },
     {
-      headerName: 'Primer Apellido',
+      headerName: 'Segundo Apellido',
       field: 'pac_segundo_apellido',
-      width: 100,
+      width: 150,
       filter: "agTextColumnFilter"
     },
     {
@@ -60,16 +60,8 @@ export class PacientesComponent implements OnInit {
       pinned: 'right'
     },
     {
-      width: 100, headerName: 'Estado', field: 'pac_status',
-      cellRenderer: (params => {
-        var div = document.createElement('div');
-        if(params.value){
-          div.innerHTML = '<span style="text-align: center; width: 40px; height: 40px; background-color: #5cb85c; color: white; border-radius: 50%; display: inline-block;" > <i class="fa fa-check"></i> </span>';
-        } else {
-          div.innerHTML = '<span style="text-align: center; width: 40px; height: 40px; background-color: #d9534f; color: white; border-radius: 50%; display: inline-block;" > <i class="fa fa-times"></i> </span>';
-        }
-        return div;
-      })
+      width: 100, headerName: 'Tipo de Paciente',
+
     }
   ]
 

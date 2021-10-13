@@ -39,20 +39,12 @@
                 class="form-control form-control-lg">
         </div>
 
-        <div class="col-4">
-            <label class="col-form-label col-form-label-lg" for="pac_f_nacimiento">Fecha de nacimiento</label>
+
+        <div class="col-6">
+          <label class="col-form-label col-form-label-lg" for="pac_f_nacimiento">Fecha de nacimiento</label>
             <input id="pac_f_nacimiento" formControlName="pac_f_nacimiento" placeholder="DD/MM/AAAA" type="text"
                 class="form-control form-control-lg">
-        </div>
-
-        <div class="col-2" *ngIf="currentUser">
-          <label class="col-form-label col-form-label-lg">Estado del Paciente</label>
-          <select class="form-control form-control-lg" formControlName="pac_status">
-            <option [ngValue]="true" >Activo</option>
-            <option [ngValue]="false">Inactivo</option>
-          </select>
-          <small id="notificacion" class="form-text">Este campo es para indicar si el doctor se encuentra activo en la clínica o no.</small>
-        </div>
+      </div>
     </div>
 
     <div class="form-row">
@@ -123,7 +115,7 @@
           </select>
       </div>
 
-      <div class="col-2">
+      <div class="col-4">
           <div class="">
               <label class="col-form-label col-form-label-lg" for="inputG"> Genero/Sexo </label>
           </div>
@@ -140,14 +132,6 @@
                           class="fa fa-female"></span></label>
               </div>
         </div>
-      </div>
-
-      <div class="col-2" >
-        <label class="col-form-label col-form-label-lg">Tipo de Paciente</label>
-        <select class="form-control form-control-lg" formControlName="pac_tipo">
-          <option value="titular" >Titular</option>
-          <option value="adiciona">Adicional</option>
-        </select>
       </div>
 
     </div>
@@ -239,7 +223,7 @@
   </div>
 
       <div class="d-flex justify-content-center">
-        <button *ngIf="!currentUser" class="btn btn-success me-md-2" type="submit" [disabled]="!doctorForm.valid" >Guardar</button>
+        <button *ngIf="!currentUser" class="btn btn-success me-md-2" type="submit"  >Guardar</button>
             <button *ngIf="currentUser" class="btn btn-success me-md-2" (click)="updatePaciente()" type="button" [disabled]="!doctorForm.valid" >Actualizar</button>
             <button class="btn btn-danger" type="button" (click)="goToPacientes()">Cancelar</button>
       </div>
@@ -247,7 +231,3 @@
   </div>
 
 </div>
-
-
-
-

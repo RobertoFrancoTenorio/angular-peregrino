@@ -48,7 +48,7 @@ export class AddPacienteComponent implements OnInit {
 
       pac_pais: new FormControl('México', /*[Validators.required]*/),
       pac_estado: new FormControl('', /*[Validators.required]*/),
-      municipio: new FormControl('', /*[Validators.required]*/),
+      pac_municipio: new FormControl('', /*[Validators.required]*/),
 
       pac_localidad: new FormControl('', /*[Validators.required]*/),
       pac_dir_cp: new FormControl('', /*[Validators.required, Validators.pattern('[0-9]{5}'), Validators.minLength(5)]*/),
@@ -56,8 +56,6 @@ export class AddPacienteComponent implements OnInit {
       pac_dir_calle: new FormControl('', /*[Validators.required]*/),
       pac_dir_comentarios: new FormControl('', /*[Validators.required]*/),
 
-      pac_status: (this.varActivo),
-      pac_tipo: new FormControl('')
     })
     if(this.router.getCurrentNavigation() != null){
       /*queryParams: parámetro muy útil para enviar objetos complejos utilizando la navegación de ruta.
@@ -115,8 +113,6 @@ export class AddPacienteComponent implements OnInit {
       pac_segundo_apellido: this.currentUser.pac_segundo_apellido,
       pac_curp: this.currentUser.pac_curp,
       pac_f_nacimiento: this.currentUser.pac_f_nacimiento,
-      pac_status: this.currentUser.pac_status,
-      pac_tipo: this.currentUser.pac_tipo,
 
       pac_email: this.currentUser.pac_email,
       pac_telefono: this.currentUser.pac_telefono,
@@ -152,6 +148,14 @@ export class AddPacienteComponent implements OnInit {
       this.router.navigate(['pacientes'])
       return false;
     })
+  }
+
+  alert(){
+    console.log("Activado")
+  }
+
+  get f(){
+    return this.pacienteForm.controls;
   }
 
 }

@@ -84,7 +84,7 @@ export class AddPacienteComponent implements OnInit {
                 this.currentPaciente = this.router.getCurrentNavigation().extras.state.userData;
                 this.bandEditTitular = true;
                 await this.loadMunicipios();
-                this.loadUserData();
+                this.loadTitularData();
                 break;
 
               case 'editar adicional':
@@ -253,6 +253,39 @@ export class AddPacienteComponent implements OnInit {
     })
     this.nombreTitular = this.currentPaciente.pac_det_titular.pac_nombre_completo;
     this.telefonoTitular = this.currentPaciente.pac_det_titular.pac_celular;
+    this.prueba = this.currentPaciente.pac_adicionales;
+  }
+
+  loadTitularData() {
+    console.log(this.currentPaciente.pac_municipio)
+    this.getMunicipios(this.currentPaciente.pac_estado);
+    this.pacienteForm.patchValue({
+      pac_nombres: this.currentPaciente.pac_nombres,
+      pac_primer_apellido: this.currentPaciente.pac_primer_apellido,
+      pac_segundo_apellido: this.currentPaciente.pac_segundo_apellido,
+      pac_curp: this.currentPaciente.pac_curp,
+      pac_f_nacimiento: this.currentPaciente.pac_f_nacimiento,
+
+      pac_email: this.currentPaciente.pac_email,
+      pac_telefono: this.currentPaciente.pac_telefono,
+      pac_celular: this.currentPaciente.pac_celular,
+      pac_estado_civil: this.currentPaciente.pac_estado_civil,
+      pac_escolaridad: this.currentPaciente.pac_escolaridad,
+      pac_sexo: this.currentPaciente.pac_sexo,
+
+      pac_pais: this.currentPaciente.pac_pais,
+      pac_estado: this.currentPaciente.pac_estado,
+      pac_municipio: this.currentPaciente.pac_municipio,
+
+      pac_localidad: this.currentPaciente.pac_localidad,
+      pac_dir_cp: this.currentPaciente.pac_dir_cp,
+      pac_dir_colonia: this.currentPaciente.pac_dir_colonia,
+      pac_dir_calle: this.currentPaciente.pac_dir_calle,
+      pac_dir_comentarios: this.currentPaciente.pac_dir_comentarios,
+
+      pac_parentesco: this.currentPaciente.pac_parentesco,
+    })
+    this.prueba = Object.values(this.currentPaciente.pac_adicionales);
   }
 
   updatePaciente() {
@@ -274,5 +307,4 @@ export class AddPacienteComponent implements OnInit {
   get f() {
     return this.pacienteForm.controls;
   }
-
 }

@@ -284,6 +284,26 @@
             type="text" class="form-control form-control-lg">
         </div>
       </div>
+
+      <div class="form-row" *ngIf="bandEditTitular">
+        <label class="col-form-label col-form-label-lg" for="pac_dir_calle">Adicionales</label>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Parentesco</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ad of prueba">
+              <td>{{ad.nombre_completo}}</td>
+              <td>{{ad.parentesco}}</td>
+              <td><button class="btn btn-success">Editar</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </form>
   </div>
   <div class="card-footer">

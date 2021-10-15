@@ -7,7 +7,6 @@ import { PacienteService } from '../../../service/paciente/paciente.service';
 import { resolve } from '@angular/compiler-cli/src/ngtsc/file_system';
 
 //import { municipios } from './../../../service/estadosymunicipios.json'
-
 @Component({
   selector: 'app-add-paciente',
   templateUrl: './add-paciente.component.html',
@@ -34,6 +33,9 @@ export class AddPacienteComponent implements OnInit {
   currentTitular: any = null;
 
   parentesco = "";
+  nombreTitular: any;
+  telefonoTitular: any;
+  prueba: any;
 
   constructor(
     private fb: FormBuilder,
@@ -43,10 +45,10 @@ export class AddPacienteComponent implements OnInit {
     private PacienteService: PacienteService,
   ) {
     this.pacienteForm = this.fb.group({
-      pac_nombres: ['', /*[Validators.required, Validators.pattern(this.valueNombre)]*/],
-      pac_primer_apellido: new FormControl('', /*[Validators.required, Validators.pattern(this.valueNombre)]*/),
-      pac_segundo_apellido: new FormControl('', /*[Validators.required, Validators.pattern(this.valueNombre)]*/),
-      pac_curp: new FormControl('', /*[Validators.required, Validators.pattern(this.valueCURP)]*/),
+      pac_nombres: ['', [Validators.required, /*Validators.pattern(this.valueNombre)*/]],
+      pac_primer_apellido: new FormControl('', [Validators.required, /*Validators.pattern(this.valueNombre)*/]),
+      pac_segundo_apellido: new FormControl('', [Validators.required, /*Validators.pattern(this.valueNombre)*/]),
+      pac_curp: new FormControl('', [Validators.required, /*Validators.pattern(this.valueCURP)*/]),
       pac_f_nacimiento: new FormControl('', /*[Validators.required]*/),
 
       pac_email: new FormControl('', /*[Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$')]*/),
@@ -247,7 +249,10 @@ export class AddPacienteComponent implements OnInit {
       pac_dir_calle: this.currentPaciente.pac_dir_calle,
       pac_dir_comentarios: this.currentPaciente.pac_dir_comentarios,
 
+      pac_parentesco: this.currentPaciente.pac_parentesco,
     })
+    this.nombreTitular = this.currentPaciente.pac_det_titular.pac_nombre_completo;
+    this.telefonoTitular = this.currentPaciente.pac_det_titular.pac_celular;
   }
 
   updatePaciente() {
@@ -264,10 +269,6 @@ export class AddPacienteComponent implements OnInit {
       this.router.navigate(['pacientes'])
       return false;
     })
-  }
-
-  alert() {
-    console.log("Activado")
   }
 
   get f() {

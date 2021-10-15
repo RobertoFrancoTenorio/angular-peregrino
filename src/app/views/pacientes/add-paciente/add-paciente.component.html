@@ -11,18 +11,30 @@
         </form>
       </div>
     </nav>
+
   </div>
 
   <div class="card-body">
+    <!--<div class="form-row">
+      <span *ngIf="bandAddAdicional">Nombre del titular desde el titular {{ currentTitular.pac_nombre_completo }} </span>
+      <br>
+    <span *ngIf="bandEditAdicional">Nombre del titular accediendo desde el Adicional {{ currentPaciente.pac_det_titular.pac_nombre_completo }} </span>
+    <span *ngIf="bandEditAdicional">Nombre Adicional {{ currentPaciente.pac_nombre_completo }} </span>
+    <span></span>
+    </div>-->
 
-    <span *ngIf="bandAddAdicional"> {{ currentTitular.pac_nombre_completo }} </span>
-    <span *ngIf="bandEditAdicional"> {{ currentPaciente.pac_det_titular.pac_nombre_completo }} </span>
 
-    <div class="form-row" *ngIf="bandAddAdicional || bandEditAdicional">
+    <div class="form-row" *ngIf="bandAddAdicional">
+      <div class="col-6">
+        <label class="col-form-label col-form-label-lg" for="pac_nombres">Nombre del Titular</label>
+        <input id="parentesco" value="{{currentTitular.pac_nombre_completo}}" disabled placeholder="Nombre (s)" type="text"
+          class="form-control form-control-lg">
+      </div>
       <div class="col-6">
         <label class="col-form-label col-form-label-lg">Parentesco</label>
-        <select [(ngModel)]="parentesco" class="form-control col-form-label-lg">
+        <select [(ngModel)]="parentesco" class="form-control col-form-label-lg" id="options">
           <option selected value="">Elige una opción</option>
+
           <option value="Padre">Padre</option>
           <option value="Madre">Madre</option>
           <option value="Suegro">Suegro</option>
@@ -31,8 +43,34 @@
         </select>
       </div>
     </div>
+
+    <div class="form-row" *ngIf="bandEditAdicional">
+      <div class="col-3">
+        <label class="col-form-label col-form-label-lg" for="pac_nombres">Nombre del Titular</label>
+        <input id="datosPac" value="{{nombreTitular}}" disabled placeholder="Nombre (s)" type="text"
+          class="form-control form-control-lg">
+      </div>
+      <div class="col-3">
+        <label class="col-form-label col-form-label-lg" for="pac_nombres">Teléfono del Titular</label>
+        <input id="datosPac" value="{{telefonoTitular}}" disabled placeholder="Nombre (s)" type="text"
+          class="form-control form-control-lg">
+      </div>
+      <div class="col-6">
+        <label class="col-form-label col-form-label-lg">Parentesco</label>
+        <select [(ngModel)]="parentesco" required id="parentesco"class="form-control col-form-label-lg">
+          <option selected value="">Elige una opción</option>
+
+          <option value="Padre">Padre</option>
+          <option value="Madre">Madre</option>
+          <option value="Suegro">Suegro</option>
+          <option value="Suegra">Suegra</option>
+          <option value="Hijo">Hijo</option>
+        </select>
+      </div>
+    </div>
+
     <form [formGroup]="pacienteForm">
-      
+
       <span>{{parentesco}}</span>
       <div class="form-row">
         <div class="col-6">
@@ -242,9 +280,9 @@
   <div class="card-footer">
     <div class="d-flex justify-content-center">
       <button class="btn btn-success me-md-2" type="button"
-        (click)="addPacTitular()" *ngIf="bandAddTitular">Guardar Titular</button>
+        (click)="addPacTitular()" [disabled]="!pacienteForm.valid" *ngIf="bandAddTitular">Guardar Titular</button>
       <button class="btn btn-success me-md-2" type="button"
-        (click)="addPacAdicional()" *ngIf="bandAddAdicional">Guardar Adicional</button>
+        (click)="addPacAdicional()" *ngIf="bandAddAdicional" [disabled]="parentesco == '' && !pacienteForm.valid">Guardar Adicional</button>
       <button class="btn btn-success me-md-2" (click)="updatePaciente()" type="button"
         [disabled]="!pacienteForm.valid" *ngIf="bandEditTitular || bandEditAdicional">Actualizar</button>
       <button class="btn btn-danger" type="button" (click)="goToPacientes()">Cancelar</button>

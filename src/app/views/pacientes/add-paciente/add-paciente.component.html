@@ -25,13 +25,18 @@
 
 
     <div class="form-row" *ngIf="bandAddAdicional">
-      <div class="col-6">
+      <div class="col-3">
         <label class="col-form-label col-form-label-lg" for="pac_nombres">Nombre del Titular</label>
         <input id="parentesco" value="{{currentTitular.pac_nombre_completo}}" disabled placeholder="Nombre (s)" type="text"
           class="form-control form-control-lg">
       </div>
+      <div class="col-3">
+        <label class="col-form-label col-form-label-lg" for="pac_nombres">Teléfono del Titular</label>
+        <input id="datosPac" value="{{currentTitular.pac_celular}}" disabled placeholder="Nombre (s)" type="text"
+          class="form-control form-control-lg">
+      </div>
       <div class="col-6">
-        <label class="col-form-label col-form-label-lg">Parentesco</label>
+        <label class="col-form-label col-form-label-lg">Parentesco <span class="asterisco">**</span></label>
         <select [(ngModel)]="parentesco" class="form-control col-form-label-lg" id="options">
           <option selected value="">Elige una opción</option>
 
@@ -56,7 +61,7 @@
           class="form-control form-control-lg">
       </div>
       <div class="col-6">
-        <label class="col-form-label col-form-label-lg">Parentesco</label>
+        <label class="col-form-label col-form-label-lg">Parentesco <span class="asterisco">**</span></label>
         <select [(ngModel)]="parentesco" required id="parentesco"class="form-control col-form-label-lg">
           <option selected value="">Elige una opción</option>
 
@@ -74,18 +79,18 @@
       <span>{{parentesco}}</span>
       <div class="form-row">
         <div class="col-6">
-          <label class="col-form-label col-form-label-lg" for="pac_nombres">Nombre (S)</label>
+          <label class="col-form-label col-form-label-lg" for="pac_nombres">Nombre (S) <span class="asterisco">**</span></label>
           <input id="pac_nombres" formControlName="pac_nombres" placeholder="Nombre (s)" type="text"
             class="form-control form-control-lg">
         </div>
 
         <div class="col-3">
-          <label class="col-form-label col-form-label-lg" for="pac_primer_apellido">Primer apellido</label>
+          <label class="col-form-label col-form-label-lg" for="pac_primer_apellido">Primer apellido <span class="asterisco">**</span></label>
           <input id="pac_primer_apellido" formControlName="pac_primer_apellido" placeholder="Primer apellido"
             type="text" class="form-control form-control-lg">
         </div>
         <div class="col-3">
-          <label class="col-form-label col-form-label-lg" for="pac_segundo_apellido">Segundo apellido</label>
+          <label class="col-form-label col-form-label-lg" for="pac_segundo_apellido">Segundo apellido <span class="asterisco">**</span> </label>
           <input id="pac_segundo_apellido" formControlName="pac_segundo_apellido" placeholder="Segundo apellido"
             type="text" class="form-control form-control-lg">
         </div>
@@ -93,15 +98,18 @@
 
       <div class="form-row">
         <div class="col-6">
-          <label class="col-form-label col-form-label-lg" for="pac_curp">CURP</label>
+          <label class="col-form-label col-form-label-lg" for="pac_curp">CURP <span class="asterisco">**</span></label>
           <input id="pac_curp" formControlName="pac_curp" placeholder="C U R P" type="text"
-            class="form-control form-control-lg">
+            class="form-control form-control-lg" [ngClass]="{ 'is-invalid': f.pac_curp.errors }">
+            <div class="invalid-feedback" *ngIf="f.pac_curp.errors">
+              <div *ngIf="f.pac_curp.errors.required">Formato de CURP invalido</div>
+            </div>
         </div>
 
 
         <div class="col-6">
           <label class="col-form-label col-form-label-lg" for="pac_f_nacimiento">Fecha de nacimiento</label>
-          <input id="pac_f_nacimiento" formControlName="pac_f_nacimiento" placeholder="DD/MM/AAAA" type="text"
+          <input id="pac_f_nacimiento" formControlName="pac_f_nacimiento" placeholder="DD/MM/AAAA" type="date"
             class="form-control form-control-lg">
         </div>
       </div>
@@ -132,7 +140,7 @@
         </div>
 
         <div class="col-4">
-          <label class="col-form-label col-form-label-lg" for="pac_celular">Teléfono celular</label>
+          <label class="col-form-label col-form-label-lg" for="pac_celular">Teléfono celular <span class="asterisco">**</span></label>
           <div class="input-group">
             <div class="input-group-prepend">
               <div class="input-group-text">
@@ -142,6 +150,7 @@
             <input id="pac_celular" formControlName="pac_celular" placeholder="(000)-000-000" type="text"
               class="form-control form-control-lg">
           </div>
+          <small *ngIf="bandAddAdicional" class="adicional">Si el paciente adicional no cuenta con un teléfono agregar el de su titular.</small>
         </div>
       </div>
 
@@ -282,11 +291,13 @@
       <button class="btn btn-success me-md-2" type="button"
         (click)="addPacTitular()" [disabled]="!pacienteForm.valid" *ngIf="bandAddTitular">Guardar Titular</button>
       <button class="btn btn-success me-md-2" type="button"
-        (click)="addPacAdicional()" *ngIf="bandAddAdicional" [disabled]="parentesco == '' && !pacienteForm.valid">Guardar Adicional</button>
+        (click)="addPacAdicional()" *ngIf="bandAddAdicional" [disabled]="parentesco == '' || !pacienteForm.valid">Guardar Adicional</button>
       <button class="btn btn-success me-md-2" (click)="updatePaciente()" type="button"
         [disabled]="!pacienteForm.valid" *ngIf="bandEditTitular || bandEditAdicional">Actualizar</button>
       <button class="btn btn-danger" type="button" (click)="goToPacientes()">Cancelar</button>
     </div>
+    <h5>Los campos marcados con <span class="asterisco">**</span> son obligatorios.</h5>
+
   </div>
 
 </div>

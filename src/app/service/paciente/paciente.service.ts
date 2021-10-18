@@ -37,6 +37,7 @@ export class PacienteService {
         post['id'] = this.afs.createId();
         post['idNumerico'] = idNum;
         post['activo']=true;
+        post['empresa'] = 'troquelados'
 
         console.log("vALOR post");
         console.log(post);

@@ -25,26 +25,14 @@ export class PacientesComponent implements OnInit {
     },
     {
       headerName: 'Nombres',
-      field: 'pac_nombres',
-      width: 100,
-      filter: "agTextColumnFilter"
-    },
-    {
-      headerName: 'Primer Apellido',
-      field: 'pac_primer_apellido',
-      width: 150,
-      filter: "agTextColumnFilter"
-    },
-    {
-      headerName: 'Segundo Apellido',
-      field: 'pac_segundo_apellido',
-      width: 150,
+      field: 'pac_nombre_completo',
+      width: 300,
       filter: "agTextColumnFilter"
     },
     {
       headerName: 'Correo electrónico',
       field: 'pac_email',
-      width: 180,
+      width: 250,
       filter: "agTextColumnFilter"
     },
     {
@@ -57,7 +45,19 @@ export class PacientesComponent implements OnInit {
       headerName: 'Tipo de Paciente',
       field: 'pac_tipo',
       width: 180, 
-      filter: "agTextColumnFilter"
+      filter: "agTextColumnFilter",
+      cellRenderer: (params) => {
+        if(params.data.pac_tipo=='titular'){
+          var div = document.createElement('div');
+          div.innerHTML = params.data.pac_tipo + '  <span class="badge" style="background-color: #d9534f"> '+ params.data.pac_cant_adicionales + '</span>';
+          return div;
+        }else{
+          var div = document.createElement('div');
+          div.innerHTML = params.data.pac_tipo;
+          return div;
+        }
+          
+      }
     },
     {
       headerName: "Acciones",

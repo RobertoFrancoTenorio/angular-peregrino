@@ -69,7 +69,7 @@ import { DoctoresComponent } from './views/doctores/doctores.component';
 import {DoctorService } from './service/doctor/doctor.service';
 import { AddDoctorComponent } from './views/doctores/add-doctor/add-doctor.component';
 import { AccionesDoctoresComponent } from './views/doctores/acciones-doctores/acciones-doctores.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+//import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CalendarComponent } from './views/calendar/calendar.component';
 
 @NgModule({
@@ -97,7 +97,7 @@ import { CalendarComponent } from './views/calendar/calendar.component';
     IconSetModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+  //  FontAwesomeModule
   ],
   declarations: [
     AppComponent,

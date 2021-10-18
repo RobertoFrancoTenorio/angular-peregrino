@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DoctorService } from './../../../service/doctor/doctor.service';
-import { faUserMd } from '@fortawesome/free-solid-svg-icons';
+/*import { faUserMd } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faEraser } from '@fortawesome/free-solid-svg-icons';
 import { faRoute } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +12,7 @@ import { faCommentMedical } from '@fortawesome/free-solid-svg-icons';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { faAt } from '@fortawesome/free-solid-svg-icons';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
-import { faClock } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-solid-svg-icons';*/
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -34,7 +34,7 @@ export class AddDoctorComponent implements OnInit {
   //Variable que switchea el valor de activo
   varActivo: boolean = true;
 
-  faUserMd = faUserMd;
+  /*faUserMd = faUserMd;
   faPlus = faPlus;
   faEraser = faEraser;
   faRoute = faRoute;
@@ -43,7 +43,7 @@ export class AddDoctorComponent implements OnInit {
   alert = faExclamationCircle;
   at = faAt;
   fa = faPhoneAlt;
-  clock = faClock;
+  clock = faClock;*/
 
   metodoForm = this.fb.group({
     metodo: ['', []],

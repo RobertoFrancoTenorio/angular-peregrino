@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="card-header">
+  <div class="card-header" *ngIf="idAdicional==null">
     <nav class="navbar navbar-light bg-light">
       <div class="container-fluid">
         <h3 *ngIf="bandAddTitular">Agregar Paciente Titular</h3>
@@ -39,7 +39,8 @@
         <label class="col-form-label col-form-label-lg">Parentesco <span class="asterisco">**</span></label>
         <select [(ngModel)]="parentesco" class="form-control col-form-label-lg" id="options">
           <option selected value="">Elige una opción</option>
-
+          <option value="Esposa">Esposa</option>
+          <option value="Esposo">Esposo</option>
           <option value="Padre">Padre</option>
           <option value="Madre">Madre</option>
           <option value="Suegro">Suegro</option>
@@ -102,7 +103,7 @@
           <input id="pac_curp" formControlName="pac_curp" placeholder="C U R P" type="text"
             class="form-control form-control-lg" [ngClass]="{ 'is-invalid': f.pac_curp.errors }">
             <div class="invalid-feedback" *ngIf="f.pac_curp.errors">
-              <div *ngIf="f.pac_curp.errors.required">Formato de CURP invalido</div>
+              <div *ngIf="f.pac_curp.errors.pattern">Formato de CURP invalido</div>
             </div>
         </div>
 
@@ -299,7 +300,7 @@
             <tr *ngFor="let ad of prueba">
               <td>{{ad.nombre_completo}}</td>
               <td>{{ad.parentesco}}</td>
-              <td><button class="btn btn-success">Editar</button></td>
+              <td><button class="btn btn-success" (click)="editModalShow(ad.id)">Editar</button></td>
             </tr>
           </tbody>
         </table>

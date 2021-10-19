@@ -71,6 +71,9 @@ import { AddDoctorComponent } from './views/doctores/add-doctor/add-doctor.compo
 import { AccionesDoctoresComponent } from './views/doctores/acciones-doctores/acciones-doctores.component';
 //import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CalendarComponent } from './views/calendar/calendar.component';
+import { ModalEditPacComponent } from './views/pacientes/modal-edit-pac/modal-edit-pac.component';
+
+import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
 
 @NgModule({
   imports: [
@@ -87,6 +90,7 @@ import { CalendarComponent } from './views/calendar/calendar.component';
     BrowserAnimationsModule,
     AccordionModule.forRoot(),
     AppFooterModule,
+    ModalModule.forRoot(),
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,
@@ -117,7 +121,8 @@ import { CalendarComponent } from './views/calendar/calendar.component';
     AccionesDoctoresComponent,
     AddPacienteComponent,
     AccionesPacienteComponent,
-    CalendarComponent
+    CalendarComponent,
+    ModalEditPacComponent
 
   ],
   providers: [
@@ -129,6 +134,7 @@ import { CalendarComponent } from './views/calendar/calendar.component';
     AuthService,
     UsuarioService,
     DoctorService,
+    BsModalRef
   ],
   bootstrap: [ AppComponent ]
 })

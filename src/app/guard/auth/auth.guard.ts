@@ -20,7 +20,6 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.auth.isLoggedIn) {
       this.auth.getUserAccount().then(data=>{
-        console.log(route.data);
         if(route.data.cat){
           let permisosCat = Object.keys(data['permisos']);
           if(permisosCat.includes(route.data.categoria)) return true;
@@ -30,7 +29,6 @@ export class AuthGuard implements CanActivate {
           if(permisosCat.includes(route.data.pagina)) return true;
           else this.router.navigate(['403']);
         }
-        console.log(data['permisos']);
       })
 
       return true;
@@ -41,7 +39,6 @@ export class AuthGuard implements CanActivate {
         icon: 'error',
         confirmButtonText: 'OK'
       }).then(()=>{*/
-        console.log('pagina de logout')
         this.router.navigate(['logout']);
         return false;
      // })

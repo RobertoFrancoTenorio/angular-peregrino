@@ -22,7 +22,6 @@ export class AuthService {
     this.afAuth.onAuthStateChanged(user => {
       if (user) {
         this.user = user;
-        console.log('authstate')
         localStorage.setItem('user', JSON.stringify(this.user));
         JSON.parse(localStorage.getItem('user'));
         //this.getUserAccount();
@@ -66,7 +65,6 @@ export class AuthService {
   }
 
   async getUserAccount() {
-    console.log(this.currentUserId);
     return new Promise(resolve => {
       this.afs.collection('SegMedico').doc('peregrino').collection('usuarios').doc(this.currentUserId).valueChanges().subscribe(
         x => {
@@ -94,7 +92,6 @@ export class AuthService {
 
   get currentUserId(): string {
     const user = JSON.parse(localStorage.getItem('user'));
-    console.log(user);
     return this.isLoggedIn ? user.uid : '';
   }
 

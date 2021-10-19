@@ -19,7 +19,7 @@ export class PacienteService {
   }
 
   getPacienteData(id:string) {
-    return this.afs.collection('/SegMedico/peregrino/Pacientes/'+id).valueChanges();
+    return this.afs.doc('/SegMedico/peregrino/Pacientes/'+id).valueChanges();
   }
 
   creaPaciente(post: any) {

@@ -14,7 +14,6 @@ export class AccionesPacienteComponent implements ICellRendererAngularComp {
     private router: Router
   ) { }
   async agInit(params: any): Promise<void> {
-    console.log(params);
     this.params=params.data;
     this.activo= params.data.pac_status;
   }

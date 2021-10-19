@@ -1,0 +1,12 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left"> Editar Paciente Adicional </h4>
+    <div class="pull-right">
+        <button type="button" class="btn btn-secondary" title="Cerrar" (click)="modalRef.hide();">
+            <span class="fa fa-times-circle"></span>
+        </button>
+    </div>
+</div>
+
+<div class="modal-body">
+    <app-add-paciente [idAdicional]="idAdicional" (cerrarModal)="cerrarModal($event)"></app-add-paciente>
+</div>

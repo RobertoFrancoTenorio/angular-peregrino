@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { PacienteService } from '../../../service/paciente/paciente.service';
-import { resolve } from '@angular/compiler-cli/src/ngtsc/file_system';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { ModalEditPacComponent } from '../modal-edit-pac/modal-edit-pac.component';
+import { take } from 'rxjs/operators';
 
 //import { municipios } from './../../../service/estadosymunicipios.json'
 @Component({
@@ -37,18 +39,25 @@ export class AddPacienteComponent implements OnInit {
   telefonoTitular: any;
   prueba: any;
 
+  modalRef: BsModalRef;
+
+  @Input() idAdicional: string = null;
+  @Output() cerrarModal: EventEmitter<any> = new EventEmitter<any>();
+
+
   constructor(
     private fb: FormBuilder,
     private httpClient: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
     private PacienteService: PacienteService,
+    private modalService: BsModalService
   ) {
     this.pacienteForm = this.fb.group({
       pac_nombres: ['', [Validators.required, /*Validators.pattern(this.valueNombre)*/]],
       pac_primer_apellido: new FormControl('', [Validators.required, /*Validators.pattern(this.valueNombre)*/]),
       pac_segundo_apellido: new FormControl('', [Validators.required, /*Validators.pattern(this.valueNombre)*/]),
-      pac_curp: new FormControl('', [Validators.required, Validators.pattern(this.valueCURP)]),
+      pac_curp: new FormControl('', [Validators.pattern(this.valueCURP)]),
       pac_f_nacimiento: new FormControl('', /*[Validators.required]*/),
 
       pac_email: new FormControl('', /*[Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$')]*/),
@@ -67,17 +76,15 @@ export class AddPacienteComponent implements OnInit {
       pac_dir_colonia: new FormControl('', /*[Validators.required]*/),
       pac_dir_calle: new FormControl('', /*[Validators.required]*/),
       pac_dir_comentarios: new FormControl('', /*[Validators.required]*/),
+      pac_medio_contacto: new FormControl('', /*[Validators.required]*/),
 
     });
 
     if (this.router.getCurrentNavigation() != null) {
       /*queryParams: parámetro muy útil para enviar objetos complejos utilizando la navegación de ruta.
                     ↓↓↓↓↓*/
-      console.log('entro al if getCurrentNavigation')
       this.route.queryParams.subscribe(async params => {
-        console.log('entro al subscribe');
         if (this.router.getCurrentNavigation().extras.state) {
-          console.log('entro al if state')
           if (this.router.getCurrentNavigation().extras.state.caso) {
             switch (this.router.getCurrentNavigation().extras.state.caso) {
               case 'editar titular':
@@ -90,14 +97,13 @@ export class AddPacienteComponent implements OnInit {
               case 'editar adicional':
                 this.currentPaciente = this.router.getCurrentNavigation().extras.state.userData;
                 this.bandEditAdicional = true;
-                this.parentesco=this.currentPaciente.pac_parentesco;
+                this.parentesco = this.currentPaciente.pac_parentesco;
                 await this.loadMunicipios();
                 this.loadUserData();
                 break;
 
               case 'agregar adicional':
                 this.currentTitular = this.router.getCurrentNavigation().extras.state.userTitularData;
-                console.log(this.currentTitular);
                 await this.loadMunicipios();
                 this.bandAddAdicional = true;
                 break;
@@ -125,7 +131,6 @@ export class AddPacienteComponent implements OnInit {
       });
     }
     else {
-      console.log('else');
       this.bandAddTitular = true;
       this.currentPaciente = null;
     }
@@ -133,12 +138,26 @@ export class AddPacienteComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-    console.log(history.state);
-    /*this.httpClient.get<any>("assets/docs/estadosymunicipios.json").subscribe((data) => {
-      this.estadosymunicipios = data,
-      console.log(this.estadosymunicipios)
-    })*/
+  async ngOnInit(): Promise<void> {
+
+    if (this.idAdicional) {
+      await new Promise<void>((resolve) => {
+        this.PacienteService.getPacienteData(this.idAdicional).subscribe((data) => {
+          this.currentPaciente = data;
+          resolve()
+        })
+
+      })
+
+      this.bandAddTitular = false;
+      this.bandEditTitular = false;
+      this.bandAddAdicional = false;
+
+      this.bandEditAdicional = true;
+      this.parentesco = this.currentPaciente.pac_parentesco;
+      await this.loadMunicipios();
+      this.loadUserData();
+    }
   }
 
   loadMunicipios() {
@@ -151,9 +170,7 @@ export class AddPacienteComponent implements OnInit {
   }
 
   getMunicipios(value: any) {
-    console.log(value)
-    this.municipios = [],
-      console.log(this.estadosymunicipios)
+    this.municipios = [];
     this.municipios = this.estadosymunicipios[value]
   }
 
@@ -178,7 +195,6 @@ export class AddPacienteComponent implements OnInit {
     }).then(() => {
       this.pacienteForm.reset()
       this.router.navigate(['pacientes']);
-      console.log(this.pacienteForm);
       return false
     })
   }
@@ -197,7 +213,6 @@ export class AddPacienteComponent implements OnInit {
     }
 
     let response = await this.PacienteService.creaPaciente(post);
-    console.log(response);
     let arrayAdicionales = this.currentTitular.pac_adicionales;
     arrayAdicionales.push(response);
 
@@ -216,14 +231,13 @@ export class AddPacienteComponent implements OnInit {
       confirmButtonText: 'OK',
     }).then(() => {
       this.pacienteForm.reset()
-      this.router.navigate(['pacientes']);
-      console.log(this.pacienteForm);
+      if (this.idAdicional) this.modalRef.hide();
+      else this.router.navigate(['pacientes']);
       return false
     })
   }
 
   loadUserData() {
-    console.log(this.currentPaciente.pac_municipio)
     this.getMunicipios(this.currentPaciente.pac_estado);
     this.pacienteForm.patchValue({
       pac_nombres: this.currentPaciente.pac_nombres,
@@ -257,7 +271,6 @@ export class AddPacienteComponent implements OnInit {
   }
 
   loadTitularData() {
-    console.log(this.currentPaciente.pac_municipio)
     this.getMunicipios(this.currentPaciente.pac_estado);
     this.pacienteForm.patchValue({
       pac_nombres: this.currentPaciente.pac_nombres,
@@ -288,23 +301,75 @@ export class AddPacienteComponent implements OnInit {
     this.prueba = Object.values(this.currentPaciente.pac_adicionales);
   }
 
-  updatePaciente() {
+  async updatePaciente() {
     let post = this.pacienteForm.value;
+    post['pac_nombre_completo'] = post['pac_nombres'] + ' ' + post['pac_primer_apellido'] + ' ' + post['pac_segundo_apellido'];
     post['id'] = this.currentPaciente.id;
-    this.PacienteService.updatePaciente(post)
+    await this.PacienteService.updatePaciente(post)
     Swal.fire({
       title: 'Paciente Editado',
       text: 'El paciente ha sido editado correctamente.',
       icon: 'success',
       confirmButtonText: 'OK'
     }).then(() => {
+
+      if (this.currentPaciente.pac_tipo == 'adicional') {
+        console.log(this.currentPaciente)
+        //this.PacienteService.updatePaciente(post)
+        this.PacienteService.getPacienteData(this.currentPaciente.pac_det_titular.idTitular).pipe(take(1)).subscribe(async data => {
+          console.log(data);
+          let arrayAdicionales = data['pac_adicionales'];
+
+          let ad = arrayAdicionales.filter(p => p.id == this.currentPaciente.id)[0]
+
+          if( ad['nombre_completo'] != post['pac_nombres'] + ' ' + post['pac_primer_apellido'] + ' ' + post['pac_segundo_apellido']){
+            ad['nombre_completo'] = post['pac_nombres'] + ' ' + post['pac_primer_apellido'] + ' ' + post['pac_segundo_apellido'];
+
+            let postTitular = {
+              id: this.currentPaciente.pac_det_titular.idTitular,
+              pac_adicionales: arrayAdicionales
+            }
+  
+            await this.PacienteService.updatePaciente(postTitular);
+            console.log('se ejecuta');
+          }else{
+            console.log('no se ejecuta');
+          }
+         
+
+        })
+      }
+
+
       this.pacienteForm.reset();
-      this.router.navigate(['pacientes'])
+      if (this.idAdicional) {
+        this.cerrarModal.emit({ cerrar: true });
+      }
+      else this.router.navigate(['pacientes']);
       return false;
     })
   }
 
   get f() {
     return this.pacienteForm.controls;
+  }
+
+  editModalShow(id: string) {
+    console.log(id);
+
+    const initialState = {
+      idAdicional: id,
+      keyboard: false,
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: 'gray modal-lg'
+    };
+
+    this.modalRef = this.modalService.show(ModalEditPacComponent, {
+      keyboard: false,
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: 'gray modal-lg', initialState
+    });
   }
 }

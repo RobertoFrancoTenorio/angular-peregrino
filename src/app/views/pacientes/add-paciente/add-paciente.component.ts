@@ -178,6 +178,10 @@ export class AddPacienteComponent implements OnInit {
     this.router.navigate(['pacientes']);
   }
 
+  closeModal(){
+    this.cerrarModal.emit({ cerrar: true })
+  }
+
   async addPacTitular() {
     let post = this.pacienteForm.value;
 
@@ -329,13 +333,13 @@ export class AddPacienteComponent implements OnInit {
               id: this.currentPaciente.pac_det_titular.idTitular,
               pac_adicionales: arrayAdicionales
             }
-  
+
             await this.PacienteService.updatePaciente(postTitular);
             console.log('se ejecuta');
           }else{
             console.log('no se ejecuta');
           }
-         
+
 
         })
       }

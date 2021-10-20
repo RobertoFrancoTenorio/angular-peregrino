@@ -182,7 +182,7 @@
           </select>
         </div>
 
-        <div class="col-4">
+        <div class="col-4" *ngIf="idAdicional==null">
           <div class="">
             <label class="col-form-label col-form-label-lg" for="inputG"> Genero/Sexo </label>
           </div>
@@ -194,6 +194,22 @@
             <div class="custom-control custom-radio custom-control-inline">
               <input type="radio" class="custom-control-input" id="radiofemale" formControlName="pac_sexo" value="F">
               <label class="custom-control-label" for="radiofemale"><span class="fa fa-female"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-4" *ngIf="idAdicional!=null">
+          <div class="">
+            <label class="col-form-label col-form-label-lg" for="inputG"> Genero/Sexo </label>
+          </div>
+          <div class="form-row text-center">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" class="custom-control-input" id="radioMaleAd" formControlName="pac_sexo" value="M">
+              <label class="custom-control-label" for="radioMaleAd"><span class="fa fa-male"></span></label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" class="custom-control-input" id="radiofemaleAd" formControlName="pac_sexo" value="F">
+              <label class="custom-control-label" for="radiofemaleAd"><span class="fa fa-female"></span></label>
             </div>
           </div>
         </div>
@@ -315,7 +331,12 @@
         (click)="addPacAdicional()" *ngIf="bandAddAdicional" [disabled]="parentesco == '' || !pacienteForm.valid">Guardar Adicional</button>
       <button class="btn btn-success me-md-2" (click)="updatePaciente()" type="button"
         [disabled]="!pacienteForm.valid" *ngIf="bandEditTitular || bandEditAdicional">Actualizar</button>
-      <button class="btn btn-danger" type="button" (click)="goToPacientes()">Cancelar</button>
+        <div *ngIf="idAdicional==null">
+          <button class="btn btn-danger" type="button" (click)="goToPacientes()">Cancelar</button>
+        </div>
+        <div *ngIf="idAdicional!=null">
+          <button class="btn btn-danger" type="button" (click)="closeModal()">Cancelar</button>
+        </div>
     </div>
     <h5>Los campos marcados con <span class="asterisco">**</span> son obligatorios.</h5>
 

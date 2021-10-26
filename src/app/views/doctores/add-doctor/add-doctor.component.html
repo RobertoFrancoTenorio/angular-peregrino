@@ -11,7 +11,7 @@
   <div class="card">
     <h5 class="card-header">Llena todos los campos del Doctor</h5>
     <div class="card-body">
-      <h5><fa-icon [icon]="faUserEdit"></fa-icon> Datos Doctor</h5>
+      <h5> Datos Doctor</h5>
       <form [formGroup]="doctorForm" (ngSubmit)="addDoctor()">
         <div class="row">
             <div class="col-6">
@@ -57,7 +57,7 @@
         <br>
         <hr>
 
-        <h5 class="direccionH5"><fa-icon [icon]="faRoute"></fa-icon> Dirección</h5>
+        <h5 class="direccionH5"> Dirección</h5>
         <div class="row" >
           <div class="col-6">
             <label class="col-form-label col-form-label-lg" for="estado">Estado</label>
@@ -126,13 +126,14 @@
           </div>
         </div>
         <hr>
-        <h5 class="titulo"><fa-icon [icon]="faCommentMedical"></fa-icon> Contacto</h5>
+        <h5 class="titulo"> Contacto</h5>
 
           <div class="row">
             <div class="col-6">
               <label class="">Correo Electrónico</label>
               <div class="input-group">
-                <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="at"></fa-icon></span>
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-at" aria-hidden="true"></i>
+                </span>
                 <input type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.errors }" placeholder="ejemplo@dominio.com">
                 <div *ngIf="f.email.errors" class="invalid-feedback">
                     <div *ngIf="f.email.errors.required">El correo electrónico es requerido</div>
@@ -144,12 +145,13 @@
             <div class="col-6">
               <label class="">Teléfono</label>
               <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="fa"></fa-icon></span>
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-mobile" aria-hidden="true"></i>
+                </span>
                 <input type="text" class="form-control" formControlName="telefono" (keypress)="numberOnly($event)" placeholder="(000) 000 0000">
               </div>
             </div>
           </div>
-          <button type="button" class="btn btn-success" (click)="addMetodo()" id="addMetodo"><fa-icon [icon]="faPlus"></fa-icon></button><span>Agregar Metodo de Contacto</span>
+          <button type="button" class="btn btn-success" (click)="addMetodo()" id="addMetodo"><i class="fa fa-plus" aria-hidden="true"></i></button><span>Agregar Metodo de Contacto</span>
           <ng-container formArrayName="metodos">
             <ng-container *ngFor="let metodoForm of metodos.controls; let i = index">
               <div class="row" [formGroup]="metodoForm">
@@ -160,7 +162,7 @@
                   <div class="col-3">
                     <label for="" class="labelMetodo">Telefono</label>
                     <div class="input-group">
-                      <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="fa"></fa-icon></span>
+                      <span class="input-group-text" id="basic-addon1"><i class="fa fa-mobile" aria-hidden="true"></i></span>
                       <input type="text" formControlName="telefonoAux" class="form-control" id="#inputMetodo" (keypress)="numberOnly($event)" placeholder="(000) 000 0000">
                     </div>
                   </div>
@@ -173,7 +175,8 @@
                   </div>
                   <div class="col-2">
                     <div class="row">
-                      <button type="button" class="btn btn-danger" (click)="deleteMetodo(i)" id="delete"><fa-icon [icon]="faEraser"></fa-icon> Eliminar</button>
+                      <button type="button" class="btn btn-danger" (click)="deleteMetodo(i)" id="delete"><i class="fa fa-eraser" aria-hidden="true"></i>
+                        Eliminar</button>
                     </div>
                   </div>
               </div>

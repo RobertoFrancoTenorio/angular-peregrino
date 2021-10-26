@@ -74,6 +74,9 @@ import { CalendarComponent } from './views/calendar/calendar.component';
 import { ModalEditPacComponent } from './views/pacientes/modal-edit-pac/modal-edit-pac.component';
 
 import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
+import { HistoriaClinicaComponent } from './views/historia-clinica/historia-clinica.component';
+import { HeredoFamiliaresComponent } from './views/historia-clinica/heredo-familiares/heredo-familiares.component';
+import { MulticheckboxComponent } from './views/historia-clinica/multicheckbox/multicheckbox.component';
 
 @NgModule({
   imports: [
@@ -122,7 +125,10 @@ import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
     AddPacienteComponent,
     AccionesPacienteComponent,
     CalendarComponent,
-    ModalEditPacComponent
+    ModalEditPacComponent,
+    HistoriaClinicaComponent,
+    HeredoFamiliaresComponent,
+    MulticheckboxComponent
 
   ],
   providers: [

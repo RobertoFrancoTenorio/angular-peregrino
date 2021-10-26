@@ -40,7 +40,7 @@ export const navItems: INavData[] = [
       {
         name: 'Agenda',
         icon: 'fa fa-calendar',
-        url: '/'
+        url: '/calendario'
       },
     ]
   },

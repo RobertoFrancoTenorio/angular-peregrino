@@ -74,6 +74,20 @@ import { CalendarComponent } from './views/calendar/calendar.component';
 import { ModalEditPacComponent } from './views/pacientes/modal-edit-pac/modal-edit-pac.component';
 
 import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
+import { CalendarioComponent } from './views/calendario/calendario.component';
+import { FullCalendarModule } from '@fullcalendar/angular'; 
+import dayGridPlugin from '@fullcalendar/daygrid'; 
+import interactionPlugin from '@fullcalendar/interaction'; 
+import listPlugin from '@fullcalendar/list';
+import timeGridWeek from '@fullcalendar/timegrid';
+import { ModalInfoPacComponent } from './views/pacientes/modal-info-pac/modal-info-pac.component'
+
+FullCalendarModule.registerPlugins([ 
+  dayGridPlugin,
+  interactionPlugin,
+  listPlugin,
+  timeGridWeek
+]);
 
 @NgModule({
   imports: [
@@ -91,6 +105,7 @@ import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
     AccordionModule.forRoot(),
     AppFooterModule,
     ModalModule.forRoot(),
+    FullCalendarModule,
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,
@@ -122,7 +137,9 @@ import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
     AddPacienteComponent,
     AccionesPacienteComponent,
     CalendarComponent,
-    ModalEditPacComponent
+    ModalEditPacComponent,
+    CalendarioComponent,
+    ModalInfoPacComponent
 
   ],
   providers: [

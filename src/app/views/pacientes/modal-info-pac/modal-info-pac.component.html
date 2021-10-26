@@ -1,0 +1,200 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left" *ngIf="detallesBand"> Detalles del paciente {{ currentPaciente.pac_nombre_completo
+        }} </h4>
+    <h4 class="modal-title pull-left" *ngIf="antecedentesBand"> Registro de Antecedentes -- {{
+        currentPaciente.pac_nombre_completo }} </h4>
+    <h4 class="modal-title pull-left" *ngIf="citasBand"> Registro de citas -- {{ currentPaciente.pac_nombre_completo }}
+    </h4>
+    <div class="pull-right">
+        <button type="button" class="btn btn-secondary" title="Cerrar" (click)="modalRef.hide();">
+            <span class="fa fa-times-circle"></span>
+        </button>
+    </div>
+</div>
+
+<div class="modal-body">
+
+
+    <div class="container" *ngIf="detallesBand">
+        <div class="main-body">
+            <div class="row gutters-sm">
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <img src="./../../../../assets/img/paciente_masculino.jfif"
+                                    *ngIf="currentPaciente.pac_sexo =='M'" alt="paciente" class="rounded-circle"
+                                    width="150">
+                                <img src="./../../../../assets/img/paciente_femenino.jfif"
+                                    *ngIf="currentPaciente.pac_sexo == 'F'" alt="paciente" class="rounded-circle"
+                                    width="150">
+                                <div class="mt-3">
+                                    <h4> {{ currentPaciente.pac_nombres }} {{ currentPaciente.pac_primer_apellido }}
+                                    </h4>
+                                    <p class="text-muted font-size-sm">Paciente {{ currentPaciente.empresa | titlecase
+                                        }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <h6 class="mb-0">Fecha Nacimiento</h6>
+                                </div>
+                                <div class="col-sm-4">
+                                    {{ currentPaciente.pac_f_nacimiento }}
+                                </div>
+                                <div class="col-sm-2">
+                                    <h6 class="mb-0">Edad</h6>
+                                </div>
+                                <div class="col-sm-4">
+                                    {{ currentPaciente.edad }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <h6 class="mb-0">Celular</h6>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span *ngIf="currentPaciente.pac_celular">
+                                        ({{ currentPaciente.pac_celular | slice:0:3}}) - {{ currentPaciente.pac_celular
+                                        | slice:3:6}} - {{ currentPaciente.pac_celular | slice:-4}}
+                                    </span>
+                                </div>
+                                <div class="col-sm-2">
+                                    <h6 class="mb-0">Telefono</h6>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span *ngIf="currentPaciente.pac_telefono">
+                                        ({{ currentPaciente.pac_telefono | slice:0:3}}) - {{
+                                        currentPaciente.pac_telefono | slice:3:6}} - {{ currentPaciente.pac_telefono |
+                                        slice:-4}}
+                                    </span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Correo electrónico</h6>
+                                </div>
+                                <div class="col-sm-9">
+                                    {{ currentPaciente.pac_email }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Dirección</h6>
+                                </div>
+                                <div class="col-sm-9">
+                                    <span *ngIf="currentPaciente.pac_estado"> {{ currentPaciente.pac_estado }} </span>
+                                    <span *ngIf="currentPaciente.pac_municipio"> {{ currentPaciente.pac_municipio }}
+                                    </span> <span *ngIf="currentPaciente.pac_localidad"> {{
+                                        currentPaciente.pac_localidad }} </span> <span
+                                        *ngIf="currentPaciente.pac_dir_cp">C.P. {{ currentPaciente.pac_dir_cp }} </span>
+                                    <span *ngIf="currentPaciente.pac_dir_colonia"> Colonia {{
+                                        currentPaciente.pac_dir_colonia }} </span> <span
+                                        *ngIf="currentPaciente.pac_dir_calle"> {{ currentPaciente.pac_dir_calle }}
+                                    </span>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gutters-sm">
+                <div class="col-md-12 mb-12">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <tabset [justified]="true">
+
+                                <tab heading="Antecedentes">
+
+                                    <div *ngIf="true">
+                                        <div class="alert alert-warning" role="alert">
+                                            <h4 class="alert-heading">Paciente sin registro de antecedentes</h4>
+                                            <p>No exiten registros de antecedentes para este paciente, se recomienda que se agreguen lo antes posible.</p>
+                                            <hr>
+                                            <p class="mb-0">
+                                                <button type="button" class="btn btn-primary" (click)="activarAntecedentes()">Agregar antecedentes</button>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="false">
+                                        <tabset [justified]="true">
+                                            <tab heading="Heredo-Familiares">
+                                                Contenido Heredo-Familiares
+                                            </tab>
+                                            <tab heading="Patológicos">
+                                                Contenido patológicos
+                                            </tab>
+                                            <tab heading="No patológicos ">
+                                                Contenido No patológicos
+                                            </tab>
+                                            <tab heading="Gineco-obstétricos">
+                                                Contenido Gineco-obstétricos
+                                            </tab>
+                                        </tabset>
+                                    </div>
+
+                                   
+                                </tab>
+
+                                <tab heading="Citas">
+                                    Contenido de citas
+
+                                    <button type="button" class='btn btn-danger' (click)="activarCita()">
+                                        <span class='fa fa-times-circle'> </span> Agendar Cita
+                                    </button>
+                                </tab>
+
+                                <tab heading="Consultas">
+                                    Contenido de Consultas
+                                </tab>
+                            </tabset>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="container" *ngIf="antecedentesBand">
+        Formulario para antecedentes
+    </div>
+
+    <div class="container" *ngIf="citasBand">
+        Formulario de citas
+    </div>
+
+</div>
+
+<div class="modal-footer">
+
+    <div class="form-row justify-content-center">
+        <div class="col-md-12">
+           <!-- <button type="button" *ngIf="editBand" class='btn btn-success' [disabled]="rForm.invalid"
+                (click)="programarProspecto(rForm.value)">
+                <span class='fa fa-save'> </span> Guardar 
+            </button>-->
+
+            <button type="button" class='btn btn-danger' *ngIf="citasBand || antecedentesBand" (click)="activarDetalles()">
+                <span class='fa fa-times-circle'> </span> Cancelar
+            </button>
+        </div>
+    </div>
+
+</div>

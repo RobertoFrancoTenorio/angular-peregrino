@@ -20,7 +20,7 @@ import { ErrorAuthComponent } from './views/error/error-auth/error-auth.componen
 import { LogoutComponent } from './views/logout/logout.component';
 import { AddDoctorComponent } from './views/doctores/add-doctor/add-doctor.component';
 import { AddPacienteComponent } from './views/pacientes/add-paciente/add-paciente.component';
-import { CalendarComponent } from './views/calendar/calendar.component';
+import { CalendarioComponent } from './views/calendario/calendario.component';
 
 export const routes: Routes = [
   {
@@ -54,13 +54,6 @@ export const routes: Routes = [
     component: RegisterComponent,
     data: {
       title: 'Register Page'
-    }
-  },
-  {
-    path: 'calendario',
-    component: CalendarComponent,
-    data: {
-      title: 'Calendar Page'
     }
   },
   {
@@ -117,6 +110,15 @@ export const routes: Routes = [
           cat: false,
           categoria: 'Catalogos',
           pagina: 'Usuarios'
+        }
+      },
+      {
+        path: 'calendario',
+        component: CalendarioComponent,
+        data: {
+          cat: false,
+          categoria: 'Utilidades',
+          pagina: 'Calendario'
         }
       },
       {

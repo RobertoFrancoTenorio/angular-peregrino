@@ -2,11 +2,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { ActivatedRoute, Router } from '@angular/router';
-import Swal from 'sweetalert2';
 import { PacienteService } from '../../../service/paciente/paciente.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ModalEditPacComponent } from '../modal-edit-pac/modal-edit-pac.component';
 import { take } from 'rxjs/operators';
+import { Observable, Subject, Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 //import { municipios } from './../../../service/estadosymunicipios.json'
 @Component({
@@ -43,8 +44,7 @@ export class AddPacienteComponent implements OnInit {
 
   @Input() idAdicional: string = null;
   @Output() cerrarModal: EventEmitter<any> = new EventEmitter<any>();
-
-
+  obs;
   constructor(
     private fb: FormBuilder,
     private httpClient: HttpClient,
@@ -88,10 +88,14 @@ export class AddPacienteComponent implements OnInit {
           if (this.router.getCurrentNavigation().extras.state.caso) {
             switch (this.router.getCurrentNavigation().extras.state.caso) {
               case 'editar titular':
-                this.currentPaciente = this.router.getCurrentNavigation().extras.state.userData;
-                this.bandEditTitular = true;
-                await this.loadMunicipios();
-                this.loadTitularData();
+                //this.currentPaciente = this.router.getCurrentNavigation().extras.state.userData;
+                  this.PacienteService.getPacienteData(this.router.getCurrentNavigation().extras.state.userData.id).subscribe((data) => {
+                    console.log(data);
+                    this.currentPaciente = data;
+                    this.bandEditTitular = true;
+                    this.loadMunicipios();
+                    this.loadTitularData();
+                  })
                 break;
 
               case 'editar adicional':
@@ -146,7 +150,6 @@ export class AddPacienteComponent implements OnInit {
           this.currentPaciente = data;
           resolve()
         })
-
       })
 
       this.bandAddTitular = false;
@@ -174,8 +177,16 @@ export class AddPacienteComponent implements OnInit {
     this.municipios = this.estadosymunicipios[value]
   }
 
+  get refresh$(){
+    return this.refresh$;
+  }
+
   goToPacientes() {
     this.router.navigate(['pacientes']);
+  }
+
+  closeModal(){
+    this.cerrarModal.emit({ cerrar: true })
   }
 
   async addPacTitular() {
@@ -267,10 +278,10 @@ export class AddPacienteComponent implements OnInit {
     })
     this.nombreTitular = this.currentPaciente.pac_det_titular.pac_nombre_completo;
     this.telefonoTitular = this.currentPaciente.pac_det_titular.pac_celular;
-    this.prueba = this.currentPaciente.pac_adicionales;
   }
 
   loadTitularData() {
+    console.log(this.currentPaciente);
     this.getMunicipios(this.currentPaciente.pac_estado);
     this.pacienteForm.patchValue({
       pac_nombres: this.currentPaciente.pac_nombres,
@@ -299,6 +310,7 @@ export class AddPacienteComponent implements OnInit {
       pac_parentesco: this.currentPaciente.pac_parentesco,
     })
     this.prueba = Object.values(this.currentPaciente.pac_adicionales);
+    //this._refresh$ = Object.values(this.currentPaciente.pac_adicionales);
   }
 
   async updatePaciente() {
@@ -329,17 +341,13 @@ export class AddPacienteComponent implements OnInit {
               id: this.currentPaciente.pac_det_titular.idTitular,
               pac_adicionales: arrayAdicionales
             }
-  
             await this.PacienteService.updatePaciente(postTitular);
             console.log('se ejecuta');
           }else{
             console.log('no se ejecuta');
           }
-         
-
         })
       }
-
 
       this.pacienteForm.reset();
       if (this.idAdicional) {

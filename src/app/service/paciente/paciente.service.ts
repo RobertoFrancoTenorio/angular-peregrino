@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { take } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { take, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,8 @@ export class PacienteService {
   }
 
   getPacienteData(id:string) {
-    return this.afs.doc('/SegMedico/peregrino/Pacientes/'+id).valueChanges();
+    //return this.afs.doc('/SegMedico/peregrino/Pacientes/'+id).valueChanges();
+    return this.afs.doc('/SegMedico/peregrino/Pacientes/'+id).valueChanges()
   }
 
   creaPaciente(post: any) {
@@ -64,4 +66,5 @@ export class PacienteService {
       })
     })
   }
+
 }

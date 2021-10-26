@@ -42,6 +42,11 @@ export const navItems: INavData[] = [
         icon: 'fa fa-calendar',
         url: '/calendario'
       },
+      {
+        name: 'Agenda',
+        icon: 'fa fa-list-ol',
+        url: '/historia-clinica'
+      },
     ]
   },
   {

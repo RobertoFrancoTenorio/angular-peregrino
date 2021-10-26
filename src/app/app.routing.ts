@@ -21,6 +21,9 @@ import { LogoutComponent } from './views/logout/logout.component';
 import { AddDoctorComponent } from './views/doctores/add-doctor/add-doctor.component';
 import { AddPacienteComponent } from './views/pacientes/add-paciente/add-paciente.component';
 import { CalendarioComponent } from './views/calendario/calendario.component';
+import { CalendarComponent } from './views/calendar/calendar.component';
+import { HistoriaClinicaComponent } from './views/historia-clinica/historia-clinica.component';
+
 
 export const routes: Routes = [
   {
@@ -83,7 +86,7 @@ export const routes: Routes = [
           cat: true,
           categoria: 'Inicio',
           pagina: ''
-       }
+        }
       },
       {
         path: '403',
@@ -100,7 +103,7 @@ export const routes: Routes = [
           cat: false,
           categoria: 'Catalogos',
           pagina: 'Usuarios'
-       }
+        }
       },
 
       {
@@ -145,13 +148,20 @@ export const routes: Routes = [
           cat: false,
           categoria: 'Catalogos',
           pagina: 'Pacientes'
-       }
+        }
       },
       {
         path: 'add-paciente',
         component: AddPacienteComponent,
         data: {
           title: 'Error 403'
+        }
+      },
+      {
+        path: 'historia-clinica',
+        component: HistoriaClinicaComponent,
+        data: {
+          title: 'Historia Clinica'
         }
       },
       {

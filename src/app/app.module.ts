@@ -88,6 +88,9 @@ FullCalendarModule.registerPlugins([
   listPlugin,
   timeGridWeek
 ]);
+import { HistoriaClinicaComponent } from './views/historia-clinica/historia-clinica.component';
+import { HeredoFamiliaresComponent } from './views/historia-clinica/heredo-familiares/heredo-familiares.component';
+import { MulticheckboxComponent } from './views/historia-clinica/multicheckbox/multicheckbox.component';
 
 @NgModule({
   imports: [
@@ -139,7 +142,10 @@ FullCalendarModule.registerPlugins([
     CalendarComponent,
     ModalEditPacComponent,
     CalendarioComponent,
-    ModalInfoPacComponent
+    ModalInfoPacComponent,
+    HistoriaClinicaComponent,
+    HeredoFamiliaresComponent,
+    MulticheckboxComponent
 
   ],
   providers: [

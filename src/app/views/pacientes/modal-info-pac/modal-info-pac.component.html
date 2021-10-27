@@ -122,10 +122,12 @@
                                     <div *ngIf="true">
                                         <div class="alert alert-warning" role="alert">
                                             <h4 class="alert-heading">Paciente sin registro de antecedentes</h4>
-                                            <p>No exiten registros de antecedentes para este paciente, se recomienda que se agreguen lo antes posible.</p>
+                                            <p>No exiten registros de antecedentes para este paciente, se recomienda que
+                                                se agreguen lo antes posible.</p>
                                             <hr>
                                             <p class="mb-0">
-                                                <button type="button" class="btn btn-primary" (click)="activarAntecedentes()">Agregar antecedentes</button>
+                                                <button type="button" class="btn btn-primary"
+                                                    (click)="activarAntecedentes()">Agregar antecedentes</button>
                                             </p>
                                         </div>
                                     </div>
@@ -147,7 +149,7 @@
                                         </tabset>
                                     </div>
 
-                                   
+
                                 </tab>
 
                                 <tab heading="Citas">
@@ -174,6 +176,37 @@
 
     <div class="container" *ngIf="antecedentesBand">
         Formulario para antecedentes
+
+        <form [formGroup]="heredoFamForm" (ngSubmit)="submit()">
+            <div *ngFor="let enf of heredoFamForm.controls['padre'].controls; let i = index">
+                {{ enfermedades[i].enf}}
+                <label formArrayName="padre">
+                    <input type="checkbox" [formControlName]="i">
+                </label>
+                <label formArrayName="madre">
+                    <input type="checkbox" [formControlName]="i">
+                </label>
+                <br>
+            </div>
+            <hr>
+
+            <!--<div *ngFor="let enf of heredoFamForm.controls['madre'].controls; let i = index">
+                <label formArrayName="madre">
+                    <input type="checkbox" [formControlName]="i">
+                    {{ enfermedades[i].enf}}
+                </label>
+                <br>
+            </div>-->
+            <hr>
+
+
+            <button>submit</button>
+        </form>
+
+        <pre>
+         {{ heredoFamForm.value | json }}
+     </pre>
+
     </div>
 
     <div class="container" *ngIf="citasBand">
@@ -186,12 +219,13 @@
 
     <div class="form-row justify-content-center">
         <div class="col-md-12">
-           <!-- <button type="button" *ngIf="editBand" class='btn btn-success' [disabled]="rForm.invalid"
+            <!-- <button type="button" *ngIf="editBand" class='btn btn-success' [disabled]="rForm.invalid"
                 (click)="programarProspecto(rForm.value)">
                 <span class='fa fa-save'> </span> Guardar 
             </button>-->
 
-            <button type="button" class='btn btn-danger' *ngIf="citasBand || antecedentesBand" (click)="activarDetalles()">
+            <button type="button" class='btn btn-danger' *ngIf="citasBand || antecedentesBand"
+                (click)="activarDetalles()">
                 <span class='fa fa-times-circle'> </span> Cancelar
             </button>
         </div>

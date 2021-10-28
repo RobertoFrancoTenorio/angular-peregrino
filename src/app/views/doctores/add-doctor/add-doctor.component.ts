@@ -75,18 +75,18 @@ export class AddDoctorComponent implements OnInit {
       cedula: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]],
       curp: ['', [Validators.required, Validators.pattern(this.valueCURP)]],
 
-      especialidad: ['', [Validators.required]],
+      especialidad: ['',],
       activo: [this.varActivo, [Validators.required]],
 
-      estado: ['', [Validators.required]],
-      municipio: ['', [Validators.required]],
-      colonia: ['', [Validators.required]],
-      calle: ['', [Validators.required]],
-      no: ['', [Validators.required]],
-      cp: ['', [Validators.required]],
+      estado: [''],
+      municipio: [''],
+      colonia: [''],
+      calle: [''],
+      no: ['',],
+      cp: [''],
 
       email: ['',[Validators.required, Validators.email]],
-      telefono: ['',[Validators.required]],
+      telefono: ['',[Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       metodos: this.fb.array([]),
     })
 

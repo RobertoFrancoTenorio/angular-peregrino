@@ -75,14 +75,13 @@ import { ModalEditPacComponent } from './views/pacientes/modal-edit-pac/modal-ed
 
 import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
 import { CalendarioComponent } from './views/calendario/calendario.component';
-import { FullCalendarModule } from '@fullcalendar/angular'; 
-import dayGridPlugin from '@fullcalendar/daygrid'; 
-import interactionPlugin from '@fullcalendar/interaction'; 
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import timeGridWeek from '@fullcalendar/timegrid';
 import { ModalInfoPacComponent } from './views/pacientes/modal-info-pac/modal-info-pac.component'
-
-FullCalendarModule.registerPlugins([ 
+FullCalendarModule.registerPlugins([
   dayGridPlugin,
   interactionPlugin,
   listPlugin,
@@ -91,7 +90,6 @@ FullCalendarModule.registerPlugins([
 import { HistoriaClinicaComponent } from './views/historia-clinica/historia-clinica.component';
 import { HeredoFamiliaresComponent } from './views/historia-clinica/heredo-familiares/heredo-familiares.component';
 import { MulticheckboxComponent } from './views/historia-clinica/multicheckbox/multicheckbox.component';
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -119,6 +117,7 @@ import { MulticheckboxComponent } from './views/historia-clinica/multicheckbox/m
     IconSetModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
+    //Stepper
   //  FontAwesomeModule
   ],
   declarations: [

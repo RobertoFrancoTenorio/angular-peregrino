@@ -15,29 +15,27 @@
 <div class="modal-body">
 
 
-    <div class="container" *ngIf="detallesBand">
-        <div class="main-body">
-            <div class="row gutters-sm">
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-column align-items-center text-center">
-                                <img src="./../../../../assets/img/paciente_masculino.jfif"
-                                    *ngIf="currentPaciente.pac_sexo =='M'" alt="paciente" class="rounded-circle"
-                                    width="150">
-                                <img src="./../../../../assets/img/paciente_femenino.jfif"
-                                    *ngIf="currentPaciente.pac_sexo == 'F'" alt="paciente" class="rounded-circle"
-                                    width="150">
-                                <div class="mt-3">
-                                    <h4> {{ currentPaciente.pac_nombres }} {{ currentPaciente.pac_primer_apellido }}
-                                    </h4>
-                                    <p class="text-muted font-size-sm">Paciente {{ currentPaciente.empresa | titlecase
-                                        }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="container" *ngIf="detallesBand">
+  <div class="main-body">
+    <div class="row gutters-sm">
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-column align-items-center text-center">
+              <img src="./../../../../assets/img/paciente_masculino.jfif"
+                  *ngIf="currentPaciente.pac_sexo =='M'" alt="paciente" class="rounded-circle"
+                  width="150">
+              <img src="./../../../../assets/img/paciente_femenino.jfif"
+                  *ngIf="currentPaciente.pac_sexo == 'F'" alt="paciente" class="rounded-circle"
+                  width="150">
+              <div class="mt-3">
+                      <h4> {{ currentPaciente.pac_nombres }} {{ currentPaciente.pac_primer_apellido }}</h4>
+                      <p class="text-muted font-size-sm">Paciente {{ currentPaciente.empresa | titlecase}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
                 <div class="col-md-8">
                     <div class="card mb-3">
@@ -175,42 +173,91 @@
 
 
     <div class="container" *ngIf="antecedentesBand">
-        Formulario para antecedentes
 
-        <form [formGroup]="heredoFamForm" (ngSubmit)="submit()">
-            <div *ngFor="let enf of heredoFamForm.controls['padre'].controls; let i = index">
-                {{ enfermedades[i].enf}}
-                <label formArrayName="padre">
-                    <input type="checkbox" [formControlName]="i">
-                </label>
-                <label formArrayName="madre">
-                    <input type="checkbox" [formControlName]="i">
-                </label>
-                <br>
+      <div class="container">
+        <div id="stepper1" class="bs-stepper">
+          <div class="bs-stepper-header">
+            <div class="step" data-target="#test-l-1">
+              <button class="step-trigger">
+                <span class="bs-stepper-circle">1</span>
+                <span class="bs-stepper-label">Email</span>
+              </button>
             </div>
-            <hr>
+            <div class="line"></div>
+            <div class="step" data-target="#test-l-2">
+              <button class="step-trigger">
+                <span class="bs-stepper-circle">2</span>
+                <span class="bs-stepper-label">Password</span>
+              </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#test-l-3">
+              <button class="step-trigger">
+                <span class="bs-stepper-circle">3</span>
+                <span class="bs-stepper-label">Validate</span>
+              </button>
+            </div>
+          </div>
+          <div class="bs-stepper-content">
+            <form (ngSubmit)="onSubmit()">
+              <div id="test-l-1" class="content">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" />
+                </div>
+                <button (click)="next()" class="btn btn-primary">Next</button>
+              </div>
+              <div id="test-l-2" class="content">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Password</label>
+                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
+                </div>
+                <button (click)="next()" class="btn btn-primary">Next</button>
+              </div>
+              <div id="test-l-3" class="content text-center">
+                <button type="submit" class="btn btn-primary mt-5">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
-            <!--<div *ngFor="let enf of heredoFamForm.controls['madre'].controls; let i = index">
-                <label formArrayName="madre">
-                    <input type="checkbox" [formControlName]="i">
-                    {{ enfermedades[i].enf}}
-                </label>
-                <br>
-            </div>-->
-            <hr>
+      <form [formGroup]="heredoFamForm" (ngSubmit)="submit()">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th class="col-1">Padre</th>
+              <th class="col-1">Madre</th>
+              <th class="col-1">Abuelos Paternos</th>
+              <th class="col-1">Abuelos Maternos</th>
+              <th class="col-1">Hermano(s)</th>
+              <th class="col-1">Otro(s)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let enf of heredoFamForm.controls['padre'].controls; let i = index">
+              <td>{{enfermedades[i].enf}}</td>
+              <td ><label formArrayName="padre"><input type="checkbox" [formControlName]="i"></label></td>
+              <td ><label formArrayName="madre"><input type="checkbox" [formControlName]="i"></label></td>
+              <td ><label formArrayName="abuelosPaternos"><input type="checkbox" [formControlName]="i"></label></td>
+              <td ><label formArrayName="abuelosMaternos"><input type="checkbox" [formControlName]="i"></label></td>
+              <td ><label formArrayName="hermanos"><input type="checkbox" [formControlName]="i"></label></td>
+              <td ><label formArrayName="otros"><input type="checkbox" [formControlName]="i"></label></td>
+            </tr>
+          </tbody>
+        </table>
+        <button>submit</button>
 
-
-            <button>submit</button>
-        </form>
-
-        <pre>
-         {{ heredoFamForm.value | json }}
-     </pre>
+    <span>
+      {{ heredoFamForm.value | json }}
+    </span>
+      </form>
 
     </div>
 
     <div class="container" *ngIf="citasBand">
-        Formulario de citas
+      Formulario de citas
     </div>
 
 </div>
@@ -221,7 +268,7 @@
         <div class="col-md-12">
             <!-- <button type="button" *ngIf="editBand" class='btn btn-success' [disabled]="rForm.invalid"
                 (click)="programarProspecto(rForm.value)">
-                <span class='fa fa-save'> </span> Guardar 
+                <span class='fa fa-save'> </span> Guardar
             </button>-->
 
             <button type="button" class='btn btn-danger' *ngIf="citasBand || antecedentesBand"

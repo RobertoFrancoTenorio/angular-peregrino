@@ -1,41 +1,23 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { take } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DoctorService {
+export class CitaService {
 
   constructor(
     private afs: AngularFirestore,
     public authService: AuthService,
   ) { }
 
-  /*Este metodo accede a la colección en con la variable afs y la pasa al
-  componente doctores en el async OnInit() */
-  getDoctorsList() {
-    return this.afs.collection('/SegMedico/peregrino/Doctores', ref =>
-      ref
-        .orderBy('idNumerico', 'asc')
-    ).valueChanges();
-  }
-
-  getDoctorsListActive() {
-    return this.afs.collection('/SegMedico/peregrino/Doctores', ref =>
-      ref
-        .where('activo', '==', true)
-        .orderBy('idNumerico', 'asc')
-    ).valueChanges();
-  }
-
-  /*Este metodo recibe el doctor que se pasa en el componente add-doctor */
   crearDoctor(post: any) {
 
     return new Promise<void>((resolve) => {
       /*accede a la coleccion */
-      this.afs.doc('/SegMedico/peregrino/Doctores/counter').valueChanges().pipe(take(1)).subscribe(data => {
+      this.afs.doc('/SegMedico/peregrino/citas/counter').valueChanges().pipe(take(1)).subscribe(data => {
         //Incrementa el contador
         var idNum = data['counter'] + 1;
 
@@ -52,8 +34,8 @@ export class DoctorService {
         /*En esta parte se envia el id del doctor que se acaba de crear y todos los datos capturados
         una vez agregados a la colección setea el valor del contador con el idNumerico del ultimo doctor que se agregó,
         este id siempre va incrementando*/
-        this.afs.doc('/SegMedico/peregrino/Doctores/' + post['id']).set(post).then(() => {
-          this.afs.doc('/SegMedico/peregrino/Doctores/counter').set({ counter: idNum }).then(() => {
+        this.afs.doc('/SegMedico/peregrino/citas/' + post['id']).set(post).then(() => {
+          this.afs.doc('/SegMedico/peregrino/citas/counter').set({ counter: idNum }).then(() => {
             resolve();
           })
         })
@@ -61,11 +43,4 @@ export class DoctorService {
     })
   }
 
-  updateDoctor(post: any) {
-    return new Promise<void>(resolve => {
-      this.afs.doc('/SegMedico/peregrino/Doctores/' + post['id']).update(post).then(() => {
-        resolve()
-      })
-    })
-  }
 }

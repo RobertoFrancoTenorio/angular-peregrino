@@ -16,7 +16,9 @@ export class PacienteService {
   getPacientes() {
     return this.afs.collection('/SegMedico/peregrino/Pacientes', ref =>
       ref
-        .orderBy('idNumerico', 'asc')).valueChanges();
+        .orderBy('idNumerico', 'asc')
+        .limit(5)
+        ).valueChanges();
   }
 
   getPacienteData(id:string) {

@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import Stepper from 'bs-stepper';
+import moment from 'moment';
 
 @Component({
   selector: 'app-modal-info-pac',
@@ -31,37 +32,37 @@ export class ModalInfoPacComponent implements OnInit {
     { id: 'Hipertensión Arterial Sistémica', enf: 'Hipertensión Arterial Sistémica (presión alta)' },
     { id: 'Obesidad', enf: 'Obesidad Diagnosticada' },
     { id: 'Neoplasias', enf: 'Neoplasias (Cualquier tipo de cáncer)' },
-    { id: 'Malformaciones hereditarias / congenitas', enf: 'Malformaciones hereditarias / congenitas'},
-    { id: 'Alergias', enf: 'Alergias a medicamentos, clima, sustancias, etc.'},
-    { id: 'Enfermedades psiquiatricas', enf: 'Enfermedades psiquiatricas (Depresión, ansiedad, dsquizofrenia, etc)'},
-    { id: 'Enfermedades neurologicas', enf: 'Enfermedades neurologicas (Epilepsia, convulsiones, alzheimer, demencia, parkinson, etc'},
-    { id: 'Enfermedades cardiovasculares', enf: 'Enfermedades cardiovasculares (Preinfartos, infartos, colesterol, triglicéridos elevados)'},
-    { id: 'Enfermedades broncopulmonares', enf: 'Enfermedades broncopulmonares (Asma, EPOC, bronquitis)'},
-    { id: 'Enfermedades tiroideas', enf: 'Enfermedades tiroideas (hiper o hipotiroidismo)'},
-    { id: 'Enfermedades renales', enf: 'Enfermedades renales (Litiasis, insuficiencia, diálisis)'},
-    { id: 'Enfermedades osteoarticulares', enf: 'Enfermedades osteoarticulares (artritis, fibromialgia)'},
-    { id: 'Enfermedades Infectocontagiosas', enf: 'Enfermedades Infectocontagiosas (Infecciones de relevancia)'},
-    { id: 'Enfermedades Autoinmunes', enf: 'Enfermedades autoinmunes (LUPUS, artritis, etc.)'}
+    { id: 'Malformaciones hereditarias / congenitas', enf: 'Malformaciones hereditarias / congenitas' },
+    { id: 'Alergias', enf: 'Alergias a medicamentos, clima, sustancias, etc.' },
+    { id: 'Enfermedades psiquiatricas', enf: 'Enfermedades psiquiatricas (Depresión, ansiedad, dsquizofrenia, etc)' },
+    { id: 'Enfermedades neurologicas', enf: 'Enfermedades neurologicas (Epilepsia, convulsiones, alzheimer, demencia, parkinson, etc' },
+    { id: 'Enfermedades cardiovasculares', enf: 'Enfermedades cardiovasculares (Preinfartos, infartos, colesterol, triglicéridos elevados)' },
+    { id: 'Enfermedades broncopulmonares', enf: 'Enfermedades broncopulmonares (Asma, EPOC, bronquitis)' },
+    { id: 'Enfermedades tiroideas', enf: 'Enfermedades tiroideas (hiper o hipotiroidismo)' },
+    { id: 'Enfermedades renales', enf: 'Enfermedades renales (Litiasis, insuficiencia, diálisis)' },
+    { id: 'Enfermedades osteoarticulares', enf: 'Enfermedades osteoarticulares (artritis, fibromialgia)' },
+    { id: 'Enfermedades Infectocontagiosas', enf: 'Enfermedades Infectocontagiosas (Infecciones de relevancia)' },
+    { id: 'Enfermedades Autoinmunes', enf: 'Enfermedades autoinmunes (LUPUS, artritis, etc.)' }
   ];
 
 
   patologias = [
-    { id: 'Diabetes Mellitus', value: 'Diabetes Mellitus'},
-    { id: 'Hipertensión Arterial Sistémica', value: 'Hipertensión Arterial Sistémica'},
-    { id: 'Obesidad', value: 'Obesidad'},
-    { id: 'Cancer', value: 'Cancer'},
-    { id: 'Artritis Reumatoide', value: 'Artritis Reumatoide'},
-    { id: 'Enfermedad de Gota', value: 'Enfermedad de Gota (ácido úrico elevado)'},
-    { id: 'Enfermedades Psiquiatricas', value: 'Enfermedades Psiquiatricas (ansiedad, depresión, esquizofrenia)'},
-    { id: 'Enfermedades del sistema nervioso', value: 'Enfermedades del sistema nervioso (Epilepsia, covulsiones, alzheimer, demensia, parkinson, etc.'},
-    { id: 'Enfermedades del sistema cardiovascular', value: 'Enfermedades del sistema cardiovascular'},
-    { id: 'Enfermedades del sistema respiratorio', value: 'Enfermedades del sistema respiratorio'},
-    { id: 'Enfermedades del sistema gastrointestinal', value: 'Enfermedades del sistema gastrointestinal'},
-    { id: 'Enfermedades del sistema endocrino', value: 'Enfermedades del sistema endocrino'},
-    { id: 'Enfermedades del sistema urinario', value: 'Enfermedades del sistema urinario'},
-    { id: 'Enfermedades del sistema musculoesqueletico', value: 'Enfermedades del sistema musculoesqueletico (secuelas de lesiones, tenditis'},
-    { id: 'Enfermedades del sistema tegumentario', value: 'Enfermedades del sistema tegumentario'},
-    { id: 'Otra enfermedad cronico degenerativa', value: 'Otra enfermedad cronico degenerativa'}
+    { id: 'Diabetes Mellitus', value: 'Diabetes Mellitus' },
+    { id: 'Hipertensión Arterial Sistémica', value: 'Hipertensión Arterial Sistémica' },
+    { id: 'Obesidad', value: 'Obesidad' },
+    { id: 'Cancer', value: 'Cancer' },
+    { id: 'Artritis Reumatoide', value: 'Artritis Reumatoide' },
+    { id: 'Enfermedad de Gota', value: 'Enfermedad de Gota (ácido úrico elevado)' },
+    { id: 'Enfermedades Psiquiatricas', value: 'Enfermedades Psiquiatricas (ansiedad, depresión, esquizofrenia)' },
+    { id: 'Enfermedades del sistema nervioso', value: 'Enfermedades del sistema nervioso (Epilepsia, covulsiones, alzheimer, demensia, parkinson, etc.' },
+    { id: 'Enfermedades del sistema cardiovascular', value: 'Enfermedades del sistema cardiovascular' },
+    { id: 'Enfermedades del sistema respiratorio', value: 'Enfermedades del sistema respiratorio' },
+    { id: 'Enfermedades del sistema gastrointestinal', value: 'Enfermedades del sistema gastrointestinal' },
+    { id: 'Enfermedades del sistema endocrino', value: 'Enfermedades del sistema endocrino' },
+    { id: 'Enfermedades del sistema urinario', value: 'Enfermedades del sistema urinario' },
+    { id: 'Enfermedades del sistema musculoesqueletico', value: 'Enfermedades del sistema musculoesqueletico (secuelas de lesiones, tenditis' },
+    { id: 'Enfermedades del sistema tegumentario', value: 'Enfermedades del sistema tegumentario' },
+    { id: 'Otra enfermedad cronico degenerativa', value: 'Otra enfermedad cronico degenerativa' }
   ]
 
   constructor(public modalRef: BsModalRef, private fb: FormBuilder, private readonly elementRef: ElementRef) {
@@ -84,7 +85,24 @@ export class ModalInfoPacComponent implements OnInit {
     this.currentPaciente['edad'] = this.calcularEdad(this.currentPaciente.pac_f_nacimiento);
     this.onChanges();
     const nuevo = document.querySelector('.bs-stepper');
-    console.log('Nombre: ', nuevo);
+
+    var today = moment(new Date()).format('YYYY/MM/DD');
+
+    console.log(today);
+
+    var horaInicio = moment('08:00', 'hh:mm');
+    var horaFin = moment('13:00', 'hh:mm');
+
+
+    var hora1 = moment('08:01','hh:mm');
+    var hora2 = moment('16:25','hh:mm');
+    console.log(horaInicio)
+    console.log(horaFin)
+    console.log('hora 1');
+    console.log(hora1.isBetween(horaInicio,horaFin));
+    console.log('hora 2');
+    console.log(hora2.isBetween(horaInicio,horaFin));
+
   }
 
   onSubmit() {
@@ -117,8 +135,8 @@ export class ModalInfoPacComponent implements OnInit {
     console.log('Enfermedades padre: ');
     console.log()
 
-    let model={
-      pac_antecedentes_data : {
+    let model = {
+      pac_antecedentes_data: {
         heredo_familiares: {
           padre: this.seleccionesPadre,
           madre: this.seleccionesMadre,
@@ -131,9 +149,9 @@ export class ModalInfoPacComponent implements OnInit {
       }
     }
 
-    let patologias ={
-      pac_patologias_data : {
-        adicciones : {
+    let patologias = {
+      pac_patologias_data: {
+        adicciones: {
 
         }
       }

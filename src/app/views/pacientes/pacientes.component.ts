@@ -84,11 +84,12 @@ export class PacientesComponent implements OnInit {
   async ngOnInit() {
     await new Promise<void>(resolve => {
       this.pacienteService.getPacientes().subscribe(pacientes =>{
+        console.log(pacientes.length)
         this.pacientesList = pacientes;
         if(this.tablaPacientes.api){
           this.tablaPacientes.api.setRowData(this.pacientesList);
         }
-        resolve();
+          
       })
     })
   }

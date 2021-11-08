@@ -3,10 +3,9 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { ActivatedRoute, Router } from '@angular/router';
 import { PacienteService } from '../../../service/paciente/paciente.service';
-import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModalEditPacComponent } from '../modal-edit-pac/modal-edit-pac.component';
 import { take } from 'rxjs/operators';
-import { Observable, Subject, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 //import { municipios } from './../../../service/estadosymunicipios.json'
@@ -148,7 +147,7 @@ export class AddPacienteComponent implements OnInit {
       await new Promise<void>((resolve) => {
         this.PacienteService.getPacienteData(this.idAdicional).subscribe((data) => {
           this.currentPaciente = data;
-          resolve()
+          resolve();
         })
       })
 

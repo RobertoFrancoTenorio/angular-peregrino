@@ -80,6 +80,9 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import timeGridWeek from '@fullcalendar/timegrid';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
 import { ModalInfoPacComponent } from './views/pacientes/modal-info-pac/modal-info-pac.component'
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -90,6 +93,7 @@ FullCalendarModule.registerPlugins([
 import { HistoriaClinicaComponent } from './views/historia-clinica/historia-clinica.component';
 import { HeredoFamiliaresComponent } from './views/historia-clinica/heredo-familiares/heredo-familiares.component';
 import { MulticheckboxComponent } from './views/historia-clinica/multicheckbox/multicheckbox.component';
+import { AddCitaComponent } from './views/citas/add-cita/add-cita.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -100,6 +104,7 @@ import { MulticheckboxComponent } from './views/historia-clinica/multicheckbox/m
     AppRoutingModule,
     AppAsideModule,
     HttpClientModule,
+    NgSelectModule,
     AppBreadcrumbModule.forRoot(),
     AgGridModule.withComponents([]),
     BrowserAnimationsModule,
@@ -111,6 +116,7 @@ import { MulticheckboxComponent } from './views/historia-clinica/multicheckbox/m
     AppSidebarModule,
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     TabsModule.forRoot(),
     ChartsModule,
     IconModule,
@@ -144,7 +150,8 @@ import { MulticheckboxComponent } from './views/historia-clinica/multicheckbox/m
     ModalInfoPacComponent,
     HistoriaClinicaComponent,
     HeredoFamiliaresComponent,
-    MulticheckboxComponent
+    MulticheckboxComponent,
+    AddCitaComponent
 
   ],
   providers: [

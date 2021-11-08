@@ -3,6 +3,7 @@ import { auth } from 'firebase/app';
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from "@angular/router";
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +67,7 @@ export class AuthService {
 
   async getUserAccount() {
     return new Promise(resolve => {
-      this.afs.collection('SegMedico').doc('peregrino').collection('usuarios').doc(this.currentUserId).valueChanges().subscribe(
+      this.afs.collection('SegMedico').doc('peregrino').collection('usuarios').doc(this.currentUserId).valueChanges().pipe(take(1)).subscribe(
         x => {
           this.userData = x;
           resolve(x);

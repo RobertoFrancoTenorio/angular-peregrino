@@ -1,0 +1,56 @@
+<div *ngIf="!done">
+    cargando...
+</div>
+
+<div *ngIf="done">
+    <form [formGroup]="citaForm">
+        <div class="form-row">
+            <div class="col-md-4 form-group">
+                <label for="cita_fecha">Selecciona la fecha:</label>
+                <input class="form-control" #datepickerYMD="bsDatepicker" bsDatepicker formControlName="cita_fecha"
+                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', adaptivePosition: true, isAnimated: true }"
+                    [minDate]="minDate">
+            </div>
+            <div class="form-group col-md-8">
+                <label for="idDoctor">Selecciona al doctor: </label>
+                <ng-select #agesSelect [items]="doctorList" [selectOnTab]="true" bindValue="id"
+                    bindLabel="doc_nombre_completo" placeholder="Select age" formControlName="idDoctor">
+                </ng-select>
+            </div>
+        </div>
+
+
+        <table class="table" *ngIf='bandHorario'>
+            <thead>
+                <tr>
+                    <th scope="col" class="table-success">Horario</th>
+                    <th scope="col" class="table-success">Estatus</th>
+                    <th scope="col" class="table-success">Paciente</th>
+                    <th scope="col" class="table-success">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let h of horarios">
+                    <tr *ngIf="h.visible">
+                        <th scope="row">{{ h.hora_inicio }} - {{ h.hora_fin }}</th>
+                        <td> {{ h.estatus }} </td>
+                        <td>
+                           {{ h.paciente }}
+                        </td>
+                        <td>
+                            <button *ngIf="h.estatus=='libre'" type="button" (click)="crearCita(h)" class='btn btn-primary' [disabled]="!citaForm.valid">
+                                <span class='fa fa-check-circle'> </span> Seleccionar horario
+                            </button>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+
+
+    </form>
+
+    <pre>{{ citaForm.value | json }}</pre>
+
+
+</div>

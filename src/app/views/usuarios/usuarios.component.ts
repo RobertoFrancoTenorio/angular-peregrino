@@ -26,7 +26,7 @@ export class UsuariosComponent implements OnInit {
   },
   {
     headerName: 'Nombre Usuario',
-    field: 'userName',
+    field: 'user_nombre_completo',
     width: 200,
     filter: "agTextColumnFilter"
   },

@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 })
 export class ModalInfoPacComponent implements OnInit {
   private stepper: Stepper;
-
+  isLinear = true;
   @Input() currentPaciente: any = null;
   @Input() detallesBand: boolean = true;
   @Input() antecedentesBand: boolean = false;
@@ -35,12 +35,18 @@ export class ModalInfoPacComponent implements OnInit {
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
   fourthFormGroup: FormGroup;
-  //#endregion "Forms"
 
   ActividadesFisicasForm = this.fb.group({
     pac_actividad_fisica: ['', []],
     pac_frecuencia_act_fisica: ['', []],
   })
+
+  MedicamentosForm = this.fb.group({
+    pac_medicamento: ['',[]],
+    pac_frecuencia_consumo: ['',[]],
+    pac_inicio_consumo: ['', []],
+  })
+
   seleccionesPatologicas;
   bandSexo
   isCollapsed = true;
@@ -190,10 +196,10 @@ export class ModalInfoPacComponent implements OnInit {
       pac_alimentos_capeados: [''],
 
       Actividades_Fisicas: this.fb.array([]),
+
+      Medicamento: this.fb.array([]),
     })
   }
-
-
 
   ngOnInit(): void {
     this.currentPaciente['edad'] = this.calcularEdad(this.currentPaciente.pac_f_nacimiento);
@@ -422,6 +428,23 @@ export class ModalInfoPacComponent implements OnInit {
 
   deleteActividad(actId: number){
     this.act_fisicas.removeAt(actId);
+  }
+
+  get list_medicamentos(){
+    return this.NoPatologicosForm.controls["Medicamento"] as FormArray;
+  }
+
+  addMedicamento(){
+    const med = this.fb.group({
+      pac_medicamento: [''],
+      pac_frecuencia_consumo: [''],
+      pac_inicio_consumo: [''],
+    })
+    this.list_medicamentos.push(med);
+  }
+
+  deleteMedicamento(medicamentoId: number){
+    return this.list_medicamentos.removeAt(medicamentoId);
   }
 
   calcularEdad(fecha: string) {

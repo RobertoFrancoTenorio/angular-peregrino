@@ -317,7 +317,7 @@
           <br>
           <div id="btns">
               <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
-              <mat-checkbox formControlName="secondCtrl" required [disabled]="!NoPatologicosForm.valid">Finalizar Patologias</mat-checkbox>
+              <mat-checkbox formControlName="secondCtrl" required [disabled]="!NoPatologicosForm.valid">Finalizar No Patologicos</mat-checkbox>
               <button class="btn btn-primary"  matStepperNext>Siguiente</button>
           </div>
         </form>
@@ -328,7 +328,7 @@
           <ng-template matStepLabel>Patologicos</ng-template>
             <form action="" [formGroup]="PatologiasForm">
               <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                   <form [formGroup]="AlergiasForm">
                     <mat-radio-group formControlName="alergias"> Alergías
                       <mat-radio-button value="Si">Si</mat-radio-button>
@@ -350,7 +350,7 @@
                     <br>
                     <span *ngIf="HospitalizacionesForm.get('hospitalizaciones').value == 'Si'">
                       <label for="exampleInputtext1" class="form-label" >Fecha Aproximada:</label>
-                      <input type="text" class="form-control" id="input" formControlName="hospitalizacion_fecha" aria-describedby="textHelp">
+                      <input type="date" class="form-control" id="date" formControlName="hospitalizacion_fecha" aria-describedby="textHelp">
                       <label for="exampleInputtext1" class="form-label" >Causas:</label>
                       <input type="text" class="form-control" id="input" formControlName="hospitalizacion_causa" aria-describedby="textHelp">
                       <label for="exampleInputtext1" class="form-label" >Posibles secuelas:</label>
@@ -367,7 +367,7 @@
                     <br>
                     <span *ngIf="QuirurgicasForm.get('quirurgicas').value == 'Si'">
                       <label for="exampleInputtext1" class="form-label" >Fecha Aproximada:</label>
-                      <input type="text" class="form-control" id="input" formControlName="quirurgica_fecha" aria-describedby="textHelp">
+                      <input type="date" class="form-control" id="input" formControlName="quirurgica_fecha" aria-describedby="textHelp">
                       <label for="exampleInputtext1" class="form-label" >Causas:</label>
                       <input type="text" class="form-control" id="input" formControlName="quirurgica_causa" aria-describedby="textHelp">
                       <label for="exampleInputtext1" class="form-label" >Posibles secuelas:</label>
@@ -384,7 +384,7 @@
                     <br>
                     <span *ngIf="TraumaticosForm.get('traumaticos').value == 'Si'">
                       <label for="exampleInputtext1" class="form-label" >Fecha Aproximada:</label>
-                      <input type="text" class="form-control" id="input" formControlName="fecha_traumaticos" aria-describedby="textHelp">
+                      <input type="date" class="form-control" id="input" formControlName="fecha_traumaticos" aria-describedby="textHelp">
                       <label for="exampleInputtext1" class="form-label" >Tipo de Lesión:</label>
                       <input type="text" class="form-control" id="input" formControlName="tipos_traumaticos" aria-describedby="textHelp">
                       <label for="exampleInputtext1" class="form-label" >Causas:</label>
@@ -393,7 +393,6 @@
                       <input type="text" class="form-control" id="input" formControlName="secuelas_traumaticos" aria-describedby="textHelp">
                     </span>
                   </form>
-
                   <hr class="line">
 
                   <form [formGroup]="TransfusionesForm">
@@ -404,7 +403,7 @@
                     <br>
                     <span *ngIf="TransfusionesForm.get('transfusiones').value == 'Si'">
                       <label for="exampleInputtext1" class="form-label" >Fecha Aproximada:</label>
-                      <input type="text" class="form-control" id="input" formControlName="transfusiones_fecha" aria-describedby="textHelp">
+                      <input type="date" class="form-control" id="input" formControlName="transfusiones_fecha" aria-describedby="textHelp">
                       <label for="exampleInputtext1" class="form-label" >Causas:</label>
                       <input type="text" class="form-control" id="input" formControlName="transfusiones_causas" aria-describedby="textHelp">
                     </span>
@@ -423,9 +422,14 @@
                     <br>
                     <span *ngIf="PsicoactivasForm.get('alcoholismo').value == 'Si'">
                       <label for="exampleInputtext1" class="form-label" >Frecuencia de consumo:</label>
-                      <input type="text" class="form-control" id="input" formControlName="alcoholismo_frecuencia" aria-describedby="textHelp">
+                      <select class="form-control" formControlName="alcoholismo_frecuencia">
+                        <option value="Muy poco">Nunca</option>
+                        <option value="Muy poco">Muy poco</option>
+                        <option value="Algunas Veces">Algunas Veces</option>
+                        <option value="Frecuentemente">Frecuentemente</option>
+                      </select>
                       <label for="exampleInputtext1" class="form-label" >Cantidad de consumo:</label>
-                      <input type="text" class="form-control" id="input" formControlName="alcoholismo_cantidad" aria-describedby="textHelp">
+                      <input type="text" class="form-control" id="input" formControlName="alcoholismo_cantidad">
                     </span>
                     <hr class="line">
 
@@ -436,7 +440,12 @@
                     <br>
                     <span *ngIf="PsicoactivasForm.get('tabaquismo').value == 'Si'">
                       <label for="exampleInputtext1" class="form-label" >Frecuencia de consumo:</label>
-                      <input type="text" class="form-control" id="input" formControlName="tabaquismo_frecuencia" aria-describedby="textHelp">
+                      <select class="form-control" formControlName="tabaquismo_frecuencia">
+                        <option value="Muy poco">Nunca</option>
+                        <option value="Muy poco">Muy poco</option>
+                        <option value="Algunas Veces">Algunas Veces</option>
+                        <option value="Frecuentemente">Frecuentemente</option>
+                      </select>
                       <label for="exampleInputtext1" class="form-label" >Cantidad de consumo:</label>
                       <input type="text" class="form-control" id="input" formControlName="tabaquismo_cantidad" aria-describedby="textHelp">
                     </span>
@@ -451,18 +460,49 @@
                       <label for="exampleInputtext1" class="form-label" >¿Qué tipo?:</label>
                       <input type="text" class="form-control" id="input" formControlName="otras_tipo" aria-describedby="textHelp">
                       <label for="exampleInputtext1" class="form-label" >Último consumo:</label>
-                      <input type="text" class="form-control" id="input" formControlName="otras_ultimo_consumo" aria-describedby="textHelp">
+                      <input type="date" class="form-control" id="input" formControlName="otras_ultimo_consumo" aria-describedby="textHelp">
                       <label for="exampleInputtext1" class="form-label" >Frecuencia de consumo:</label>
-                      <input type="text" class="form-control" id="input" formControlName="otras_frecuencia" aria-describedby="textHelp">
+                      <select class="form-control" formControlName="otras_frecuencia">
+                        <option value="Muy poco">Nunca</option>
+                        <option value="Muy poco">Muy poco</option>
+                        <option value="Algunas Veces">Algunas Veces</option>
+                        <option value="Frecuentemente">Frecuentemente</option>
+                      </select>
                     </span>
                     <hr class="line">
                   </form>
 
                 </div>
-                <div class="col-6">
+                <div class="col-8">
                   <span *ngFor="let enf of PatologiasForm.controls['patologias'].controls; let i = index">
                     <label class ="patologia" formArrayName="patologias"><input type="checkbox" [formControlName]="i"> {{patologicas[i].value}}</label>
                   </span>
+                  <hr class="line">
+                  <h5>Medicamentos</h5>
+                  <button type="submit" class="btn btn-primary" (click)="addMedicamento()"><i class="fa fa-plus" aria-hidden="true"></i> Agregar Medicamentos</button>
+                  <ng-container formArrayName="Medicamento">
+                    <ng-container *ngFor="let MedicamentosForm of list_medicamentos.controls; let i = index">
+                      <br>
+                      <div class="row" id="Medicamentos" [formGroup]="MedicamentosForm">
+                        <br>
+                        <div class="col-3">
+                          <label for="" class="form-label">Nombre del medicamento</label>
+                          <input type="text" class="form-control" formControlName="pac_medicamento">
+                        </div>
+                        <div class="col-3">
+                          <label for="" class="form-label">Frecuencia de consumo</label>
+                          <input type="text" class="form-control" formControlName="pac_frecuencia_consumo">
+                        </div>
+                        <div class="col-3">
+                          <label for="" class="form-label">Fecha del primer consumo:</label>
+                          <input type="text" class="form-control" formControlName="pac_inicio_consumo">
+                        </div>
+                        <div class="col-1">
+                          <button class="btn btn-danger" id="btn-danger" (click)="deleteMedicamento(i)">Quitar</button>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </ng-container>
                 </div>
               </div>
             </form>
@@ -580,8 +620,30 @@
 
               <div class="row">
                 <div class="col-8">
-                  <label for="" class="form-label">Método anticonceptivo:</label>
-                  <input type="text" formControlName="pac_metodo_anticonceptivo" id="" class="form-control">
+                  <span *ngIf="currentPaciente.pac_sexo == 'M'">
+                    <label for="" class="form-label">Metodo Anticonceptivo:</label>
+                    <select  class="form-control" formControlName="pac_metodo_anticonceptivo" id="options">
+                      <option value="Ninguno">Ninguno</option>
+                      <option value="Preservativo">Preservativo</option>
+                    </select>
+                  </span>
+                  <span *ngIf="currentPaciente.pac_sexo == 'F'">
+                    <label for="" class="form-label">Metodo Anticonceptivo:</label>
+                    <select  class="form-control" formControlName="pac_metodo_anticonceptivo" id="options">
+                      <option value="Ninguno">Ninguno</option>
+                      <option value="Preservativo">Preservativo</option>
+                    </select>
+                    <label for="" class="form-label">Metodo Anticonceptivo:</label>
+                    <select  class="form-control" formControlName="pac_metodo_anticonceptivo" id="options">
+                      <option value="Pastillas">Ninguno</option>
+                      <option value="Preservativo">Preservativo</option>
+                    </select>
+                    <label for="" class="form-label">Metodo Anticonceptivo:</label>
+                    <select  class="form-control" formControlName="pac_metodo_anticonceptivo" id="options">
+                      <option value="Ninguno">Ninguno</option>
+                      <option value="Preservativo">Preservativo</option>
+                    </select>
+                  </span>
                 </div>
               </div>
               <br>

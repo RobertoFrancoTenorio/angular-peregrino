@@ -16,34 +16,45 @@
         <div class="row">
             <div class="col-6">
               <label for="">Nombre</label>
-              <input type="text" formControlName="userName" class="form-control" placeholder="Nombre">
+              <input type="text" formControlName="doc_nombre" class="form-control" placeholder="Nombre">
             </div>
             <div class="col-3">
               <label for="">Primer Apellido</label>
-              <input type="text" formControlName="primerApellido" class="form-control" placeholder="Primer Apellido">
+              <input type="text" formControlName="doc_primer_apellido" class="form-control" placeholder="Primer Apellido">
             </div>
           <div class="col-3">
               <label for="">Segundo Apellido</label>
-              <input type="text" formControlName="segundoApellido" class="form-control" placeholder="Segundo Apellido">
+              <input type="text" formControlName="doc_segundo_apellido" class="form-control" placeholder="Segundo Apellido">
           </div>
         </div>
 
         <div class="row" id="curpCedula">
           <div class="col-6">
             <label for="">CURP</label>
-            <input type="text" formControlName="curp" class="form-control" placeholder="C.U.R.P">
+            <input type="text" formControlName="doc_curp" class="form-control" placeholder="C.U.R.P">
           </div>
 
           <div class="col-6">
             <label class="">Cédula Profesional</label>
-              <input type="text" formControlName="cedula" class="form-control" (keypress)="numberOnly($event)" placeholder="CEDULA">
+              <input type="text" formControlName="doc_cedula" class="form-control" (keypress)="numberOnly($event)" placeholder="CEDULA">
           </div>
         </div>
 
         <div class="row" id="especialidad">
           <div class="col-5">
             <label for="">Especialidad</label>
-            <input type="text" formControlName="especialidad" class="form-control" placeholder="Nutrición, Optometría, Odontologia, etc ...">
+            <label for="especialidades">Especialidad</label>
+            <ng-select *ngIf="isCitiesControlVisible" [items]="especialidades"
+              [items]="especialidades"
+              bindLabel="name"
+              bindValue="name"
+              labelForId="especialidades"
+              [multiple]="true"
+              placeholder="Seleccione especialidades"
+              clearAllText="Clear"
+              formControlName="doc_especialidades">
+            </ng-select>
+          <!-- <input type="text" formControlName="doc_especialidades" class="form-control" placeholder="Nutrición, Optometría, Odontologia, etc ..."> -->
           </div>
           <div class="col-4" *ngIf="currentUser">
             <label class="">Estado del Doctor</label>
@@ -51,7 +62,7 @@
                   <option [ngValue]="true" >Activo</option>
                   <option [ngValue]="false">Inactivo</option>
                 </select>
-                <small id="notificacion" class="form-text"><fa-icon [icon]="alert"></fa-icon> Este campo es para indicar si el doctor se encuentra activo en la clínica o no.</small>
+                <small id="notificacion" class="form-text"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Este campo es para indicar si el doctor se encuentra activo en la clínica o no.</small>
             </div>
           </div>
         <br>
@@ -61,7 +72,7 @@
         <div class="row" >
           <div class="col-6">
             <label class="col-form-label col-form-label-lg" for="estado">Estado</label>
-            <select id="estado" #estados formControlName="estado"
+            <select id="estado" #estados formControlName="doc_estado"
                 (change)="getMunicipios(estados.value)" class="form-control">
                 <option value="" disabled="true">Selecciona una opcion</option>
                 <option value="Aguascalientes">Aguascalientes</option>
@@ -100,7 +111,7 @@
         </div>
           <div class="col-4">
               <label class="col-form-label col-form-label-lg" for="municipio">Municipio</label>
-              <select id="municipio" formControlName="municipio" class="form-control">
+              <select id="municipio" formControlName="doc_municipio" class="form-control">
                   <option value="" disabled="true">Selecciona una opcion</option>
                   <option *ngFor="let x of municipios" value="{{x}}">{{x}}</option>
               </select>
@@ -110,19 +121,19 @@
         <div class="row" id="direccion" >
           <div class="col-4">
             <label for="" class="input">Colonia</label>
-            <input type="text" formControlName="colonia" class="form-control" placeholder="COLONIA">
+            <input type="text" formControlName="doc_dir_colonia" class="form-control" placeholder="COLONIA">
           </div>
           <div class="col-4">
             <label for="">Calle</label>
-            <input type="text" formControlName="calle" class="form-control" placeholder="CALLE">
+            <input type="text" formControlName="doc_dir_calle" class="form-control" placeholder="CALLE">
           </div>
           <div class="col-2">
             <label for="">Número</label>
-            <input type="text" formControlName="no" class="form-control" placeholder="Número del dominio">
+            <input type="text" formControlName="doc_dir_numero" class="form-control" placeholder="Número del dominio">
           </div>
           <div class="col-2">
             <label for="">Código Postal</label>
-            <input type="text" formControlName="cp" class="form-control" placeholder="Cod. Postal">
+            <input type="text" formControlName="doc_dir_cp" class="form-control" placeholder="Cod. Postal">
           </div>
         </div>
         <hr>
@@ -134,43 +145,54 @@
               <div class="input-group">
                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-at" aria-hidden="true"></i>
                 </span>
-                <input type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': f.email.errors }" placeholder="ejemplo@dominio.com">
-                <div *ngIf="f.email.errors" class="invalid-feedback">
-                    <div *ngIf="f.email.errors.required">El correo electrónico es requerido</div>
-                    <div *ngIf="f.email.errors.email">Formato de correo invalido</div>
+                <input type="text" class="form-control" formControlName="doc_email" [ngClass]="{ 'is-invalid': f.doc_email.errors }" placeholder="ejemplo@dominio.com">
+                <div *ngIf="f.doc_email.errors" class="invalid-feedback">
+                    <div *ngIf="f.doc_email.errors.required">El correo electrónico es requerido</div>
+                    <div *ngIf="f.doc_email.errors.email">Formato de correo invalido</div>
                 </div>
               </div>
-
             </div>
             <div class="col-6">
               <label class="">Teléfono</label>
               <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-mobile" aria-hidden="true"></i>
                 </span>
-                <input type="text" class="form-control" formControlName="telefono" (keypress)="numberOnly($event)" placeholder="(000) 000 0000" maxlength="10">
+                <input type="text" class="form-control" formControlName="doc_celular_principal" (keypress)="numberOnly($event)" placeholder="(000) 000 0000" maxlength="10">
               </div>
             </div>
           </div>
+          <h5>Disponibilidad</h5>
+          <div class="row">
+            <div class="col-5">
+              <label for="">Hora de Inicio</label>
+              <input type="time" formControlName="doc_horario_ini" class="form-control" placeholder="8:00am, 12:00pm">
+            </div>
+            <div class="col-5">
+              <label for="">Hora Fin</label>
+              <input type="time" formControlName="doc_horario_fin" class="form-control" placeholder="CALLE">
+            </div>
+          </div>
+          <br>
           <button type="button" class="btn btn-success" (click)="addMetodo()" id="addMetodo"><i class="fa fa-plus" aria-hidden="true"></i></button><span>Agregar Metodo de Contacto</span>
-          <ng-container formArrayName="metodos">
+          <ng-container formArrayName="metodos_contacto">
             <ng-container *ngFor="let metodoForm of metodos.controls; let i = index">
               <div class="row" [formGroup]="metodoForm">
                   <div class="col-3">
                     <label for="" class="labelMetodo">Tipo de Contacto</label>
-                    <input type="text" formControlName="metodo" class="form-control" id="#inputMetodo" placeholder="Celular, Telefono Fijo, Whatsapp, telegram, etc...">
+                    <input type="text" formControlName="doc_metodo" class="form-control" id="#inputMetodo" placeholder="Celular, Telefono Fijo, Whatsapp, telegram, etc...">
                   </div>
                   <div class="col-3">
                     <label for="" class="labelMetodo">Telefono</label>
                     <div class="input-group">
                       <span class="input-group-text" id="basic-addon1"><i class="fa fa-mobile" aria-hidden="true"></i></span>
-                      <input type="text" formControlName="telefonoAux" class="form-control" id="#inputMetodo" (keypress)="numberOnly($event)" placeholder="(000) 000 0000">
+                      <input type="text" formControlName="doc_telefono_aux" class="form-control" id="#inputMetodo" (keypress)="numberOnly($event)" placeholder="(000) 000 0000">
                     </div>
                   </div>
                   <div class="col-3">
                     <label for="" class="labelMetodo">Horario</label>
                     <div class="input-group">
-                      <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="clock"></fa-icon></span>
-                      <input type="text" formControlName="horario" class="form-control" id="#inputMetodo" placeholder="Matutino, Vespertino, Nocturno, 8am-12pm, etc...">
+                      <span class="input-group-text" id="basic-addon1"><i class="fa fa-clock-o" aria-hidden="true"></i>                      </span>
+                      <input type="text" formControlName="doc_horario" class="form-control" id="#inputMetodo" placeholder="Matutino, Vespertino, Nocturno, 8am-12pm, etc...">
                     </div>
                   </div>
                   <div class="col-2">

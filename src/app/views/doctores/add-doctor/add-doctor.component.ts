@@ -3,18 +3,10 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DoctorService } from './../../../service/doctor/doctor.service';
-/*import { faUserMd } from '@fortawesome/free-solid-svg-icons';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { faEraser } from '@fortawesome/free-solid-svg-icons';
-import { faRoute } from '@fortawesome/free-solid-svg-icons';
-import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
-import { faCommentMedical } from '@fortawesome/free-solid-svg-icons';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { faAt } from '@fortawesome/free-solid-svg-icons';
-import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
-import { faClock } from '@fortawesome/free-solid-svg-icons';*/
 import { HttpClient } from '@angular/common/http';
-
+export interface Fruit {
+  name: string;
+}
 @Component({
   selector: 'app-add-doctor',
   templateUrl: './add-doctor.component.html',
@@ -34,22 +26,17 @@ export class AddDoctorComponent implements OnInit {
   //Variable que switchea el valor de activo
   varActivo: boolean = true;
 
-  /*faUserMd = faUserMd;
-  faPlus = faPlus;
-  faEraser = faEraser;
-  faRoute = faRoute;
-  faUserEdit = faUserEdit;
-  faCommentMedical = faCommentMedical;
-  alert = faExclamationCircle;
-  at = faAt;
-  fa = faPhoneAlt;
-  clock = faClock;*/
-
   metodoForm = this.fb.group({
-    metodo: ['', []],
-    telefono: ['', []],
-    horario: ['',[]]
+    doc_metodo: ['', []],
+    doc_telefono: ['', []],
+    doc_horario: ['',[]]
   });
+  isCitiesControlVisible = true;
+  especialidades: any[]=[
+    {name: 'Nutrición'},
+    {name: 'Psicología'},
+    {name: 'Medico General'}
+  ]
 
   estadosymunicipios : any;
   municipios : any;
@@ -57,8 +44,8 @@ export class AddDoctorComponent implements OnInit {
   valueNombre: string = '^([A-ZÀ-ÿ]{2,20})*( [A-ZÀ-ÿ]{2,20}){0,3}$';
   valueCURP: string = '[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}';
 
-
   prueba: any;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -68,26 +55,28 @@ export class AddDoctorComponent implements OnInit {
   ) {
     /*Siempre que vaya a manipular un dato hay que incluir la variable */
     this.doctorForm = this.fb.group({
-      userName: ['', [Validators.required]],
-      primerApellido: ['', [Validators.required]],
-      segundoApellido: ['', [Validators.required]],
+      doc_nombre: ['', [Validators.required]],
+      doc_primer_apellido: ['', [Validators.required]],
+      doc_segundo_apellido: ['', [Validators.required]],
 
-      cedula: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]],
-      curp: ['', [Validators.required, Validators.pattern(this.valueCURP)]],
+      doc_cedula: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]],
+      doc_curp: ['', [Validators.required, Validators.pattern(this.valueCURP)]],
 
-      especialidad: ['',],
+      doc_especialidades: ['',],
       activo: [this.varActivo, [Validators.required]],
 
-      estado: [''],
-      municipio: [''],
-      colonia: [''],
-      calle: [''],
-      no: ['',],
-      cp: [''],
+      doc_estado: [''],
+      doc_municipio: [''],
+      doc_dir_colonia: [''],
+      doc_dir_calle: [''],
+      doc_dir_numero: ['',],
+      doc_dir_cp: [''],
 
-      email: ['',[Validators.required, Validators.email]],
-      telefono: ['',[Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
-      metodos: this.fb.array([]),
+      doc_email: ['',[Validators.required, Validators.email]],
+      doc_celular_principal: ['',[Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      doc_horario_ini: [''],
+      doc_horario_fin: [''],
+      metodos_contacto: this.fb.array([]),
     })
 
 
@@ -97,6 +86,7 @@ export class AddDoctorComponent implements OnInit {
       this.route.queryParams.subscribe(async params => {
         if(this.router.getCurrentNavigation().extras.state){
           this.currentUser = this.router.getCurrentNavigation().extras.state.userData;
+          this.loadMunicipios();
           this.loadUserData();
         } else{
           this.currentUser = null;
@@ -117,33 +107,35 @@ export class AddDoctorComponent implements OnInit {
 
   loadUserData() {
     //↓↓↓↓Se encarga de rellenar el formulario con los datos que pueden ser modificados
+    console.log('Municipio', this.currentUser.pac_municipio)
     this.doctorForm.patchValue({
-      userName: this.currentUser.userName,
-      primerApellido: this.currentUser.primerApellido,
-      segundoApellido: this.currentUser.segundoApellido,
-      especialidad: this.currentUser.especialidad,
-      email: this.currentUser.email,
+      doc_nombre: this.currentUser.doc_nombre,
+      doc_primer_apellido: this.currentUser.doc_primer_apellido,
+      doc_segundo_apellido: this.currentUser.doc_segundo_apellido,
+      doc_especialidades: this.currentUser.doc_especialidades,
+      doc_email: this.currentUser.doc_email,
       activo: this.currentUser.activo,
-      cedula: this.currentUser.cedula,
-      curp: this.currentUser.curp,
-      estado: this.currentUser.estado,
-      municipio: this.currentUser.municipio,
-      colonia: this.currentUser.colonia,
-      calle: this.currentUser.calle,
-      no: this.currentUser.no,
-      cp: this.currentUser.cp,
-      telefono: this.currentUser.telefono,
+      doc_cedula: this.currentUser.doc_cedula,
+      doc_curp: this.currentUser.doc_curp,
+      doc_estado: this.currentUser.doc_estado,
+      doc_municipio: this.currentUser.doc_municipio,
+      doc_dir_colonia: this.currentUser.doc_dir_colonia,
+      doc_dir_calle: this.currentUser.doc_dir_calle,
+      doc_dir_numero: this.currentUser.doc_dir_numero,
+      doc_dir_cp: this.currentUser.doc_dir_cp,
+      doc_celular_principal: this.currentUser.doc_celular_principal,
+      doc_horario_ini: this.currentUser.doc_horario_ini,
+      doc_horario_fin: this.currentUser.doc_horario_fin,
     })
-
     /*CurrentUser carga la información, en este caso accede al campo metodos y lo carga como un map,
     con la función flecha carga los datos en los campos necesarios con la variable data
     */
-    this.currentUser.metodos.map(data => {
+    this.currentUser.metodos_contacto.map(data => {
       this.metodos.push(
         this.fb.group({
-          metodo: [data.metodo, [Validators.required]],
-          telefonoAux: [data.telefonoAux, [Validators.required, Validators.minLength(10)]],
-          horario: [data.horario, [Validators.required]]
+          doc_metodo: [data.doc_metodo, [Validators.required]],
+          doc_telefono_aux: [data.doc_telefono_aux, [Validators.required, Validators.minLength(10)]],
+          doc_horario: [data.doc_horario, [Validators.required]]
         })
       )
     })
@@ -156,7 +148,9 @@ export class AddDoctorComponent implements OnInit {
     /*
     ↓↓↓Esta parte recibe el formulario y lo pasa como parametro
     al servicio en su metodo crearDoctor↓↓↓*/
-    await this.DoctorService.crearDoctor(this.doctorForm.value);
+    let post = this.doctorForm.value;
+    post['doc_nombre_completo'] = post['doc_nombre'] + ' ' + post['doc_primer_apellido'] + ' ' + post['doc_segundo_apellido']
+    await this.DoctorService.crearDoctor(post);
     console.log(this.doctorForm.value);
     /*Ejecución de Sweet Alert con los parametros necesarios*/
     Swal.fire({
@@ -180,6 +174,8 @@ export class AddDoctorComponent implements OnInit {
     enviarlos con el metodo UpdateDoctor de Doctor service*/
     let post = this.doctorForm.value;
     post['id'] = this.currentUser.id;
+    post['doc_nombre_completo'] = post['doc_nombre'] + ' ' + post['doc_primer_apellido'] + ' ' + post['doc_segundo_apellido']
+    console.log('Doctor Actualizado', post)
     this.DoctorService.updateDoctor(post)
     /*Sweet Alert*/
     Swal.fire({
@@ -219,15 +215,15 @@ export class AddDoctorComponent implements OnInit {
   }
 
   get metodos() {
-    return this.doctorForm.controls["metodos"] as FormArray;
+    return this.doctorForm.controls["metodos_contacto"] as FormArray;
   }
 
   /*Agrega el nmetodo de contacto al formArray */
   addMetodo(){
     const metodoForm = this.fb.group({
-      metodo: ['', [Validators.required]],
-      telefonoAux: ['', [Validators.required, Validators.minLength(10)]],
-      horario: ['',[Validators.required]]
+      doc_metodo: ['', [Validators.required]],
+      doc_telefono_aux: ['', [Validators.required, Validators.minLength(10)]],
+      doc_horario: ['',[Validators.required]]
     });
     this.metodos.push(metodoForm);
   }
@@ -248,8 +244,16 @@ export class AddDoctorComponent implements OnInit {
 
   getMunicipios(value: number){
     this.municipios = [],
-    console.log(this.estadosymunicipios)
     this.municipios = this.estadosymunicipios[value]
+  }
+
+  loadMunicipios() {
+    return new Promise((resolve) => {
+      this.httpClient.get<any>("assets/docs/estadosymunicipios.json").subscribe((data) => {
+        this.estadosymunicipios = data;
+        resolve('success');
+      })
+    })
   }
 
 }

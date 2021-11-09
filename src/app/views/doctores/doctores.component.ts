@@ -34,25 +34,37 @@ export class DoctoresComponent implements OnInit {
   },
   {
     headerName: 'Nombre Usuario',
-    field: 'userName',
-    width: 200,
+    field: 'doc_nombre_completo',
+    width: 250,
+    filter: "agTextColumnFilter"
+  },
+  {
+    headerName: 'Especialidades',
+    field: 'doc_especialidades',
+    width: 300,
     filter: "agTextColumnFilter"
   },
   {
     headerName: 'Correo electrónico',
-    field: 'email',
+    field: 'doc_email',
     width: 180,
     filter: "agTextColumnFilter"
   },
   {
-    headerName: 'Cédula Profesional',
-    field: 'cedula',
+    headerName: 'Horario de Inicio',
+    field: 'doc_horario_ini',
+    width: 180,
+    filter: "agTextColumnFilter"
+  },
+  {
+    headerName: 'Horario de Fin',
+    field: 'doc_horario_fin',
     width: 180,
     filter: "agTextColumnFilter"
   },
   {
     headerName: 'Teléfono',
-    field: 'telefono',
+    field: 'doc_celular_principal',
     width: 150,
     filter: "agTextColumnFilter"
   },
@@ -91,8 +103,8 @@ export class DoctoresComponent implements OnInit {
     };
   }
   /*Siempre que usamos una función asincrona debemos colocar el async
-   y se complementa con un await*/
-  async ngOnInit() {
+  y se complementa con un await*/
+  async ngOnInit(): Promise<void> {
     await new Promise<void>(resolve => {
       this.DoctorService.getDoctorsList().subscribe(doctores =>{
         console.log(doctores);

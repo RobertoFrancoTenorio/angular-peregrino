@@ -24,6 +24,16 @@ import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 
+import { MatStepperModule } from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatRadioModule} from '@angular/material/radio';
+import { MatChipsModule } from '@angular/material';
+import { MatIconModule } from '@angular/material'
+
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+
 const APP_CONTAINERS = [
   DefaultLayoutComponent
 ];
@@ -90,9 +100,6 @@ FullCalendarModule.registerPlugins([
   listPlugin,
   timeGridWeek
 ]);
-import { HistoriaClinicaComponent } from './views/historia-clinica/historia-clinica.component';
-import { HeredoFamiliaresComponent } from './views/historia-clinica/heredo-familiares/heredo-familiares.component';
-import { MulticheckboxComponent } from './views/historia-clinica/multicheckbox/multicheckbox.component';
 import { AddCitaComponent } from './views/citas/add-cita/add-cita.component';
 @NgModule({
   imports: [
@@ -123,6 +130,14 @@ import { AddCitaComponent } from './views/citas/add-cita/add-cita.component';
     IconSetModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatIconModule,
+    MatChipsModule,
+    CollapseModule,
     //Stepper
   //  FontAwesomeModule
   ],
@@ -148,9 +163,6 @@ import { AddCitaComponent } from './views/citas/add-cita/add-cita.component';
     ModalEditPacComponent,
     CalendarioComponent,
     ModalInfoPacComponent,
-    HistoriaClinicaComponent,
-    HeredoFamiliaresComponent,
-    MulticheckboxComponent,
     AddCitaComponent
 
   ],

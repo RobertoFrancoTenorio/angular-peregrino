@@ -22,7 +22,6 @@ import { AddDoctorComponent } from './views/doctores/add-doctor/add-doctor.compo
 import { AddPacienteComponent } from './views/pacientes/add-paciente/add-paciente.component';
 import { CalendarioComponent } from './views/calendario/calendario.component';
 import { CalendarComponent } from './views/calendar/calendar.component';
-import { HistoriaClinicaComponent } from './views/historia-clinica/historia-clinica.component';
 
 
 export const routes: Routes = [
@@ -155,13 +154,6 @@ export const routes: Routes = [
         component: AddPacienteComponent,
         data: {
           title: 'Error 403'
-        }
-      },
-      {
-        path: 'historia-clinica',
-        component: HistoriaClinicaComponent,
-        data: {
-          title: 'Historia Clinica'
         }
       },
       {

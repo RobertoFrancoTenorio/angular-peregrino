@@ -137,6 +137,7 @@
                 </tab>
 
                 <tab heading="Citas">
+                  
                   <div *ngIf="true">
                     <div class="alert alert-warning" role="alert">
                       <h4 class="alert-heading">Paciente sin registro de Citas</h4>
@@ -149,6 +150,8 @@
                       </p>
                     </div>
                   </div>
+
+                  
 
                 </tab>
 
@@ -766,7 +769,7 @@
       </div>
     </div>
     <br>
-    <app-add-cita [currentPaciente]="currentPaciente"></app-add-cita>
+    <app-add-cita [currentPaciente]="currentPaciente" (citaSave)="citaSave($event)"></app-add-cita>
   </div>
 
   <div class="container" *ngIf="verHistoria">

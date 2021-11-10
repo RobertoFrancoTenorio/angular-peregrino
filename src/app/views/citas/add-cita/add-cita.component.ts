@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DoctorService } from '../../../service/doctor/doctor.service';
 import moment from 'moment';
 import { CitaService } from '../../../service/cita/cita.service';
 import Swal from 'sweetalert2';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-cita',
@@ -21,6 +22,7 @@ export class AddCitaComponent implements OnInit {
   doctorList: any[] = [];
 
   minDate: Date;
+  date_select: any;
 
   currentDoctor: any = null;
   @Input() currentPaciente: any = null;
@@ -199,12 +201,15 @@ export class AddCitaComponent implements OnInit {
       paciente: 'Horario libre'
     },
   ]
-
   bandHorario: boolean = false;
+
+  @Output() citaSave: EventEmitter<any> = new EventEmitter<any>();
+
   constructor(
     private fb: FormBuilder,
     private docService: DoctorService,
-    private citaServ: CitaService
+    private citaServ: CitaService,
+    public datepipe: DatePipe
   ) {
     this.citaForm = this.fb.group({
       idDoctor: [null, Validators.required],
@@ -239,6 +244,7 @@ export class AddCitaComponent implements OnInit {
     });
 
     this.citaForm.get('cita_fecha').valueChanges.subscribe(val => {
+      this.date_select=this.datepipe.transform(new Date(val), 'yyyy-MM-dd')
       this.printCalendar();
     });
 
@@ -263,17 +269,28 @@ export class AddCitaComponent implements OnInit {
       }
       console.log(this.horarios);
       this.bandHorario = true;
-    }else{
-      this.bandHorario = false;     
+    } else {
+      this.bandHorario = false;
     }
 
   }
 
-  async crearCita(horario){
+  async crearCita(horario) {
 
-    console.log(horario)
+    Swal.fire({
+      title: 'Registrando cita',
+      text: 'Los datos de la cita estan ciendo almacenados',
+      icon: 'info',
+      showConfirmButton: false,
+      showCancelButton: false,
+      showCloseButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    });
 
-    let citaData={
+    
+    console.log(String(this.citaForm.value['cita_fecha']).substring(0,10)+' '+horario.hora_inicio);
+    let citaData = {
       idDoctor: this.currentDoctor.id,
       idPaciente: this.currentPaciente.id,
       detDoctor: {
@@ -284,31 +301,36 @@ export class AddCitaComponent implements OnInit {
         id: this.currentPaciente.id,
         nombre: this.currentPaciente.pac_nombre_completo
       },
-      idHorario: horario.idHorario, 
+      f_cita: new Date(this.date_select+' '+horario.hora_inicio),
+      idHorario: horario.idHorario,
       cita_hora_ini: horario.hora_inicio,
       cita_hora_fin: horario.hora_fin,
-      estatus:'asignada',
+      estatus: 'asignada',
     }
 
     console.log(citaData);
     /*
     ↓↓↓Esta parte recibe el formulario y lo pasa como parametro
     al servicio en su metodo crearDoctor↓↓↓*/
-    await this.citaServ.crearDoctor(citaData);
+    await this.citaServ.crearCita(citaData);
     /*Ejecución de Sweet Alert con los parametros necesarios*/
+
+    Swal.close();
+
     Swal.fire({
-      title: 'Usuario Registrado',
-      text: 'El usuario ha sido registrado correctamente.',
+      title: 'Cita registrada',
+      text: 'La cita ha sido registrada correctamente.',
       icon: 'success',
       confirmButtonText: 'OK'
     })
-    /*Una vez ejecutado el Sweet alert limpia el formulario
-    y redirige al componente de doctores*/
-    .then(()=>{
-      this.citaForm.reset();
-      //this.router.navigate(['doctores']);
-      return false;
-    })
+      /*Una vez ejecutado el Sweet alert limpia el formulario
+      y redirige al componente de doctores*/
+      .then(() => {
+        this.citaForm.reset();
+        //this.router.navigate(['doctores']);
+        this.citaSave.emit({ citaSave: true })
+        return false;
+      })
 
   }
 }

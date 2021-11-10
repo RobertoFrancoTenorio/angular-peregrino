@@ -467,4 +467,14 @@ export class ModalInfoPacComponent implements OnInit {
   next() {
     this.stepper.next();
   }
+
+  citaSave(event: any){
+    if (event.citaSave) {
+      console.log('Cita almacenada')
+      this.activarDetalles();
+    }else{
+      console.log('Cancel Cita')
+      this.activarDetalles();
+    }
+  }
 }

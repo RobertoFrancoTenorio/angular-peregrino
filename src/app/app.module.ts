@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -175,7 +176,8 @@ import { AddCitaComponent } from './views/citas/add-cita/add-cita.component';
     AuthService,
     UsuarioService,
     DoctorService,
-    BsModalRef
+    BsModalRef,
+    DatePipe
   ],
   bootstrap: [ AppComponent ]
 })

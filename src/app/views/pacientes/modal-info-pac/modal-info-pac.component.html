@@ -302,7 +302,11 @@
                     </div>
                     <div class="col-6">
                       <label for="" class="form-label">Frecuencia de actividad física</label>
-                      <input type="text" class="form-control" formControlName="pac_actividad_frec">
+                      <select  class="form-control" id="options" formControlName="pac_actividad_frec">
+                        <option value="Diario">Diario</option>
+                        <option value="Semanal">Semanal</option>
+                        <option value="Mensual">Mensual</option>
+                      </select>
                     </div>
                     <div class="col-1">
                       <button class="btn btn-danger" id="btn-danger" (click)="deleteActividad(i)">Quitar</button>
@@ -490,12 +494,16 @@
                           <input type="text" class="form-control" formControlName="pac_medicamento">
                         </div>
                         <div class="col-3">
-                          <label for="" class="form-label">Frecuencia de consumo</label>
-                          <input type="text" class="form-control" formControlName="pac_frecuencia_consumo">
+                          <label for="" class="form-label">Frecuencia de consumo (Por semana)</label>
+                          <select  class="form-control" id="options" formControlName="pac_frecuencia_consumo">
+                            <option value="De 0 a 2 veces">De 0 a 2 veces</option>
+                            <option value="De 3 a 5 veces">De 3 a 5 veces</option>
+                            <option value="Mas de 6 veces">Mas de 6 veces</option>
+                          </select>
                         </div>
                         <div class="col-3">
                           <label for="" class="form-label">Fecha del primer consumo:</label>
-                          <input type="text" class="form-control" formControlName="pac_inicio_consumo">
+                          <input type="date" class="form-control" formControlName="pac_inicio_consumo">
                         </div>
                         <div class="col-1">
                           <button class="btn btn-danger" id="btn-danger" (click)="deleteMedicamento(i)">Quitar</button>
@@ -516,17 +524,18 @@
         </form>
       </mat-step>
       <!--Paso 4-->
-      <mat-step [stepControl]="fourthFormGroup" label ="Gineco-obstétricos">
+      <mat-step [stepControl]="fourthFormGroup" label ="Gineco-obstétricos / Androgenicos">
         <form [formGroup]="fourthFormGroup">
           <mat-label>Gineco-obstétricos</mat-label>
           <form [formGroup]="GinecoObstricoForm">
             <label for="" *ngIf="currentPaciente.pac_sexo == 'F'">Menarquía</label>
             <input type="text" id="" formControlName="pac_menarquia" *ngIf="currentPaciente.pac_sexo == 'F'">
             <div class="row">
-              <div class="col-4" *ngIf="currentPaciente.pac_sexo == 'F'">
+              <div class="col-6" *ngIf="currentPaciente.pac_sexo == 'F'">
                 <h5>Características de la menstruación</h5>
                 <label class="form-label">Última Menstruación</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" formControlName="pac_carac_mens">
+                <input type="date" class="form-control" formControlName="pac_carac_mens">
+
                 <br>
                 <div class="row">
                   <div class="col-3">
@@ -542,8 +551,9 @@
                     <label for="" class="form-label">Cantidad de sangre</label>
                     <select  class="form-control" id="options" formControlName="pac_cant_mens">
                       <option selected value="No especificado">No especificado</option>
-                      <option value=""></option>
-                      <option value=""></option>
+                      <option value="Leve">Leve</option>
+                      <option value="Moderado">Moderado</option>
+                      <option value="Abundante">Abundante</option>
                     </select>
                   </div>
                 </div>
@@ -553,9 +563,9 @@
                   <div class="col-6">
                     <label for="" class="form-label">Frecuencia</label>
                     <select  class="form-control" id="options" formControlName="pac_frec_mens">
-                      <option selected value="">No especificado</option>
-                      <option value=""></option>
-                      <option value=""></option>
+                      <option value="Alta">Alta</option>
+                      <option value="Baja">Baja</option>
+                      <option value="Moderada">Moderada</option>
                     </select>
                   </div>
                 </div>
@@ -565,9 +575,8 @@
                   <div class="col-4">
                     <label for="" class="form-label">Presencia de dolor: </label>
                     <select  class="form-control" id="options" formControlName="pac_precencia_dolor_mens">
-                      <option selected value="No">No</option>
-                      <option value=""></option>
-                      <option value=""></option>
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
                     </select>
                   </div>
                 </div>
@@ -576,24 +585,12 @@
                 <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" formControlName="pac_otras_sec_mens"></textarea>
               </div>
 
-              <div class="col-4">
+              <div class="col-6">
                 <h5>Actividad Sexual</h5>
               <div class="row">
                 <div class="col-6">
                   <label for="" class="form-label">Vida sexual activa</label>
-                  <div class="row">
-                    <div class="col-3">
-                      <div class="form-check">
-                        <input class="form-check-input" formControlName="pac_vida_sexual_activa" type="radio" name="pac_vida_sexual_activa" id="pac_vida_sexual_activa">
-                        <label class="form-check-label" value="No" for="flexRadioDefault1">Si</label>
-                      </div>
-                    </div>
-                    <div class="col-6">
-
-                    </div>
-                  </div>
-
-                  <select  class="form-control" id="options" >
+                  <select formControlName="pac_vida_sexual_activa" class="form-control" id="options" >
                     <option selected value="">Seleccione una opción</option>
                     <option value="Si">Si</option>
                     <option value="No">No</option>
@@ -632,17 +629,26 @@
                     <select  class="form-control" formControlName="pac_metodo_anticonceptivo" id="options">
                       <option value="Ninguno">Ninguno</option>
                       <option value="Preservativo">Preservativo</option>
+                      <option value="Hormonal">Hormonal</option>
                     </select>
-                    <label for="" class="form-label">Metodo Anticonceptivo:</label>
-                    <select  class="form-control" formControlName="pac_metodo_anticonceptivo" id="options">
-                      <option value="Pastillas">Ninguno</option>
-                      <option value="Preservativo">Preservativo</option>
-                    </select>
-                    <label for="" class="form-label">Metodo Anticonceptivo:</label>
-                    <select  class="form-control" formControlName="pac_metodo_anticonceptivo" id="options">
-                      <option value="Ninguno">Ninguno</option>
-                      <option value="Preservativo">Preservativo</option>
-                    </select>
+                    <span *ngIf="this.GinecoObstricoForm.get('pac_metodo_anticonceptivo').value == 'Hormonal'">
+                      <br>
+                      <label for="" class="form-label">Metodo Anticonceptivo:</label>
+                      <select  class="form-control" formControlName="pac_metodo_anticonceptivo_hormonal" id="options">
+                        <option value="Pastillas">Ninguno</option>
+                        <option value="Inyección">Inyección</option>
+                        <option value="DIU">DIU</option>
+                        <option value="Implante">Implante</option>
+                      </select>
+                      <span *ngIf="this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal').value == 'DIU'">
+                        <br>
+                        <label for="" class="form-label">Metodo Anticonceptivo:</label>
+                        <select  class="form-control" formControlName="pac_metodo_anticonceptivo_hormonal_diu" id="options">
+                          <option value="Cobre">Cobre</option>
+                          <option value="Medicinal">Medicinal</option>
+                        </select>
+                      </span>
+                    </span>
                   </span>
                 </div>
               </div>
@@ -651,11 +657,7 @@
               <div class="row">
                 <div class="col-6">
                   <label for="" class="form-label">Tipo de relaciones</label>
-                  <select  class="form-control" formControlName="pac_tipo_relaciones" id="options">
-                    <option selected value="No especificado">No especificado</option>
-                    <option value=""></option>
-                    <option value=""></option>
-                  </select>
+                  <input type="text" formControlName="pac_tipo_relaciones" id="" class="form-control">
                 </div>
               </div>
               <br>
@@ -663,17 +665,26 @@
               <label for="floatingTextarea2">Enfermedades de transmisión sexual</label>
               <textarea class="form-control" formControlName="pac_ets" placeholder="Leave a comment here" style="height: 100px"></textarea>
               </div>
-
-              <div class="col-4" *ngIf="currentPaciente.pac_sexo == 'F'">
+            </div>
+            <hr class="line">
+            <div class="row">
+              <div class="col-6" *ngIf="currentPaciente.pac_sexo == 'F'">
                 <h5>Información de embarazos</h5>
                 <div class="row">
                   <div class="col-6">
                     <label for="" class="form-label">Gestaciones</label>
-                    <select class="form-control" formControlName="pac_gestaciones" id="options">
-                      <option selected value="Ninguno">Ninguno</option>
-                      <option value="Ninguno">Ninguno</option>
-                      <option value="Ninguno">Ninguno</option>
+                    <select  class="form-control" formControlName="pac_gestaciones" id="options">
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
                     </select>
+                    <span *ngIf="this.GinecoObstricoForm.get('pac_gestaciones').value == 'Si'">
+                      <label for="" class="form-label">No. de Gestaciones</label>
+                      <input type="number" min="0" max="15" formControlName="pac_cant_gestaciones" id="" class="form-control">
+                      <label for="" class="form-label">Fecha Aproximada de la última gestación</label>
+                      <input type="date" class="form-control" formControlName="pac_ultima_gestacion" id="">
+                      <label for="" class="form-label">Observaciones</label>
+                      <textarea class="form-control" formControlName="pac_ultima_gestacion_observacion" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                    </span>
                   </div>
                 </div>
                 <br>
@@ -681,11 +692,18 @@
                 <div class="row">
                   <div class="col-6">
                     <label for="" class="form-label">Partos</label>
-                    <select formControlName="pac_partos" class="form-control" id="options">
-                      <option selected value="Ninguno">Ninguno</option>
-                      <option value=""></option>
-                      <option value=""></option>
+                    <select  class="form-control" formControlName="pac_partos" id="options">
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
                     </select>
+                    <span *ngIf="this.GinecoObstricoForm.get('pac_partos').value == 'Si'">
+                      <label for="" class="form-label">No. de partos</label>
+                      <input type="number" min="0" max="15" formControlName="pac_cant_partos" id="" class="form-control">
+                      <label for="" class="form-label">Fecha Aproximada del último parto</label>
+                      <input type="date" class="form-control" formControlName="pac_ultimo_parto" id="">
+                      <label for="" class="form-label">Observaciones</label>
+                      <textarea class="form-control" formControlName="pac_ultimo_parto_observacion" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                    </span>
                   </div>
                 </div>
                 <br>
@@ -693,11 +711,18 @@
                 <div class="row">
                   <div class="col-6">
                     <label for="" class="form-label">Abortos</label>
-                    <select formControlName="pac_abortos" class="form-control" id="options">
-                      <option selected value="Ninguno">Ninguno</option>
-                      <option value=""></option>
-                      <option value=""></option>
+                    <select  class="form-control" formControlName="pac_abortos" id="options">
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
                     </select>
+                    <span *ngIf="this.GinecoObstricoForm.get('pac_abortos').value == 'Si'">
+                      <label for="" class="form-label">Fecha Aproximada del último aborto</label>
+                      <input type="number" min="0" max="15" formControlName="pac_cant_abortos" id="" class="form-control">
+                      <label for="" class="form-label">Fecha Aproximada del último aborto</label>
+                      <input type="date" class="form-control" formControlName="pac_ultimo_aborto" id="">
+                      <label for="" class="form-label">Observaciones</label>
+                      <textarea class="form-control" formControlName="pac_ultimo_aborto_observacion" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                    </span>
                   </div>
                 </div>
                 <br>
@@ -705,24 +730,58 @@
                 <div class="row">
                   <div class="col-6">
                     <label for="" class="form-label">Cesareas</label>
-                    <select formControlName="pac_cesareas" class="form-control" id="options">
-                      <option selected value="Ninguno">Ninguno</option>
-                      <option value=""></option>
-                      <option value=""></option>
+                    <select  class="form-control" formControlName="pac_cesareas" id="options">
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
                     </select>
+                    <span *ngIf="this.GinecoObstricoForm.get('pac_cesareas').value == 'Si'">
+                      <label for="" class="form-label">Fecha Aproximada de la última cesarea</label>
+                      <input type="number" min="0" max="15" formControlName="pac_cant_cesareas" id="" class="form-control">
+                      <label for="" class="form-label">Fecha Aproximada de la última cesarea</label>
+                      <input type="date" class="form-control" formControlName="pac_ultima_cesarea" id="">
+                      <label for="" class="form-label">Observaciones</label>
+                      <textarea class="form-control" formControlName="pac_ultima_cesarea_observacion" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                    </span>
                   </div>
                 </div>
                 <br>
 
-                <label for="floatingTextarea2">Antecedentes Prerinatales</label>
-                <textarea class="form-control" formControlName="pac_antecedentes_perinatales" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+              </div>
+
+              <div class="col-6" *ngIf="currentPaciente.pac_sexo == 'F'">
+                <h5>Panicolao/Tamis de mama</h5>
+                <label for="" class="form-label">Se ha realizado papanicolau</label>
+                <select class="form-control" formControlName="pac_papanicolau" id="options">
+                  <option value="Si">Si</option>
+                  <option value="No">No</option>
+                </select>
+                <span *ngIf="this.GinecoObstricoForm.get('pac_papanicolau').value == 'Si'">
+                  <br>
+                  <label for="" class="form-label">Fecha de realización:</label>
+                  <input type="date" formControlName="pac_papanicolau_fecha" id="" class="form-control">
+                  <label for="" class="form-label">Observaciones:</label>
+                  <textarea class="form-control" formControlName="pac_papanicolau_observacion" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                </span>
+                <br>
+                <label for="" class="form-label">Se ha realizado tamis de mama</label>
+                <select class="form-control" formControlName="pac_tamis_mama" id="options">
+                  <option value="Si">Si</option>
+                  <option value="No">No</option>
+                </select>
+                <span *ngIf="this.GinecoObstricoForm.get('pac_tamis_mama').value == 'Si'">
+                  <br>
+                  <label for="" class="form-label">Fecha de realización:</label>
+                  <input type="date" formControlName="pac_tamis_fecha" id="" class="form-control">
+                  <label for="" class="form-label">Observaciones:</label>
+                  <textarea class="form-control" formControlName="pac_tamis_observacion" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                </span>
               </div>
             </div>
           </form>
           <br>
           <div id="btns">
               <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
-              <mat-checkbox formControlName="fourthCtrl" required>Finalizar Gineco-obstétricos</mat-checkbox>
+              <mat-checkbox formControlName="fourthCtrl" required [disabled]="!GinecoObstricoForm.valid">Finalizar Gineco-obstétricos</mat-checkbox>
               <button class="btn btn-primary"  matStepperNext>Siguiente</button>
           </div>
         </form>
@@ -1121,6 +1180,29 @@
           </span>
         </div>
         </div>
+
+        <span *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.Medicamentos">
+          <hr class="line">
+
+          <h4>Medicamentos</h4>
+          <div class="row" *ngFor="let med of currentPaciente.pac_antecedentes_data.Patologicos.Medicamentos; let i = index">
+            <div class="col-4">
+              <span class="info">
+                Medicamento: <span class="resp">{{med.pac_medicamento}}</span>
+              </span>
+            </div>
+            <div class="col-4">
+              <span class="info">
+                Frecuencia de Consumo: <span class="resp">{{med.pac_frecuencia_consumo}}</span>
+              </span>
+            </div>
+            <div class="col-4">
+              <span class="info">
+                Fecha de Inicio de Consumo: <span class="resp">{{med.pac_inicio_consumo}}</span>
+              </span>
+            </div>
+          </div>
+        </span>
     </div>
     <hr class="line">
 
@@ -1162,9 +1244,6 @@
               <span class="infoME">Frecuencia: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_frec_mens}}</span></span>
               <span class="infoME">Presencia del dolor: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_precencia_dolor_mens}}</span></span>
             </span>
-            <span class="containerME">
-              <span class="infoME1">Otras secreciones menstruales: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_otras_sec_mens}}</span></span>
-            </span>
           </div>
         </div>
       </span>
@@ -1173,20 +1252,28 @@
       <span *ngIf="currentPaciente.pac_sexo == 'F'">
         <h4>Información de embarazos</h4>
         <div class="row">
+          <span *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones == 'Si'">
+              <span class="containerME">
+                <span class="infoME">No. de Gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones}}</span></span>
+                <span class="infoME">Última Gestación: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_gestacion}}</span></span>
+              </span>
+          </span>
           <div class="col-12">
             <span class="containerME">
-              <span class="infoME">Gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones}}</span></span>
+              <span class="infoME">Gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_gestaciones}}</span></span>
               <span class="infoME">Partos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos}}</span></span>
             </span>
             <span class="containerME">
               <span class="infoME">Abortos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos}}</span></span>
               <span class="infoME">Cesareas: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas}}</span></span>
             </span>
-            <span class="containerME">
-              <span class="infoME1">Antecedentes Perinatales: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_antecedentes_perinatales}}</span></span>
+            <span class="containerME" *ngIf="">
             </span>
           </div>
         </div>
+      </span>
+
+      <span>
       </span>
     </div>
   </div>

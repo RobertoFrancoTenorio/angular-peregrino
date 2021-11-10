@@ -25,6 +25,7 @@ export class AddDoctorComponent implements OnInit {
 
   //Variable que switchea el valor de activo
   varActivo: boolean = true;
+  doc_id: string = '';
 
   metodoForm = this.fb.group({
     doc_metodo: ['', []],
@@ -150,8 +151,8 @@ export class AddDoctorComponent implements OnInit {
     al servicio en su metodo crearDoctor↓↓↓*/
     let post = this.doctorForm.value;
     post['doc_nombre_completo'] = post['doc_nombre'] + ' ' + post['doc_primer_apellido'] + ' ' + post['doc_segundo_apellido']
-    await this.DoctorService.crearDoctor(post);
-    console.log(this.doctorForm.value);
+    await this.DoctorService.crearDoctor(post, this.doc_id);
+    //console.log(this.doctorForm.value, this.doc_id);
     /*Ejecución de Sweet Alert con los parametros necesarios*/
     Swal.fire({
       title: 'Usuario Registrado',

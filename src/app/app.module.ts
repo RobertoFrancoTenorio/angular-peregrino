@@ -32,6 +32,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
 import { MatChipsModule } from '@angular/material';
 import { MatIconModule } from '@angular/material'
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 
@@ -139,6 +140,7 @@ import { AddCitaComponent } from './views/citas/add-cita/add-cita.component';
     MatIconModule,
     MatChipsModule,
     CollapseModule,
+    MatDatepickerModule
     //Stepper
   //  FontAwesomeModule
   ],

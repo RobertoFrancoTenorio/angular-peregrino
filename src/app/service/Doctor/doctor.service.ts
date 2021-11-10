@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { async } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
+import { UsuarioService } from '../usuario/usuario.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,7 @@ export class DoctorService {
   constructor(
     private afs: AngularFirestore,
     public authService: AuthService,
+    private usuarioService: UsuarioService,
   ) { }
 
   /*Este metodo accede a la colección en con la variable afs y la pasa al
@@ -31,7 +34,7 @@ export class DoctorService {
   }
 
   /*Este metodo recibe el doctor que se pasa en el componente add-doctor */
-  crearDoctor(post: any) {
+  crearDoctor(post: any, id?: string) {
 
     return new Promise<void>((resolve) => {
       /*accede a la coleccion */
@@ -42,19 +45,23 @@ export class DoctorService {
         /*Almacena los datos de activo, fecha de registro, el usuario que lo registró
         el id y un idNumerico*/
         post['f_registro'] = new Date();
+        if(!id){
+          /*Este id se genera automaticamente mediante un metodo de afs */
+          post['id'] = this.afs.createId();
+        }
+        else{
+          console.log('id', id)
+          post['id'] = id;
+        }
         post['user_reg'] = this.authService.currentUserId;
-        /*Este id se genera automaticamente mediante un metodo de afs */
-        post['id'] = this.afs.createId();
         post['idNumerico'] = idNum;
-
-        console.log("vALOR post");
-        console.log(post);
         /*En esta parte se envia el id del doctor que se acaba de crear y todos los datos capturados
         una vez agregados a la colección setea el valor del contador con el idNumerico del ultimo doctor que se agregó,
         este id siempre va incrementando*/
         this.afs.doc('/SegMedico/peregrino/Doctores/' + post['id']).set(post).then(() => {
           this.afs.doc('/SegMedico/peregrino/Doctores/counter').set({ counter: idNum }).then(() => {
             resolve();
+            this.usuarioService.crearDoctorUsuario(post, id);
           })
         })
       })
@@ -68,4 +75,5 @@ export class DoctorService {
       })
     })
   }
+
 }

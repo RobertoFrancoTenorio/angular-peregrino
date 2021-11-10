@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 })
 export class ModalInfoPacComponent implements OnInit {
   private stepper: Stepper;
-
+  isLinear = true;
   @Input() currentPaciente: any = null;
   @Input() detallesBand: boolean = true;
   @Input() antecedentesBand: boolean = false;
@@ -35,12 +35,18 @@ export class ModalInfoPacComponent implements OnInit {
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
   fourthFormGroup: FormGroup;
-  //#endregion "Forms"
 
   ActividadesFisicasForm = this.fb.group({
-    pac_actividad_fisica: ['', []],
-    pac_frecuencia_act_fisica: ['', []],
+    pac_actividad_fisica: ['', Validators.required],
+    pac_frecuencia_act_fisica: ['', Validators.required]
   })
+
+  MedicamentosForm = this.fb.group({
+    pac_medicamento: ['', Validators.required],
+    pac_frecuencia_consumo: ['',Validators.required],
+    pac_inicio_consumo: ['', Validators.required],
+  })
+
   seleccionesPatologicas;
   bandSexo
   isCollapsed = true;
@@ -104,6 +110,7 @@ export class ModalInfoPacComponent implements OnInit {
 
     this.PatologiasForm = this.fb.group({
       patologias: new FormArray(this.patologicas.map(control => new FormControl((false)))),
+      Medicamento: this.fb.array([]),
     })
 
     this.AlergiasForm = this.fb.group({
@@ -169,31 +176,49 @@ export class ModalInfoPacComponent implements OnInit {
       pac_metodo_anticonceptivo: ['', Validators.required],
       pac_tipo_relaciones: ['', Validators.required],
       pac_ets: ['', Validators.required],
+      pac_metodo_anticonceptivo_hormonal: ['', Validators.required],
+      pac_metodo_anticonceptivo_hormonal_diu: ['', Validators.required],
 
       pac_gestaciones: ['', Validators.required],
+      pac_cant_gestaciones: ['', Validators.required],
+      pac_ultima_gestacion: ['', Validators.required],
+      pac_ultima_gestacion_observacion: ['', Validators.required],
       pac_partos: ['', Validators.required],
+      pac_cant_partos: ['', Validators.required],
+      pac_ultimo_parto: ['', Validators.required],
+      pac_ultimo_parto_observacion: ['', Validators.required],
       pac_abortos: ['', Validators.required],
+      pac_cant_abortos: ['', Validators.required],
+      pac_ultimo_aborto: ['', Validators.required],
+      pac_ultimo_aborto_observacion: ['', Validators.required],
       pac_cesareas: ['', Validators.required],
-      pac_antecedentes_perinatales: ['', Validators.required],
+      pac_cant_cesareas: ['', Validators.required],
+      pac_ultima_cesarea: ['', Validators.required],
+      pac_ultima_cesarea_observacion: ['',Validators.required],
+
+      pac_papanicolau: ['', Validators.required],
+      pac_papanicolau_fecha: ['', Validators.required],
+      pac_papanicolau_observacion: ['', Validators.required],
+      pac_tamis_mama: ['', Validators.required],
+      pac_tamis_fecha: ['', Validators.required],
+      pac_tamis_observacion: ['', Validators.required],
     })
 
     this.NoPatologicosForm = this.fb.group({
-      pac_habitaciones: [''],
-      pac_habitantes: [''],
-      mascota: [''],
-      pac_mascota_tipo: [''],
-      pac_comidas_al_dia: [''],
-      pac_consumo_pan: [''],
-      pac_consumo_refresco: [''],
-      pac_consumo_sal: [''],
-      pac_gpos_alimenticios: [''],
-      pac_alimentos_capeados: [''],
+      pac_habitaciones: ['', Validators.required],
+      pac_habitantes: ['', Validators.required],
+      mascota: ['', Validators.required],
+      pac_mascota_tipo: ['', Validators.required],
+      pac_comidas_al_dia: ['', Validators.required],
+      pac_consumo_pan: ['', Validators.required],
+      pac_consumo_refresco: ['', Validators.required],
+      pac_consumo_sal: ['', Validators.required],
+      pac_gpos_alimenticios: ['', Validators.required],
+      pac_alimentos_capeados: ['', Validators.required],
 
       Actividades_Fisicas: this.fb.array([]),
     })
   }
-
-
 
   ngOnInit(): void {
     this.currentPaciente['edad'] = this.calcularEdad(this.currentPaciente.pac_f_nacimiento);
@@ -281,11 +306,11 @@ export class ModalInfoPacComponent implements OnInit {
     this.TransfusionesForm.get("transfusiones").valueChanges.subscribe(data =>{
       if(data == 'Si'){
         this.TransfusionesForm.get('transfusiones_fecha').enable();
-        this.TransfusionesForm.get('transfusiones_fecha').enable();
+        this.TransfusionesForm.get('transfusiones_causas').enable();
       }
       else{
         this.TransfusionesForm.get('transfusiones_fecha').disable();
-        this.TransfusionesForm.get('transfusiones_fecha').disable();
+        this.TransfusionesForm.get('transfusiones_causas').disable();
       }
     })
     this.PsicoactivasForm.get('alcoholismo').valueChanges.subscribe(data =>{
@@ -332,7 +357,6 @@ export class ModalInfoPacComponent implements OnInit {
       this.GinecoObstricoForm.get("pac_partos").disable();
       this.GinecoObstricoForm.get("pac_abortos").disable();
       this.GinecoObstricoForm.get("pac_cesareas").disable();
-      this.GinecoObstricoForm.get("pac_antecedentes_perinatales").disable();
     }
     else{
       this.GinecoObstricoForm.get("pac_menarquia").enable();
@@ -346,8 +370,91 @@ export class ModalInfoPacComponent implements OnInit {
       this.GinecoObstricoForm.get("pac_partos").enable();
       this.GinecoObstricoForm.get("pac_abortos").enable();
       this.GinecoObstricoForm.get("pac_cesareas").enable();
-      this.GinecoObstricoForm.get("pac_antecedentes_perinatales").enable();
     }
+    this.GinecoObstricoForm.get('pac_metodo_anticonceptivo').valueChanges.subscribe(data =>{
+      if(data == 'Hormonal'){
+        this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal').enable();
+      }
+      else{
+        this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal').disable();
+      }
+    })
+    this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal').valueChanges.subscribe(data =>{
+      if(data == 'DIU'){
+        this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal_diu').enable();
+      }
+      else{
+        this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal_diu').disable();
+      }
+    })
+    this.GinecoObstricoForm.get('pac_gestaciones').valueChanges.subscribe(data =>{
+      if(data == 'Si'){
+        this.GinecoObstricoForm.get('pac_cant_gestaciones').enable();
+        this.GinecoObstricoForm.get('pac_ultima_gestacion').enable();
+        this.GinecoObstricoForm.get('pac_ultima_gestacion_observacion').enable();
+      }
+      else{
+        this.GinecoObstricoForm.get('pac_cant_gestaciones').disable();
+        this.GinecoObstricoForm.get('pac_ultima_gestacion').disable();
+        this.GinecoObstricoForm.get('pac_ultima_gestacion_observacion').disable();
+      }
+    })
+    this.GinecoObstricoForm.get('pac_partos').valueChanges.subscribe(data =>{
+      if(data == 'Si'){
+        this.GinecoObstricoForm.get('pac_cant_partos').enable();
+        this.GinecoObstricoForm.get('pac_ultimo_parto').enable();
+        this.GinecoObstricoForm.get('pac_ultimo_parto_observacion').enable();
+      }
+      else{
+        this.GinecoObstricoForm.get('pac_cant_partos').disable();
+        this.GinecoObstricoForm.get('pac_ultimo_parto').disable();
+        this.GinecoObstricoForm.get('pac_ultimo_parto_observacion').disable();
+      }
+    })
+    this.GinecoObstricoForm.get('pac_abortos').valueChanges.subscribe(data =>{
+      if(data == 'Si'){
+        this.GinecoObstricoForm.get('pac_cant_abortos').enable();
+        this.GinecoObstricoForm.get('pac_ultimo_aborto').enable();
+        this.GinecoObstricoForm.get('pac_ultimo_aborto_observacion').enable();
+      }
+      else{
+        this.GinecoObstricoForm.get('pac_cant_abortos').disable();
+        this.GinecoObstricoForm.get('pac_ultimo_aborto').disable();
+        this.GinecoObstricoForm.get('pac_ultimo_aborto_observacion').disable();
+      }
+    })
+    this.GinecoObstricoForm.get('pac_cesareas').valueChanges.subscribe(data =>{
+      if(data == 'Si'){
+        this.GinecoObstricoForm.get('pac_cant_cesareas').enable();
+        this.GinecoObstricoForm.get('pac_ultima_cesarea').enable();
+        this.GinecoObstricoForm.get('pac_ultima_cesarea_observacion').enable();
+      }
+      else{
+        this.GinecoObstricoForm.get('pac_cant_cesareas').disable();
+        this.GinecoObstricoForm.get('pac_ultima_cesarea').disable();
+        this.GinecoObstricoForm.get('pac_ultima_cesarea_observacion').disable();
+      }
+    })
+    this.GinecoObstricoForm.get('pac_papanicolau').valueChanges.subscribe(data =>{
+      if(data == 'Si'){
+        this.GinecoObstricoForm.get('pac_papanicolau_fecha').enable();
+        this.GinecoObstricoForm.get('pac_papanicolau_observacion').enable();
+      }
+      else{
+        this.GinecoObstricoForm.get('pac_papanicolau_fecha').enable();
+        this.GinecoObstricoForm.get('pac_papanicolau_observacion').enable();
+      }
+    })
+    this.GinecoObstricoForm.get('pac_tamis_mama').valueChanges.subscribe(data =>{
+      if(data == 'Si'){
+        this.GinecoObstricoForm.get('pac_tamis_fecha').enable();
+        this.GinecoObstricoForm.get('pac_tamis_observacion').enable();
+      }
+      else{
+        this.GinecoObstricoForm.get('pac_tamis_fecha').enable();
+        this.GinecoObstricoForm.get('pac_tamis_observacion').enable();
+      }
+    })
   }
 
   submit() {
@@ -375,6 +482,7 @@ export class ModalInfoPacComponent implements OnInit {
           traumaticos: this.TraumaticosForm.value,
           transfusiones: this.TransfusionesForm.value,
           sustancias_psicoactivas: this.PsicoactivasForm.value,
+          Medicamentos: this.PatologiasForm.value.Medicamento,
         },
         GinecoObstrico: this.GinecoObstricoForm.value,
       }
@@ -422,6 +530,23 @@ export class ModalInfoPacComponent implements OnInit {
 
   deleteActividad(actId: number){
     this.act_fisicas.removeAt(actId);
+  }
+
+  get list_medicamentos(){
+    return this.PatologiasForm.controls["Medicamento"] as FormArray;
+  }
+
+  addMedicamento(){
+    const med = this.fb.group({
+      pac_medicamento: ['', [Validators.required]],
+      pac_frecuencia_consumo: ['', [Validators.required]],
+      pac_inicio_consumo: ['', [Validators.required]],
+    })
+    this.list_medicamentos.push(med);
+  }
+
+  deleteMedicamento(medicamentoId: number){
+    return this.list_medicamentos.removeAt(medicamentoId);
   }
 
   calcularEdad(fecha: string) {

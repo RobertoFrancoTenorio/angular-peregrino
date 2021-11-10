@@ -12,6 +12,20 @@
     <h5 class="card-header">Llena todos los campos del Doctor</h5>
     <div class="card-body">
       <h5> Datos Doctor</h5>
+      <div class="col-6">
+        <div class="row">
+          <div class="col-4">
+            <label for="form-label" class="">ID Doctor</label>
+            <input type="text" class="form-control" [(ngModel)]="doc_id" placeholder="ID de Doctor">
+          </div>
+          <div class="col-4">
+            <br>
+            <br>
+            <label for="form-label" class="">ID: {{doc_id}}</label>
+          </div>
+        </div>
+      </div>
+
       <form [formGroup]="doctorForm" (ngSubmit)="addDoctor()">
         <div class="row">
             <div class="col-6">

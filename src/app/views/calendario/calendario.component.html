@@ -1,7 +1,40 @@
-<div class="container">
-    <div class="row">
-        <div class="col-sm">
-            <full-calendar [options]="calendarOptions"></full-calendar>
-        </div>
+<p>Display Event : {{ displayEvent | json}}</p>
+<div class="cont_card">
+  <h5>{{id}}</h5>
+  <div class="cardd">
+    <div class="card" style="width: 10rem;">
+      <div class="card-body" id="totales">
+        <h1 class="card-title" id="title_totales"><i class="fa fa-list-alt" aria-hidden="true"></i></h1>
+        <h1 class="card-text" id="title_totales">{{totales}}</h1>
+        <h5 class="sub_totales">Citas totales</h5>
+      </div>
     </div>
+  </div>
+  <div class="cardd-4">
+    <div class="card" style="width: 10rem;">
+      <div class="card-body" id="asignadas">
+        <h1 class="card-title" id="title_asignada"><i class="fa fa-check" aria-hidden="true"></i></h1>
+        <h1 class="card-text" id="title_asignada">{{asignadas}}</h1>
+        <h5 class="sub_asignada">Asignadas</h5>
+      </div>
+    </div>
+  </div>
+  <div class="cardd">
+    <div class="card" style="width: 10rem;">
+      <div class="card-body" id="pendientes">
+        <h1 class="card-title" id="title_pendiente"><i class="fa fa-times" aria-hidden="true"></i></h1>
+        <h1 class="card-text" id="title_pendiente">{{pendientes}}</h1>
+        <h5 class="sub_pendiente">Pendientes</h5>
+      </div>
+    </div>
+  </div>
 </div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <full-calendar [options]="calendarOptions" eventClick="eventClick($event.details)" (click)="eventClick($event.details)"></full-calendar>
+    </div>
+  </div>
+</div>
+
+

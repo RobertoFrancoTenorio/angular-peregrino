@@ -19,7 +19,7 @@ export class DefaultLayoutComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    
+
     this.auth.getUserAccount().then(data => {
       let categorias = Object.keys(data['permisos']);
       //let subCat = [];
@@ -43,13 +43,13 @@ export class DefaultLayoutComponent implements OnInit {
               this.navItems.push(item);
             }
             else this.navItems.push(item);
-          } 
+          }
         }
       }
-      console.log(this.navItems);
+      //console.log(this.navItems);
       this.loadMenu = true;
     });
-    console.log(navItems);
+    //console.log(navItems);
     //this.navItems=navItems;
     //this.loadMenu = true;
     //console.log(this.navItems)

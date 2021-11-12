@@ -1,0 +1,72 @@
+
+.card{
+  border-radius: 20px;
+  height:140px;
+}
+
+.card-body{
+  text-align: center;
+}
+
+
+#totales{
+  background-color: rgb(53, 123, 228);
+  border-radius: 20px;
+}
+
+
+#title_totales{
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: rgb(29, 61, 110);
+}
+
+.sub_totales{
+  font-weight: bold;
+  color: rgb(29, 61, 110);
+}
+
+#asignadas{
+  background-color: rgb(41, 165, 16);
+  border-radius: 20px;
+}
+
+#title_asignada{
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: rgb(24, 99, 8);
+}
+
+.sub_asignada{
+  font-weight: bold;
+  color: rgb(24, 99, 8);
+}
+
+#pendientes{
+  background-color: rgb(228, 18, 18);
+  border-radius: 20px;
+}
+
+#title_pendiente{
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: rgb(146, 11, 11);
+}
+
+.sub_pendiente{
+  font-weight: bold;
+  color: rgb(146, 11, 11);
+}
+
+.cont_card{
+  display: flex;
+}
+
+.cardd{
+
+}
+
+.buttons{
+  display: flex;
+}
+

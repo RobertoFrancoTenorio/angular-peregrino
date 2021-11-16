@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/angular';
 import esLocale from '@fullcalendar/core/locales/es';
 declare let $: any;
 import { AuthService } from '../../service/auth/auth.service'
 import { CitaService } from '../../service/cita/cita.service'
 import { UsuarioService } from '../../service/usuario/usuario.service'
-import { BsModalRef } from 'ngx-bootstrap';
-
-
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-calendario',
@@ -17,11 +16,14 @@ import { BsModalRef } from 'ngx-bootstrap';
 
 export class CalendarioComponent implements OnInit {
   id: string
+  private modalRef?: BsModalRef;
 
   length: number;
   asignadas: number;
   pendientes: number;
   totales: number;
+  rechazadas: number;
+  finalizadas: number;
 
   displayEvent: any;
   band = {};
@@ -31,7 +33,7 @@ export class CalendarioComponent implements OnInit {
   constructor(private AuthService: AuthService,
               private CitaService: CitaService,
               private UsuarioService: UsuarioService,
-              private BsModalRef: BsModalRef)
+              private modalService: BsModalService)
   {
   }
 
@@ -48,16 +50,7 @@ export class CalendarioComponent implements OnInit {
       },
       dateClick: this.handleDateClick.bind(this), // bind is important!
       selectable: true,
-      eventClick: function(arg){
-        this.displayEvent = {
-          event: {
-            title: arg.event.title,
-            start: arg.event.start,
-            end: arg.event.end,
-          },
-        }
-        console.log('Tipo de dato de arg', arg.event.start)
-      }
+      eventClick: this.eventClick.bind(this), // bind is important!
     }
     this.DeterminaUsuario()
   }
@@ -67,14 +60,73 @@ export class CalendarioComponent implements OnInit {
   }
 
   eventClick(model: any){
-    model = {
-      event: {
-        title: model.event.title,
-        start: model.event.start,
-        end: model.event.end,
-      }
+    this.displayEvent = model.event._def
+    console.log(this.displayEvent.extendedProps.currentCita.estatus)
+    if(this.displayEvent.extendedProps.currentCita.estatus == 'pendiente'){
+      Swal.fire({
+        title: '¿Desea aceptar la consulta?',
+        icon: 'info',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire('La cita ha sido aceptada con éxito!', '', 'success')
+          this.displayEvent.extendedProps.currentCita.estatus = 'asignada'
+          console.log(this.displayEvent.extendedProps)
+          console.log('Resultado', this.displayEvent.extendedProps.currentCita.estatus)
+          this.CitaService.updateCita(this.displayEvent.extendedProps.currentCita)
+          console.log('ResultadoActualizado', this.displayEvent.extendedProps.currentCita.estatus)
+
+        } else if (result.isDenied) {
+          Swal.fire('La cita ha sido rechazada', '', 'error')
+          this.displayEvent.extendedProps.currentCita.estatus = 'rechazada'
+          console.log(this.displayEvent.extendedProps)
+          console.log('Resultado', this.displayEvent.extendedProps.currentCita.estatus)
+          this.CitaService.updateCita(this.displayEvent.extendedProps.currentCita)
+          console.log('ResultadoActualizado', this.displayEvent.extendedProps.currentCita.estatus)
+
+        }
+      })
     }
-    console.log(model)
+    if(this.displayEvent.extendedProps.currentCita.estatus == 'asignada'){
+      Swal.fire({
+        title: '¿Desea marcar como realizada la cosulta?',
+        icon: 'info',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire('La cita ha concluido!', '', 'success')
+          this.displayEvent.extendedProps.currentCita.estatus = 'terminada'
+          console.log(this.displayEvent.extendedProps)
+          console.log('Resultado', this.displayEvent.extendedProps.currentCita.estatus)
+          this.CitaService.updateCita(this.displayEvent.extendedProps.currentCita)
+        } else if (result.isDenied) {
+          Swal.fire('La cita ha sido rechazada', '', 'error')
+          this.displayEvent.extendedProps.currentCita.estatus = 'rechazada'
+          console.log(this.displayEvent.extendedProps)
+          console.log('Resultado', this.displayEvent.extendedProps.currentCita.estatus)
+        }
+      })
+    }
+    if(this.displayEvent.extendedProps.currentCita.estatus == 'rechazada'){
+      Swal.fire({
+        title: '¿Desea marcar como realizada la cosulta?',
+        icon: 'info',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log('Aquí va a abrir un modal')
+        }
+      })
+    }
   }
 
   DeterminaUsuario(){
@@ -94,7 +146,7 @@ export class CalendarioComponent implements OnInit {
   }
 
   consultasDoctor(){
-    this.CitaService.getCitasDoctor(this.AuthService.currentUserId).subscribe(citas => {
+    this.CitaService.getCitasDoctor(this.AuthService.currentUserId).subscribe(citas => {;
       this.totales = citas.length;
       this.citasTotales = citas;
       this.calendarOptions.events = this.citasTotales
@@ -107,6 +159,7 @@ export class CalendarioComponent implements OnInit {
     this.CitaService.getCitasPendientesDoctor(this.AuthService.currentUserId).subscribe(citas =>{
       this.pendientes = citas.length
     })
+
   }
 
   consultasOtros(){
@@ -123,5 +176,16 @@ export class CalendarioComponent implements OnInit {
     this.CitaService.getCitasPendientes().subscribe(citas =>{
       this.pendientes = citas.length
     })
+    this.CitaService.getCitasRechazadas().subscribe(citas =>{
+      this.rechazadas = citas.length
+    })
+    this.CitaService.getCitasFinalizadas().subscribe(citas =>{
+      this.finalizadas = citas.length
+    })
   }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
 }

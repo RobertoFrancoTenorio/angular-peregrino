@@ -16,7 +16,6 @@ export class CitaService {
   ) { }
 
   crearCita(post: any) {
-
     return new Promise<void>((resolve) => {
 
       /*Almacena los datos de activo, fecha de registro, el usuario que lo registró
@@ -33,6 +32,14 @@ export class CitaService {
       este id siempre va incrementando*/
       this.afs.doc('/SegMedico/peregrino/citas/' + post['id']).set(post).then(() => {
         resolve();
+      })
+    })
+  }
+
+  updateCita(post: any) {
+    return new Promise<void>((resolve) => {
+      this.afs.doc('SegMedico/peregrino/citas/' + post['id']).update(post).then(() => {
+        resolve()
       })
     })
   }
@@ -71,11 +78,47 @@ export class CitaService {
         )
   }
 
+  getCitasRechazadas() {
+    return this.afs.collection('/SegMedico/peregrino/citas', ref =>
+      ref.where('estatus', '==', 'rechazada')
+        .orderBy('f_registro')).snapshotChanges().pipe(
+          map(actions => actions.map(a => {
+            const data = a.payload.doc.data()
+            var fecha = data['f_cita']
+            let evento = {};
+            evento = {
+              title: data['detPaciente'].nombre,
+              start: this.DatePipe.transform(fecha.toDate(), 'yyyy-MM-dd'),
+            }
+            return evento
+          }))
+        )
+  }
+
+  getCitasFinalizadas() {
+    return this.afs.collection('/SegMedico/peregrino/citas', ref =>
+      ref.where('estatus', '==', 'terminada')
+        .orderBy('f_registro')).snapshotChanges().pipe(
+          map(actions => actions.map(a => {
+            const data = a.payload.doc.data()
+            var fecha = data['f_cita']
+            let evento = {};
+            evento = {
+              title: data['detPaciente'].nombre,
+              start: this.DatePipe.transform(fecha.toDate(), 'yyyy-MM-dd'),
+            }
+            return evento
+          }))
+        )
+  }
+
   getCitasTotales(){
     return this.afs.collection('/SegMedico/peregrino/citas', ref =>
       ref.orderBy('f_registro')).snapshotChanges().pipe(
         map(actions => actions.map(a => {
-          const data = a.payload.doc.data()
+          var color = ' '
+            var background = ' '
+            const data = a.payload.doc.data()
             var start = data['f_cita']
             const ini = this.DatePipe.transform(start.toDate(), 'yyyy-MM-dd').toString()
             const horaInicio = data['cita_hora_ini']+':00'
@@ -84,10 +127,38 @@ export class CitaService {
             const fin = this.DatePipe.transform(end.toDate(), 'yyyy-MM-dd').toString()
             const horaFin = data['cita_hora_fin']+':00'
             let evento = {};
+            switch(data['estatus']){
+              case 'pendiente':{
+                color = 'orange'
+                background = 'orange'
+                break;
+              }
+              case 'asignada': {
+                color = 'blue'
+                background = 'blue'
+                break;
+              }
+              case 'terminada': {
+                color = 'green'
+                background = 'green'
+                break;
+              }
+              case 'rechazada': {
+                color = 'red'
+                background = 'red'
+                break;
+              }
+            }
             evento = {
               title: data['detPaciente'].nombre,
               start: ini+'T'+horaInicio,
-              end: fin+'T'+horaFin
+              end: fin+'T'+horaFin,
+              //textColor: background,
+              color: color,
+              extendedProps: {
+                tipoEvento: 'Cita',
+                currentCita: data,
+              }
             };
             return evento
         }))
@@ -148,6 +219,8 @@ export class CitaService {
     return this.afs.collection('/SegMedico/peregrino/citas', ref =>
         ref.where('detDoctor.id', '==', id,)).snapshotChanges().pipe(
           map(actions => actions.map(a => {
+            var color = ' '
+            var background = ' '
             const data = a.payload.doc.data()
             var start = data['f_cita']
             const ini = this.DatePipe.transform(start.toDate(), 'yyyy-MM-dd').toString()
@@ -157,10 +230,24 @@ export class CitaService {
             const fin = this.DatePipe.transform(end.toDate(), 'yyyy-MM-dd').toString()
             const horaFin = data['cita_hora_fin']+':00'
             let evento = {};
+            if(data['estatus'] == 'asignada'){
+              color = 'green'
+              background = 'green'
+            }
+            else{
+              color= 'red'
+              background = 'red'
+            }
             evento = {
               title: data['detPaciente'].nombre,
               start: ini+'T'+horaInicio,
-              end: fin+'T'+horaFin
+              end: fin+'T'+horaFin,
+              //textColor: background,
+              color: color,
+              extendedProps: {
+                tipoEvento: 'Cita',
+                currentCita: data,
+              }
             };
             return evento
           }))
@@ -192,61 +279,6 @@ export class CitaService {
       }).then(() => {
 
     })
-
-    /* await new Promise<void>((resolve) => {
-      this.afs.collection('SegMedico').doc('peregrino').collection('usuarios',
-        ref => ref.where('id', '==', id).where('is_Doctor', '==', 'Si')).valueChanges().subscribe(data => {
-          console.log('2-resultado consulta', data);
-          band = data[0].is_Doctor;
-          console.log('3-valor bandera ', band);
-          resolve();
-        })
-    }).then(() => {
-      console.log('4-inicia then');
-      console.log('5-valor de bandera', band)
-      if(band == 'Si'){
-        console.log('6-si es doctor');
-        return band;
-      }else{
-        console.log('6-no es doctor');
-        return band;
-      }
-    }) */
-
-    /*console.log('Doctor? (3)', band)
-        if(band == 'Si'){
-          console.log('Si es un doctor')
-          return this.afs.collection('/SegMedico/peregrino/citas', ref =>
-          ref.where('detDoctor.id', '==', id,)).snapshotChanges().pipe(
-            map(actions => actions.map(a => {
-              const data = a.payload.doc.data()
-              var fecha = data['f_cita']
-              let evento = {};
-              evento = {
-                title: data['detPaciente'].nombre,
-                start: this.DatePipe.transform(fecha.toDate(), 'yyyy-MM-dd, h:mm:ss a'),
-              }
-              return evento
-            }))
-          )
-        }
-        if(this.afs.collection('/SegMedico/peregrino/usuarios'+ id, ref =>
-        ref.where('is_Doctor', '==', 'No'))){
-          console.log('No es un doctor')
-          return this.afs.collection('/SegMedico/peregrino/citas', ref =>
-          ref.orderBy('f_registro', 'asc')).snapshotChanges().pipe(
-            map(actions => actions.map(a => {
-              const data = a.payload.doc.data()
-              var fecha = data['f_cita']
-              let evento = {};
-              evento = {
-                title: data['detPaciente'].nombre,
-                start: this.DatePipe.transform(fecha.toDate(), 'yyyy-MM-dd, h:mm:ss a'),
-              }
-              return evento
-            }))
-          );
-        } */
   }
 
 

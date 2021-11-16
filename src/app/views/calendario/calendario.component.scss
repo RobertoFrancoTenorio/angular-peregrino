@@ -10,7 +10,7 @@
 
 
 #totales{
-  background-color: rgb(53, 123, 228);
+  background-color: rgb(120, 53, 228);
   border-radius: 20px;
 }
 
@@ -18,44 +18,76 @@
 #title_totales{
   font-size: 1.3rem;
   font-weight: bold;
-  color: rgb(29, 61, 110);
+  color: rgb(78, 34, 148);
 }
 
 .sub_totales{
   font-weight: bold;
-  color: rgb(29, 61, 110);
+  color: rgb(78, 34, 148);
 }
 
 #asignadas{
-  background-color: rgb(41, 165, 16);
+  background-color: rgb(19, 52, 236);
   border-radius: 20px;
 }
 
 #title_asignada{
   font-size: 1.3rem;
   font-weight: bold;
-  color: rgb(24, 99, 8);
+  color: rgb(11, 27, 122);
 }
 
 .sub_asignada{
   font-weight: bold;
-  color: rgb(24, 99, 8);
+  color: rgb(11, 27, 122);
 }
 
 #pendientes{
-  background-color: rgb(228, 18, 18);
+  background-color: rgb(255, 108, 23);
   border-radius: 20px;
 }
 
 #title_pendiente{
   font-size: 1.3rem;
   font-weight: bold;
-  color: rgb(146, 11, 11);
+  color: rgb(177, 80, 23)
 }
 
 .sub_pendiente{
   font-weight: bold;
-  color: rgb(146, 11, 11);
+  color: rgb(177, 80, 23)
+}
+
+#rechazadas{
+  background-color: rgb(223, 25, 25);
+  border-radius: 20px;
+}
+
+#title_rechazadas{
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: rgb(139, 4, 4)
+}
+
+.sub_rechazada{
+  font-weight: bold;
+  color: rgb(139, 4, 4);
+}
+
+#terminadas{
+  background-color: rgb(8, 175, 3);
+  border-radius: 20px;
+}
+
+#title_terminada{
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: rgb(5, 119, 1)
+}
+
+.sub_terminada{
+  font-weight: bold;
+  color: rgb(5, 119, 1)
 }
 
 .cont_card{

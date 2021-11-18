@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GridOptions } from 'ag-grid-community';
+import { take } from 'rxjs/operators';
 import { PacienteService } from '../../service/paciente/paciente.service';
 import { AccionesPacienteComponent } from './acciones-paciente/acciones-paciente.component';
 
@@ -83,7 +84,7 @@ export class PacientesComponent implements OnInit {
 
   async ngOnInit() {
     await new Promise<void>(resolve => {
-      this.pacienteService.getPacientes().subscribe(pacientes =>{
+      this.pacienteService.getPacientes().pipe(take(1)).subscribe(pacientes =>{
         console.log(pacientes.length)
         this.pacientesList = pacientes;
         if(this.tablaPacientes.api){

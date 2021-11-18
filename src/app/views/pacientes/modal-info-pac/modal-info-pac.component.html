@@ -118,11 +118,11 @@
                     <div class="alert alert-warning" role="alert">
                       <h4 class="alert-heading">Paciente sin registro de antecedentes</h4>
                       <p>No exiten registros de antecedentes para este paciente, se recomienda que
-                          se agreguen lo antes posible.</p>
+                        se agreguen lo antes posible.</p>
                       <hr>
                       <p class="mb-0">
-                          <button type="button" class="btn btn-primary"
-                              (click)="activarAntecedentes()">Agregar antecedentes</button>
+                        <button type="button" class="btn btn-primary" (click)="activarAntecedentes()">Agregar
+                          antecedentes</button>
                       </p>
                     </div>
                   </div>
@@ -136,9 +136,12 @@
                   </div>
                 </tab>
 
-                <tab heading="Citas">
-                  
-                  <div *ngIf="true">
+                <tab>
+                  <ng-template tabHeading>
+                    Citas <span class="badge badge-primary"> {{ dataCitasAll.length }} </span>
+                  </ng-template>
+
+                  <div *ngIf="dataCitasAll.length == 0 ">
                     <div class="alert alert-warning" role="alert">
                       <h4 class="alert-heading">Paciente sin registro de Citas</h4>
                       <p>El paciente no tiene ninguna cita registrada.</p>
@@ -150,8 +153,43 @@
                       </p>
                     </div>
                   </div>
+                  <div *ngIf="dataCitasAll.length > 0 ">
 
-                  
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col" class="table-success">Fecha</th>
+                          <th scope="col" class="table-success">Horario</th>
+                          <th scope="col" class="table-success">Estatus</th>
+                          <th scope="col" class="table-success">Doctor</th>
+                          <th scope="col" class="table-success">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let c of dataCitasAll">
+                          <th scope="row"> {{ c.f_cita.seconds * 1000 | date:'longDate' }} </th>
+                          <td>{{ c.cita_hora_ini }} - {{ c.cita_hora_fin }}</td>
+                          <td> {{ c.estatus | uppercase }} </td>
+                          <td>
+                            {{ c.detDoctor.nombre }}
+                          </td>
+                          <td>
+                            <button type="button" (click)="modificarCita(h)" class='btn btn-primary'>
+                              <span class='fa fa-check-circle'> </span> Modificar
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-center">
+                      <button type="button" class='btn btn-success' (click)="activarCita()">
+                        <span class='fa fa-calendar-plus-o'> </span> Agendar Cita
+                      </button>
+                    </div>
+                  </div>
+
+
 
                 </tab>
 
@@ -175,40 +213,40 @@
       <mat-step [stepControl]="firstFormGroup">
         <form [formGroup]="firstFormGroup">
           <ng-template matStepLabel>Antecedentes HeredoFamiliares</ng-template>
-            <form [formGroup]="heredoFamForm" (ngSubmit)="submit()">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col"></th>
-                    <th class="col-1">Padre</th>
-                    <th class="col-1">Madre</th>
-                    <th class="col-1">Abuelos Paternos</th>
-                    <th class="col-1">Abuelos Maternos</th>
-                    <th class="col-1">Hermano(s)</th>
-                    <th class="col-1">Otro(s)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let enf of heredoFamForm.controls['padre'].controls; let i = index">
-                    <td>{{enfermedades[i].enf}}</td>
-                    <td ><label formArrayName="padre"><input type="checkbox" [formControlName]="i"></label></td>
-                    <td ><label formArrayName="madre"><input type="checkbox" [formControlName]="i"></label></td>
-                    <td ><label formArrayName="abuelosPaternos"><input type="checkbox" [formControlName]="i"></label></td>
-                    <td ><label formArrayName="abuelosMaternos"><input type="checkbox" [formControlName]="i"></label></td>
-                    <td ><label formArrayName="hermanos"><input type="checkbox" [formControlName]="i"></label></td>
-                    <td ><label formArrayName="otros"><input type="checkbox" [formControlName]="i"></label></td>
-                  </tr>
-                </tbody>
-              </table>
-            </form>
-            <div class="row">
-              <div class="col-4"></div>
-              <div class="col-3"></div>
-              <div class="col-5">
-                <mat-checkbox formControlName="firstCtrl" required>Finalizar Antecedentes HeredoFamiliares</mat-checkbox>
-                <button class="btn btn-primary"  matStepperNext>Siguiente</button>
-              </div>
+          <form [formGroup]="heredoFamForm" (ngSubmit)="submit()">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th class="col-1">Padre</th>
+                  <th class="col-1">Madre</th>
+                  <th class="col-1">Abuelos Paternos</th>
+                  <th class="col-1">Abuelos Maternos</th>
+                  <th class="col-1">Hermano(s)</th>
+                  <th class="col-1">Otro(s)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let enf of heredoFamForm.controls['padre'].controls; let i = index">
+                  <td>{{enfermedades[i].enf}}</td>
+                  <td><label formArrayName="padre"><input type="checkbox" [formControlName]="i"></label></td>
+                  <td><label formArrayName="madre"><input type="checkbox" [formControlName]="i"></label></td>
+                  <td><label formArrayName="abuelosPaternos"><input type="checkbox" [formControlName]="i"></label></td>
+                  <td><label formArrayName="abuelosMaternos"><input type="checkbox" [formControlName]="i"></label></td>
+                  <td><label formArrayName="hermanos"><input type="checkbox" [formControlName]="i"></label></td>
+                  <td><label formArrayName="otros"><input type="checkbox" [formControlName]="i"></label></td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+          <div class="row">
+            <div class="col-4"></div>
+            <div class="col-3"></div>
+            <div class="col-5">
+              <mat-checkbox formControlName="firstCtrl" required>Finalizar Antecedentes HeredoFamiliares</mat-checkbox>
+              <button class="btn btn-primary" matStepperNext>Siguiente</button>
             </div>
+          </div>
         </form>
       </mat-step>
       <!--Paso 2-->
@@ -225,7 +263,7 @@
               <div class="col-2">
                 <br>
                 <br>
-                <label for="" class="form-label">Número de habitantes:  </label>
+                <label for="" class="form-label">Número de habitantes: </label>
                 <input type="text" formControlName="pac_habitantes" id="" class="form-control">
               </div>
             </div>
@@ -239,8 +277,9 @@
               </mat-radio-group>
               <br>
               <span *ngIf="NoPatologicosForm.get('mascota').value == 'Si'">
-                <label for="exampleInputEmail1" class="form-label" >Especifíque el tipo de mascota:</label>
-                <input type="text" class="form-control" id="input" formControlName="pac_mascota_tipo" aria-describedby="textHelp">
+                <label for="exampleInputEmail1" class="form-label">Especifíque el tipo de mascota:</label>
+                <input type="text" class="form-control" id="input" formControlName="pac_mascota_tipo"
+                  aria-describedby="textHelp">
               </span>
             </div>
             <hr class="line">
@@ -294,7 +333,8 @@
             <hr class="line">
 
             <h5><i class="fa fa-heartbeat" id="heart"></i> Actividad Física</h5>
-            <button class="btn btn-success" (click)="addActividades()" id="addActividades">Registrar actividad física</button>
+            <button class="btn btn-success" (click)="addActividades()" id="addActividades">Registrar actividad
+              física</button>
             <div class="row">
               <span formArrayName="Actividades_Fisicas">
                 <span *ngFor="let ActividadesFisicasForm of act_fisicas.controls; let i=index">
@@ -305,7 +345,7 @@
                     </div>
                     <div class="col-6">
                       <label for="" class="form-label">Frecuencia de actividad física</label>
-                      <select  class="form-control" id="options" formControlName="pac_actividad_frec">
+                      <select class="form-control" id="options" formControlName="pac_actividad_frec">
                         <option value="Diario">Diario</option>
                         <option value="Semanal">Semanal</option>
                         <option value="Mensual">Mensual</option>
@@ -323,9 +363,10 @@
           <hr class="line">
           <br>
           <div id="btns">
-              <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
-              <mat-checkbox formControlName="secondCtrl" required [disabled]="!NoPatologicosForm.valid">Finalizar No Patologicos</mat-checkbox>
-              <button class="btn btn-primary"  matStepperNext>Siguiente</button>
+            <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
+            <mat-checkbox formControlName="secondCtrl" required [disabled]="!NoPatologicosForm.valid">Finalizar No
+              Patologicos</mat-checkbox>
+            <button class="btn btn-primary" matStepperNext>Siguiente</button>
           </div>
         </form>
       </mat-step>
@@ -333,201 +374,221 @@
       <mat-step [stepControl]="thirdFormGroup">
         <form [formGroup]="thirdFormGroup">
           <ng-template matStepLabel>Patologicos</ng-template>
-            <form action="" [formGroup]="PatologiasForm">
-              <div class="row">
-                <div class="col-4">
-                  <form [formGroup]="AlergiasForm">
-                    <mat-radio-group formControlName="alergias"> Alergías
-                      <mat-radio-button value="Si">Si</mat-radio-button>
-                      <mat-radio-button value="No">No</mat-radio-button>
-                    </mat-radio-group>
-                    <br>
-                    <span *ngIf="AlergiasForm.get('alergias').value == 'Si'">
-                      <label for="exampleInputEmail1" class="form-label" >Especifíque el tipo de alergia:</label>
-                      <input type="text" class="form-control" id="input" formControlName="alergia_tipo" aria-describedby="textHelp">
-                    </span>
-                  </form>
-                  <hr class="line">
-
-                  <form [formGroup]="HospitalizacionesForm">
-                    <mat-radio-group formControlName="hospitalizaciones"> Hospitalizaciones
-                      <mat-radio-button value="Si">Si</mat-radio-button>
-                      <mat-radio-button value="No">No</mat-radio-button>
-                    </mat-radio-group>
-                    <br>
-                    <span *ngIf="HospitalizacionesForm.get('hospitalizaciones').value == 'Si'">
-                      <label for="exampleInputtext1" class="form-label" >Fecha Aproximada:</label>
-                      <input type="date" class="form-control" id="date" formControlName="hospitalizacion_fecha" aria-describedby="textHelp">
-                      <label for="exampleInputtext1" class="form-label" >Causas:</label>
-                      <input type="text" class="form-control" id="input" formControlName="hospitalizacion_causa" aria-describedby="textHelp">
-                      <label for="exampleInputtext1" class="form-label" >Posibles secuelas:</label>
-                      <input type="text" class="form-control" id="input" formControlName="hospitalizacion_secuela" aria-describedby="textHelp">
-                    </span>
-                  </form>
-                  <hr class="line">
-
-                  <form [formGroup]="QuirurgicasForm">
-                    <mat-radio-group formControlName="quirurgicas"> Operaciones Quirurgícas
-                      <mat-radio-button value="Si">Si</mat-radio-button>
-                      <mat-radio-button value="No">No</mat-radio-button>
-                    </mat-radio-group>
-                    <br>
-                    <span *ngIf="QuirurgicasForm.get('quirurgicas').value == 'Si'">
-                      <label for="exampleInputtext1" class="form-label" >Fecha Aproximada:</label>
-                      <input type="date" class="form-control" id="input" formControlName="quirurgica_fecha" aria-describedby="textHelp">
-                      <label for="exampleInputtext1" class="form-label" >Causas:</label>
-                      <input type="text" class="form-control" id="input" formControlName="quirurgica_causa" aria-describedby="textHelp">
-                      <label for="exampleInputtext1" class="form-label" >Posibles secuelas:</label>
-                      <input type="text" class="form-control" id="input" formControlName="quirurgica_secuela" aria-describedby="textHelp">
-                    </span>
-                  </form>
-                  <hr class="line">
-
-                  <form [formGroup]="TraumaticosForm">
-                    <mat-radio-group formControlName="traumaticos"> Traumatismos
-                      <mat-radio-button value="Si">Si</mat-radio-button>
-                      <mat-radio-button value="No">No</mat-radio-button>
-                    </mat-radio-group>
-                    <br>
-                    <span *ngIf="TraumaticosForm.get('traumaticos').value == 'Si'">
-                      <label for="exampleInputtext1" class="form-label" >Fecha Aproximada:</label>
-                      <input type="date" class="form-control" id="input" formControlName="fecha_traumaticos" aria-describedby="textHelp">
-                      <label for="exampleInputtext1" class="form-label" >Tipo de Lesión:</label>
-                      <input type="text" class="form-control" id="input" formControlName="tipos_traumaticos" aria-describedby="textHelp">
-                      <label for="exampleInputtext1" class="form-label" >Causas:</label>
-                      <input type="text" class="form-control" id="input" formControlName="causas_traumaticos" aria-describedby="textHelp">
-                      <label for="exampleInputtext1" class="form-label" >Posibles secuelas:</label>
-                      <input type="text" class="form-control" id="input" formControlName="secuelas_traumaticos" aria-describedby="textHelp">
-                    </span>
-                  </form>
-                  <hr class="line">
-
-                  <form [formGroup]="TransfusionesForm">
-                    <mat-radio-group formControlName="transfusiones"> Transfusiones
-                      <mat-radio-button value="Si">Si</mat-radio-button>
-                      <mat-radio-button value="No">No</mat-radio-button>
-                    </mat-radio-group>
-                    <br>
-                    <span *ngIf="TransfusionesForm.get('transfusiones').value == 'Si'">
-                      <label for="exampleInputtext1" class="form-label" >Fecha Aproximada:</label>
-                      <input type="date" class="form-control" id="input" formControlName="transfusiones_fecha" aria-describedby="textHelp">
-                      <label for="exampleInputtext1" class="form-label" >Causas:</label>
-                      <input type="text" class="form-control" id="input" formControlName="transfusiones_causas" aria-describedby="textHelp">
-                    </span>
-                  </form>
-
-                  <hr class="line">
+          <form action="" [formGroup]="PatologiasForm">
+            <div class="row">
+              <div class="col-4">
+                <form [formGroup]="AlergiasForm">
+                  <mat-radio-group formControlName="alergias"> Alergías
+                    <mat-radio-button value="Si">Si</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
                   <br>
+                  <span *ngIf="AlergiasForm.get('alergias').value == 'Si'">
+                    <label for="exampleInputEmail1" class="form-label">Especifíque el tipo de alergia:</label>
+                    <input type="text" class="form-control" id="input" formControlName="alergia_tipo"
+                      aria-describedby="textHelp">
+                  </span>
+                </form>
+                <hr class="line">
+
+                <form [formGroup]="HospitalizacionesForm">
+                  <mat-radio-group formControlName="hospitalizaciones"> Hospitalizaciones
+                    <mat-radio-button value="Si">Si</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
                   <br>
+                  <span *ngIf="HospitalizacionesForm.get('hospitalizaciones').value == 'Si'">
+                    <label for="exampleInputtext1" class="form-label">Fecha Aproximada:</label>
+                    <input type="date" class="form-control" id="date" formControlName="hospitalizacion_fecha"
+                      aria-describedby="textHelp">
+                    <label for="exampleInputtext1" class="form-label">Causas:</label>
+                    <input type="text" class="form-control" id="input" formControlName="hospitalizacion_causa"
+                      aria-describedby="textHelp">
+                    <label for="exampleInputtext1" class="form-label">Posibles secuelas:</label>
+                    <input type="text" class="form-control" id="input" formControlName="hospitalizacion_secuela"
+                      aria-describedby="textHelp">
+                  </span>
+                </form>
+                <hr class="line">
+
+                <form [formGroup]="QuirurgicasForm">
+                  <mat-radio-group formControlName="quirurgicas"> Operaciones Quirurgícas
+                    <mat-radio-button value="Si">Si</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
                   <br>
+                  <span *ngIf="QuirurgicasForm.get('quirurgicas').value == 'Si'">
+                    <label for="exampleInputtext1" class="form-label">Fecha Aproximada:</label>
+                    <input type="date" class="form-control" id="input" formControlName="quirurgica_fecha"
+                      aria-describedby="textHelp">
+                    <label for="exampleInputtext1" class="form-label">Causas:</label>
+                    <input type="text" class="form-control" id="input" formControlName="quirurgica_causa"
+                      aria-describedby="textHelp">
+                    <label for="exampleInputtext1" class="form-label">Posibles secuelas:</label>
+                    <input type="text" class="form-control" id="input" formControlName="quirurgica_secuela"
+                      aria-describedby="textHelp">
+                  </span>
+                </form>
+                <hr class="line">
 
-                  <form [formGroup]="PsicoactivasForm">
-                    <mat-radio-group formControlName="alcoholismo"> Alcohol
-                      <mat-radio-button value="Si">Si</mat-radio-button>
-                      <mat-radio-button value="No">No</mat-radio-button>
-                    </mat-radio-group>
-                    <br>
-                    <span *ngIf="PsicoactivasForm.get('alcoholismo').value == 'Si'">
-                      <label for="exampleInputtext1" class="form-label" >Frecuencia de consumo:</label>
-                      <select class="form-control" formControlName="alcoholismo_frecuencia">
-                        <option value="Muy poco">Nunca</option>
-                        <option value="Muy poco">Muy poco</option>
-                        <option value="Algunas Veces">Algunas Veces</option>
-                        <option value="Frecuentemente">Frecuentemente</option>
-                      </select>
-                      <label for="exampleInputtext1" class="form-label" >Cantidad de consumo:</label>
-                      <input type="text" class="form-control" id="input" formControlName="alcoholismo_cantidad">
-                    </span>
-                    <hr class="line">
+                <form [formGroup]="TraumaticosForm">
+                  <mat-radio-group formControlName="traumaticos"> Traumatismos
+                    <mat-radio-button value="Si">Si</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                  <br>
+                  <span *ngIf="TraumaticosForm.get('traumaticos').value == 'Si'">
+                    <label for="exampleInputtext1" class="form-label">Fecha Aproximada:</label>
+                    <input type="date" class="form-control" id="input" formControlName="fecha_traumaticos"
+                      aria-describedby="textHelp">
+                    <label for="exampleInputtext1" class="form-label">Tipo de Lesión:</label>
+                    <input type="text" class="form-control" id="input" formControlName="tipos_traumaticos"
+                      aria-describedby="textHelp">
+                    <label for="exampleInputtext1" class="form-label">Causas:</label>
+                    <input type="text" class="form-control" id="input" formControlName="causas_traumaticos"
+                      aria-describedby="textHelp">
+                    <label for="exampleInputtext1" class="form-label">Posibles secuelas:</label>
+                    <input type="text" class="form-control" id="input" formControlName="secuelas_traumaticos"
+                      aria-describedby="textHelp">
+                  </span>
+                </form>
+                <hr class="line">
 
-                    <mat-radio-group formControlName="tabaquismo"> Tabaco
-                      <mat-radio-button value="Si">Si</mat-radio-button>
-                      <mat-radio-button value="No">No</mat-radio-button>
-                    </mat-radio-group>
-                    <br>
-                    <span *ngIf="PsicoactivasForm.get('tabaquismo').value == 'Si'">
-                      <label for="exampleInputtext1" class="form-label" >Frecuencia de consumo:</label>
-                      <select class="form-control" formControlName="tabaquismo_frecuencia">
-                        <option value="Muy poco">Nunca</option>
-                        <option value="Muy poco">Muy poco</option>
-                        <option value="Algunas Veces">Algunas Veces</option>
-                        <option value="Frecuentemente">Frecuentemente</option>
-                      </select>
-                      <label for="exampleInputtext1" class="form-label" >Cantidad de consumo:</label>
-                      <input type="text" class="form-control" id="input" formControlName="tabaquismo_cantidad" aria-describedby="textHelp">
-                    </span>
-                    <hr class="line">
+                <form [formGroup]="TransfusionesForm">
+                  <mat-radio-group formControlName="transfusiones"> Transfusiones
+                    <mat-radio-button value="Si">Si</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                  <br>
+                  <span *ngIf="TransfusionesForm.get('transfusiones').value == 'Si'">
+                    <label for="exampleInputtext1" class="form-label">Fecha Aproximada:</label>
+                    <input type="date" class="form-control" id="input" formControlName="transfusiones_fecha"
+                      aria-describedby="textHelp">
+                    <label for="exampleInputtext1" class="form-label">Causas:</label>
+                    <input type="text" class="form-control" id="input" formControlName="transfusiones_causas"
+                      aria-describedby="textHelp">
+                  </span>
+                </form>
 
-                    <mat-radio-group formControlName="otras"> Otra(s)
-                      <mat-radio-button value="Si">Si</mat-radio-button>
-                      <mat-radio-button value="No">No</mat-radio-button>
-                    </mat-radio-group>
-                    <br>
-                    <span *ngIf="PsicoactivasForm.get('otras').value == 'Si'">
-                      <label for="exampleInputtext1" class="form-label" >¿Qué tipo?:</label>
-                      <input type="text" class="form-control" id="input" formControlName="otras_tipo" aria-describedby="textHelp">
-                      <label for="exampleInputtext1" class="form-label" >Último consumo:</label>
-                      <input type="date" class="form-control" id="input" formControlName="otras_ultimo_consumo" aria-describedby="textHelp">
-                      <label for="exampleInputtext1" class="form-label" >Frecuencia de consumo:</label>
-                      <select class="form-control" formControlName="otras_frecuencia">
-                        <option value="Muy poco">Nunca</option>
-                        <option value="Muy poco">Muy poco</option>
-                        <option value="Algunas Veces">Algunas Veces</option>
-                        <option value="Frecuentemente">Frecuentemente</option>
-                      </select>
-                    </span>
-                    <hr class="line">
-                  </form>
+                <hr class="line">
+                <br>
+                <br>
+                <br>
 
-                </div>
-                <div class="col-8">
-                  <span *ngFor="let enf of PatologiasForm.controls['patologias'].controls; let i = index">
-                    <label class ="patologia" formArrayName="patologias"><input type="checkbox" [formControlName]="i"> {{patologicas[i].value}}</label>
+                <form [formGroup]="PsicoactivasForm">
+                  <mat-radio-group formControlName="alcoholismo"> Alcohol
+                    <mat-radio-button value="Si">Si</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                  <br>
+                  <span *ngIf="PsicoactivasForm.get('alcoholismo').value == 'Si'">
+                    <label for="exampleInputtext1" class="form-label">Frecuencia de consumo:</label>
+                    <select class="form-control" formControlName="alcoholismo_frecuencia">
+                      <option value="Muy poco">Nunca</option>
+                      <option value="Muy poco">Muy poco</option>
+                      <option value="Algunas Veces">Algunas Veces</option>
+                      <option value="Frecuentemente">Frecuentemente</option>
+                    </select>
+                    <label for="exampleInputtext1" class="form-label">Cantidad de consumo:</label>
+                    <input type="text" class="form-control" id="input" formControlName="alcoholismo_cantidad">
                   </span>
                   <hr class="line">
-                  <h5>Medicamentos</h5>
-                  <button type="submit" class="btn btn-primary" (click)="addMedicamento()"><i class="fa fa-plus" aria-hidden="true"></i> Agregar Medicamentos</button>
-                  <ng-container formArrayName="Medicamento">
-                    <ng-container *ngFor="let MedicamentosForm of list_medicamentos.controls; let i = index">
-                      <br>
-                      <div class="row" id="Medicamentos" [formGroup]="MedicamentosForm">
-                        <br>
-                        <div class="col-3">
-                          <label for="" class="form-label">Nombre del medicamento</label>
-                          <input type="text" class="form-control" formControlName="pac_medicamento">
-                        </div>
-                        <div class="col-3">
-                          <label for="" class="form-label">Frecuencia de consumo (Por semana)</label>
-                          <select  class="form-control" id="options" formControlName="pac_frecuencia_consumo">
-                            <option value="De 0 a 2 veces">De 0 a 2 veces</option>
-                            <option value="De 3 a 5 veces">De 3 a 5 veces</option>
-                            <option value="Mas de 6 veces">Mas de 6 veces</option>
-                          </select>
-                        </div>
-                        <div class="col-3">
-                          <label for="" class="form-label">Fecha del primer consumo:</label>
-                          <input type="date" class="form-control" formControlName="pac_inicio_consumo">
-                        </div>
-                        <div class="col-1">
-                          <button class="btn btn-danger" id="btn-danger" (click)="deleteMedicamento(i)">Quitar</button>
-                        </div>
-                      </div>
-                    </ng-container>
-                  </ng-container>
-                </div>
+
+                  <mat-radio-group formControlName="tabaquismo"> Tabaco
+                    <mat-radio-button value="Si">Si</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                  <br>
+                  <span *ngIf="PsicoactivasForm.get('tabaquismo').value == 'Si'">
+                    <label for="exampleInputtext1" class="form-label">Frecuencia de consumo:</label>
+                    <select class="form-control" formControlName="tabaquismo_frecuencia">
+                      <option value="Muy poco">Nunca</option>
+                      <option value="Muy poco">Muy poco</option>
+                      <option value="Algunas Veces">Algunas Veces</option>
+                      <option value="Frecuentemente">Frecuentemente</option>
+                    </select>
+                    <label for="exampleInputtext1" class="form-label">Cantidad de consumo:</label>
+                    <input type="text" class="form-control" id="input" formControlName="tabaquismo_cantidad"
+                      aria-describedby="textHelp">
+                  </span>
+                  <hr class="line">
+
+                  <mat-radio-group formControlName="otras"> Otra(s)
+                    <mat-radio-button value="Si">Si</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                  <br>
+                  <span *ngIf="PsicoactivasForm.get('otras').value == 'Si'">
+                    <label for="exampleInputtext1" class="form-label">¿Qué tipo?:</label>
+                    <input type="text" class="form-control" id="input" formControlName="otras_tipo"
+                      aria-describedby="textHelp">
+                    <label for="exampleInputtext1" class="form-label">Último consumo:</label>
+                    <input type="date" class="form-control" id="input" formControlName="otras_ultimo_consumo"
+                      aria-describedby="textHelp">
+                    <label for="exampleInputtext1" class="form-label">Frecuencia de consumo:</label>
+                    <select class="form-control" formControlName="otras_frecuencia">
+                      <option value="Muy poco">Nunca</option>
+                      <option value="Muy poco">Muy poco</option>
+                      <option value="Algunas Veces">Algunas Veces</option>
+                      <option value="Frecuentemente">Frecuentemente</option>
+                    </select>
+                  </span>
+                  <hr class="line">
+                </form>
+
               </div>
-            </form>
-            <br>
+              <div class="col-8">
+                <span *ngFor="let enf of PatologiasForm.controls['patologias'].controls; let i = index">
+                  <label class="patologia" formArrayName="patologias"><input type="checkbox" [formControlName]="i">
+                    {{patologicas[i].value}}</label>
+                </span>
+                <hr class="line">
+                <h5>Medicamentos</h5>
+                <button type="submit" class="btn btn-primary" (click)="addMedicamento()"><i class="fa fa-plus"
+                    aria-hidden="true"></i> Agregar Medicamentos</button>
+                <ng-container formArrayName="Medicamento">
+                  <ng-container *ngFor="let MedicamentosForm of list_medicamentos.controls; let i = index">
+                    <br>
+                    <div class="row" id="Medicamentos" [formGroup]="MedicamentosForm">
+                      <br>
+                      <div class="col-3">
+                        <label for="" class="form-label">Nombre del medicamento</label>
+                        <input type="text" class="form-control" formControlName="pac_medicamento">
+                      </div>
+                      <div class="col-3">
+                        <label for="" class="form-label">Frecuencia de consumo (Por semana)</label>
+                        <select class="form-control" id="options" formControlName="pac_frecuencia_consumo">
+                          <option value="De 0 a 2 veces">De 0 a 2 veces</option>
+                          <option value="De 3 a 5 veces">De 3 a 5 veces</option>
+                          <option value="Mas de 6 veces">Mas de 6 veces</option>
+                        </select>
+                      </div>
+                      <div class="col-3">
+                        <label for="" class="form-label">Fecha del primer consumo:</label>
+                        <input type="date" class="form-control" formControlName="pac_inicio_consumo">
+                      </div>
+                      <div class="col-1">
+                        <button class="btn btn-danger" id="btn-danger" (click)="deleteMedicamento(i)">Quitar</button>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+          </form>
+          <br>
           <hr class="line">
           <div id="btns">
-              <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
-              <mat-checkbox formControlName="thirdControl" required [disabled]="!AlergiasForm.valid && !HospitalizacionesForm.valid && !QuirurgicasForm.valid && !TraumaticosForm.valid && !TransfusionesForm.valid && !PsicoactivasForm.valid">Finalizar Patologias</mat-checkbox>
-              <button class="btn btn-primary"  matStepperNext>Siguiente</button>
+            <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
+            <mat-checkbox formControlName="thirdControl" required
+              [disabled]="!AlergiasForm.valid && !HospitalizacionesForm.valid && !QuirurgicasForm.valid && !TraumaticosForm.valid && !TransfusionesForm.valid && !PsicoactivasForm.valid">
+              Finalizar Patologias</mat-checkbox>
+            <button class="btn btn-primary" matStepperNext>Siguiente</button>
           </div>
         </form>
       </mat-step>
       <!--Paso 4-->
-      <mat-step [stepControl]="fourthFormGroup" label ="Gineco-obstétricos / Androgenicos">
+      <mat-step [stepControl]="fourthFormGroup" label="Gineco-obstétricos / Androgenicos">
         <form [formGroup]="fourthFormGroup">
           <mat-label>Gineco-obstétricos</mat-label>
           <form [formGroup]="GinecoObstricoForm">
@@ -552,7 +613,7 @@
                 <div class="row">
                   <div class="col-6">
                     <label for="" class="form-label">Cantidad de sangre</label>
-                    <select  class="form-control" id="options" formControlName="pac_cant_mens">
+                    <select class="form-control" id="options" formControlName="pac_cant_mens">
                       <option selected value="No especificado">No especificado</option>
                       <option value="Leve">Leve</option>
                       <option value="Moderado">Moderado</option>
@@ -565,7 +626,7 @@
                 <div class="row">
                   <div class="col-6">
                     <label for="" class="form-label">Frecuencia</label>
-                    <select  class="form-control" id="options" formControlName="pac_frec_mens">
+                    <select class="form-control" id="options" formControlName="pac_frec_mens">
                       <option value="Alta">Alta</option>
                       <option value="Baja">Baja</option>
                       <option value="Moderada">Moderada</option>
@@ -577,7 +638,7 @@
                 <div class="row">
                   <div class="col-4">
                     <label for="" class="form-label">Presencia de dolor: </label>
-                    <select  class="form-control" id="options" formControlName="pac_precencia_dolor_mens">
+                    <select class="form-control" id="options" formControlName="pac_precencia_dolor_mens">
                       <option value="Si">Si</option>
                       <option value="No">No</option>
                     </select>
@@ -585,88 +646,91 @@
                 </div>
                 <br>
                 <label for="floatingTextarea2">Presencia de otras secreciones vaginales</label>
-                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" formControlName="pac_otras_sec_mens"></textarea>
+                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                  style="height: 100px" formControlName="pac_otras_sec_mens"></textarea>
               </div>
 
               <div class="col-6">
                 <h5>Actividad Sexual</h5>
-              <div class="row">
-                <div class="col-6">
-                  <label for="" class="form-label">Vida sexual activa</label>
-                  <select formControlName="pac_vida_sexual_activa" class="form-control" id="options" >
-                    <option selected value="">Seleccione una opción</option>
-                    <option value="Si">Si</option>
-                    <option value="No">No</option>
-                  </select>
-                </div>
-              </div>
-              <br>
-
-              <div class="row">
-                <div class="col-8">
-                  <label for="" class="form-label">Edad inicio actividad sexual:</label>
-                  <input type="text" formControlName="pac_inicio_vida_sexual" id="" class="form-control">
-                </div>
-              </div>
-              <br>
-
-              <div class="row">
-                <div class="col-8">
-                  <label for="" class="form-label">Número de compañeros sexuales:</label>
-                  <input type="text" formControlName="pac_no_comp_sexuales" id="" class="form-control">
-                </div>
-              </div>
-              <br>
-
-              <div class="row">
-                <div class="col-8">
-                  <span *ngIf="currentPaciente.pac_sexo == 'M'">
-                    <label for="" class="form-label">Metodo Anticonceptivo:</label>
-                    <select  class="form-control" formControlName="pac_metodo_anticonceptivo" id="options">
-                      <option value="Ninguno">Ninguno</option>
-                      <option value="Preservativo">Preservativo</option>
+                <div class="row">
+                  <div class="col-6">
+                    <label for="" class="form-label">Vida sexual activa</label>
+                    <select formControlName="pac_vida_sexual_activa" class="form-control" id="options">
+                      <option selected value="">Seleccione una opción</option>
+                      <option value="Si">Si</option>
+                      <option value="No">No</option>
                     </select>
-                  </span>
-                  <span *ngIf="currentPaciente.pac_sexo == 'F'">
-                    <label for="" class="form-label">Metodo Anticonceptivo:</label>
-                    <select  class="form-control" formControlName="pac_metodo_anticonceptivo" id="options">
-                      <option value="Ninguno">Ninguno</option>
-                      <option value="Preservativo">Preservativo</option>
-                      <option value="Hormonal">Hormonal</option>
-                    </select>
-                    <span *ngIf="this.GinecoObstricoForm.get('pac_metodo_anticonceptivo').value == 'Hormonal'">
-                      <br>
+                  </div>
+                </div>
+                <br>
+
+                <div class="row">
+                  <div class="col-8">
+                    <label for="" class="form-label">Edad inicio actividad sexual:</label>
+                    <input type="text" formControlName="pac_inicio_vida_sexual" id="" class="form-control">
+                  </div>
+                </div>
+                <br>
+
+                <div class="row">
+                  <div class="col-8">
+                    <label for="" class="form-label">Número de compañeros sexuales:</label>
+                    <input type="text" formControlName="pac_no_comp_sexuales" id="" class="form-control">
+                  </div>
+                </div>
+                <br>
+
+                <div class="row">
+                  <div class="col-8">
+                    <span *ngIf="currentPaciente.pac_sexo == 'M'">
                       <label for="" class="form-label">Metodo Anticonceptivo:</label>
-                      <select  class="form-control" formControlName="pac_metodo_anticonceptivo_hormonal" id="options">
-                        <option value="Pastillas">Ninguno</option>
-                        <option value="Inyección">Inyección</option>
-                        <option value="DIU">DIU</option>
-                        <option value="Implante">Implante</option>
+                      <select class="form-control" formControlName="pac_metodo_anticonceptivo" id="options">
+                        <option value="Ninguno">Ninguno</option>
+                        <option value="Preservativo">Preservativo</option>
                       </select>
-                      <span *ngIf="this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal').value == 'DIU'">
+                    </span>
+                    <span *ngIf="currentPaciente.pac_sexo == 'F'">
+                      <label for="" class="form-label">Metodo Anticonceptivo:</label>
+                      <select class="form-control" formControlName="pac_metodo_anticonceptivo" id="options">
+                        <option value="Ninguno">Ninguno</option>
+                        <option value="Preservativo">Preservativo</option>
+                        <option value="Hormonal">Hormonal</option>
+                      </select>
+                      <span *ngIf="this.GinecoObstricoForm.get('pac_metodo_anticonceptivo').value == 'Hormonal'">
                         <br>
                         <label for="" class="form-label">Metodo Anticonceptivo:</label>
-                        <select  class="form-control" formControlName="pac_metodo_anticonceptivo_hormonal_diu" id="options">
-                          <option value="Cobre">Cobre</option>
-                          <option value="Medicinal">Medicinal</option>
+                        <select class="form-control" formControlName="pac_metodo_anticonceptivo_hormonal" id="options">
+                          <option value="Pastillas">Ninguno</option>
+                          <option value="Inyección">Inyección</option>
+                          <option value="DIU">DIU</option>
+                          <option value="Implante">Implante</option>
                         </select>
+                        <span *ngIf="this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal').value == 'DIU'">
+                          <br>
+                          <label for="" class="form-label">Metodo Anticonceptivo:</label>
+                          <select class="form-control" formControlName="pac_metodo_anticonceptivo_hormonal_diu"
+                            id="options">
+                            <option value="Cobre">Cobre</option>
+                            <option value="Medicinal">Medicinal</option>
+                          </select>
+                        </span>
                       </span>
                     </span>
-                  </span>
+                  </div>
                 </div>
-              </div>
-              <br>
+                <br>
 
-              <div class="row">
-                <div class="col-6">
-                  <label for="" class="form-label">Tipo de relaciones</label>
-                  <input type="text" formControlName="pac_tipo_relaciones" id="" class="form-control">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="" class="form-label">Tipo de relaciones</label>
+                    <input type="text" formControlName="pac_tipo_relaciones" id="" class="form-control">
+                  </div>
                 </div>
-              </div>
-              <br>
+                <br>
 
-              <label for="floatingTextarea2">Enfermedades de transmisión sexual</label>
-              <textarea class="form-control" formControlName="pac_ets" placeholder="Leave a comment here" style="height: 100px"></textarea>
+                <label for="floatingTextarea2">Enfermedades de transmisión sexual</label>
+                <textarea class="form-control" formControlName="pac_ets" placeholder="Leave a comment here"
+                  style="height: 100px"></textarea>
               </div>
             </div>
             <hr class="line">
@@ -676,17 +740,19 @@
                 <div class="row">
                   <div class="col-6">
                     <label for="" class="form-label">Gestaciones</label>
-                    <select  class="form-control" formControlName="pac_gestaciones" id="options">
+                    <select class="form-control" formControlName="pac_gestaciones" id="options">
                       <option value="Si">Si</option>
                       <option value="No">No</option>
                     </select>
                     <span *ngIf="this.GinecoObstricoForm.get('pac_gestaciones').value == 'Si'">
                       <label for="" class="form-label">No. de Gestaciones</label>
-                      <input type="number" min="0" max="15" formControlName="pac_cant_gestaciones" id="" class="form-control">
+                      <input type="number" min="0" max="15" formControlName="pac_cant_gestaciones" id=""
+                        class="form-control">
                       <label for="" class="form-label">Fecha Aproximada de la última gestación</label>
                       <input type="date" class="form-control" formControlName="pac_ultima_gestacion" id="">
                       <label for="" class="form-label">Observaciones</label>
-                      <textarea class="form-control" formControlName="pac_ultima_gestacion_observacion" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                      <textarea class="form-control" formControlName="pac_ultima_gestacion_observacion"
+                        placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
                     </span>
                   </div>
                 </div>
@@ -695,17 +761,19 @@
                 <div class="row">
                   <div class="col-6">
                     <label for="" class="form-label">Partos</label>
-                    <select  class="form-control" formControlName="pac_partos" id="options">
+                    <select class="form-control" formControlName="pac_partos" id="options">
                       <option value="Si">Si</option>
                       <option value="No">No</option>
                     </select>
                     <span *ngIf="this.GinecoObstricoForm.get('pac_partos').value == 'Si'">
                       <label for="" class="form-label">No. de partos</label>
-                      <input type="number" min="0" max="15" formControlName="pac_cant_partos" id="" class="form-control">
+                      <input type="number" min="0" max="15" formControlName="pac_cant_partos" id=""
+                        class="form-control">
                       <label for="" class="form-label">Fecha Aproximada del último parto</label>
                       <input type="date" class="form-control" formControlName="pac_ultimo_parto" id="">
                       <label for="" class="form-label">Observaciones</label>
-                      <textarea class="form-control" formControlName="pac_ultimo_parto_observacion" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                      <textarea class="form-control" formControlName="pac_ultimo_parto_observacion"
+                        placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
                     </span>
                   </div>
                 </div>
@@ -714,17 +782,19 @@
                 <div class="row">
                   <div class="col-6">
                     <label for="" class="form-label">Abortos</label>
-                    <select  class="form-control" formControlName="pac_abortos" id="options">
+                    <select class="form-control" formControlName="pac_abortos" id="options">
                       <option value="Si">Si</option>
                       <option value="No">No</option>
                     </select>
                     <span *ngIf="this.GinecoObstricoForm.get('pac_abortos').value == 'Si'">
                       <label for="" class="form-label">Fecha Aproximada del último aborto</label>
-                      <input type="number" min="0" max="15" formControlName="pac_cant_abortos" id="" class="form-control">
+                      <input type="number" min="0" max="15" formControlName="pac_cant_abortos" id=""
+                        class="form-control">
                       <label for="" class="form-label">Fecha Aproximada del último aborto</label>
                       <input type="date" class="form-control" formControlName="pac_ultimo_aborto" id="">
                       <label for="" class="form-label">Observaciones</label>
-                      <textarea class="form-control" formControlName="pac_ultimo_aborto_observacion" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                      <textarea class="form-control" formControlName="pac_ultimo_aborto_observacion"
+                        placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
                     </span>
                   </div>
                 </div>
@@ -733,17 +803,19 @@
                 <div class="row">
                   <div class="col-6">
                     <label for="" class="form-label">Cesareas</label>
-                    <select  class="form-control" formControlName="pac_cesareas" id="options">
+                    <select class="form-control" formControlName="pac_cesareas" id="options">
                       <option value="Si">Si</option>
                       <option value="No">No</option>
                     </select>
                     <span *ngIf="this.GinecoObstricoForm.get('pac_cesareas').value == 'Si'">
                       <label for="" class="form-label">Fecha Aproximada de la última cesarea</label>
-                      <input type="number" min="0" max="15" formControlName="pac_cant_cesareas" id="" class="form-control">
+                      <input type="number" min="0" max="15" formControlName="pac_cant_cesareas" id=""
+                        class="form-control">
                       <label for="" class="form-label">Fecha Aproximada de la última cesarea</label>
                       <input type="date" class="form-control" formControlName="pac_ultima_cesarea" id="">
                       <label for="" class="form-label">Observaciones</label>
-                      <textarea class="form-control" formControlName="pac_ultima_cesarea_observacion" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                      <textarea class="form-control" formControlName="pac_ultima_cesarea_observacion"
+                        placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
                     </span>
                   </div>
                 </div>
@@ -763,7 +835,8 @@
                   <label for="" class="form-label">Fecha de realización:</label>
                   <input type="date" formControlName="pac_papanicolau_fecha" id="" class="form-control">
                   <label for="" class="form-label">Observaciones:</label>
-                  <textarea class="form-control" formControlName="pac_papanicolau_observacion" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                  <textarea class="form-control" formControlName="pac_papanicolau_observacion"
+                    placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
                 </span>
                 <br>
                 <label for="" class="form-label">Se ha realizado tamis de mama</label>
@@ -776,16 +849,18 @@
                   <label for="" class="form-label">Fecha de realización:</label>
                   <input type="date" formControlName="pac_tamis_fecha" id="" class="form-control">
                   <label for="" class="form-label">Observaciones:</label>
-                  <textarea class="form-control" formControlName="pac_tamis_observacion" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                  <textarea class="form-control" formControlName="pac_tamis_observacion"
+                    placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
                 </span>
               </div>
             </div>
           </form>
           <br>
           <div id="btns">
-              <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
-              <mat-checkbox formControlName="fourthCtrl" required [disabled]="!GinecoObstricoForm.valid">Finalizar Gineco-obstétricos</mat-checkbox>
-              <button class="btn btn-primary"  matStepperNext>Siguiente</button>
+            <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
+            <mat-checkbox formControlName="fourthCtrl" required [disabled]="!GinecoObstricoForm.valid">Finalizar
+              Gineco-obstétricos</mat-checkbox>
+            <button class="btn btn-primary" matStepperNext>Siguiente</button>
           </div>
         </form>
       </mat-step>
@@ -793,7 +868,7 @@
       <mat-step label="Terminar Historia Clínica">
         <div class="alert alert-success" role="alert">
           <h5>Historia clinica completa</h5>
-          <button class="btn btn-success" (click)="guardaPatolgiasFam()" >Guardar</button>
+          <button class="btn btn-success" (click)="guardaPatolgiasFam()">Guardar</button>
         </div>
       </mat-step>
 
@@ -899,10 +974,12 @@
     <h4>Antecedentes Heredo Familiares</h4>
     <div class="row">
       <div class="col-6">
-        <span (click)="heredoPadres = !heredoPadres" [attr.aria-expanded]="!heredoPadres" class="NoPatologicos"><i class="fa fa-eye"></i>Ver/Ocultar Heredo Familiares (Padre, Madre y hermano(s))</span>
+        <span (click)="heredoPadres = !heredoPadres" [attr.aria-expanded]="!heredoPadres" class="NoPatologicos"><i
+            class="fa fa-eye"></i>Ver/Ocultar Heredo Familiares (Padre, Madre y hermano(s))</span>
       </div>
       <div class="col-6">
-        <span (click)="heredoAbuelos = !heredoAbuelos" [attr.aria-expanded]="!heredoAbuelos" class="NoPatologicos"><i class="fa fa-eye"></i>Ver/Ocultar Heredo Familiares (Abuelos y otros)</span>
+        <span (click)="heredoAbuelos = !heredoAbuelos" [attr.aria-expanded]="!heredoAbuelos" class="NoPatologicos"><i
+            class="fa fa-eye"></i>Ver/Ocultar Heredo Familiares (Abuelos y otros)</span>
       </div>
     </div>
     <div id="collapseBasic" [collapse]="heredoPadres" [isAnimated]="true">
@@ -910,19 +987,22 @@
       <div class="row">
         <div class="col-4">
           <h5>Antecedentes Padre</h5>
-          <span class="enf" *ngFor="let enf of currentPaciente.pac_antecedentes_data.heredo_familiares.padre; let i=index">
+          <span class="enf"
+            *ngFor="let enf of currentPaciente.pac_antecedentes_data.heredo_familiares.padre; let i=index">
             <span class="badge badge-success" id="heredo">{{enf}}</span>
           </span>
         </div>
         <div class="col-4">
           <h5>Antecedentes Madre</h5>
-          <span class="enf" *ngFor="let enf of currentPaciente.pac_antecedentes_data.heredo_familiares.madre; let i=index">
+          <span class="enf"
+            *ngFor="let enf of currentPaciente.pac_antecedentes_data.heredo_familiares.madre; let i=index">
             <span class="badge badge-success" id="heredo">{{enf}}</span>
           </span>
         </div>
         <div class="col-4">
           <h5>Hermanos</h5>
-          <span class="enf" *ngFor="let enf of currentPaciente.pac_antecedentes_data.heredo_familiares.hermanos; let i=index">
+          <span class="enf"
+            *ngFor="let enf of currentPaciente.pac_antecedentes_data.heredo_familiares.hermanos; let i=index">
             <span class="badge badge-danger" id="heredo">{{enf}}</span>
           </span>
         </div>
@@ -933,19 +1013,22 @@
       <div class="row">
         <div class="col-4">
           <h5>Abuelos Paternos</h5>
-          <span class="enf" *ngFor="let enf of currentPaciente.pac_antecedentes_data.heredo_familiares.abuelosPaternos; let i=index">
+          <span class="enf"
+            *ngFor="let enf of currentPaciente.pac_antecedentes_data.heredo_familiares.abuelosPaternos; let i=index">
             <span class="badge badge-primary" id="heredo">{{enf}}</span>
           </span>
         </div>
         <div class="col-4">
           <h5>Abuelos Paternos</h5>
-          <span class="enf" *ngFor="let enf of currentPaciente.pac_antecedentes_data.heredo_familiares.abuelosMaternos; let i=index">
+          <span class="enf"
+            *ngFor="let enf of currentPaciente.pac_antecedentes_data.heredo_familiares.abuelosMaternos; let i=index">
             <span class="badge badge-primary" id="heredo">{{enf}}</span>
           </span>
         </div>
         <div class="col-4">
           <h5>Otros</h5>
-          <span class="enf" *ngFor="let enf of currentPaciente.pac_antecedentes_data.heredo_familiares.otros; let i=index">
+          <span class="enf"
+            *ngFor="let enf of currentPaciente.pac_antecedentes_data.heredo_familiares.otros; let i=index">
             <span class="badge badge-danger" id="heredo">{{enf}}</span>
           </span>
         </div>
@@ -953,15 +1036,18 @@
     </div>
     <hr class="line">
     <h3>No patologicos </h3>
-    <span (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" class="NoPatologicos"><i class="fa fa-eye"></i>>Ver/Ocultar No Patologicos</span>
+    <span (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" class="NoPatologicos"><i
+        class="fa fa-eye"></i>>Ver/Ocultar No Patologicos</span>
     <div id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
       <h5>Información No Patologicos</h5>
       <div class="row">
         <div class="col-6">
-          <span class="info">Número de habitantes: <span class="resp">{{currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_habitantes}}</span></span>
+          <span class="info">Número de habitantes: <span
+              class="resp">{{currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_habitantes}}</span></span>
         </div>
         <div class="col-6">
-          <span class="info">Número de habitaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_habitaciones}}</span></span>
+          <span class="info">Número de habitaciones: <span
+              class="resp">{{currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_habitaciones}}</span></span>
         </div>
       </div>
       <hr class="line">
@@ -973,8 +1059,10 @@
             <span class="infoGO"><span class="resp"> No</span> <i class="fa fa-window-close" id="no"></i></span>
           </div>
           <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.No_Patolgicos.mascota == 'Si'">
-            <span class="infoGO">¿El paciente cuenta con mascotas?<span class="resp"> Si</span> <i class="fa fa-check-square" id="si"></i></span>
-            <span class="infoGO">¿De qué tipo? <span class="resp">{{currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_mascota_tipo}}</span></span>
+            <span class="infoGO">¿El paciente cuenta con mascotas?<span class="resp"> Si</span> <i
+                class="fa fa-check-square" id="si"></i></span>
+            <span class="infoGO">¿De qué tipo? <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_mascota_tipo}}</span></span>
           </span>
         </div>
       </div>
@@ -983,25 +1071,34 @@
       <div class="row">
         <div class="col-4">
           <span class="info">¿Consume algún tipo de pan?
-            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_consumo_pan == 'Si'"><span class="resp"> Si</span> <i class="fa fa-check-square" id="si"></i>
+            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_consumo_pan == 'Si'"><span
+                class="resp"> Si</span> <i class="fa fa-check-square" id="si"></i>
             </span>
-            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_consumo_pan == 'No'"><span class="resp"> No</span> <i class="fa fa-window-close" id="no"></i>
+            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_consumo_pan == 'No'"><span
+                class="resp"> No</span> <i class="fa fa-window-close" id="no"></i>
             </span>
           </span>
         </div>
         <div class="col-4">
           <span class="info">¿Consume refresco?
-            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_consumo_refresco == 'Si'"><span class="resp"> Si</span> <i class="fa fa-check-square" id="si"></i>
+            <span class="info"
+              *ngIf="currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_consumo_refresco == 'Si'"><span
+                class="resp"> Si</span> <i class="fa fa-check-square" id="si"></i>
             </span>
-            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_consumo_refresco == 'No'"><span class="resp"> No</span> <i class="fa fa-window-close" id="no"></i>
+            <span class="info"
+              *ngIf="currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_consumo_refresco == 'No'"><span
+                class="resp"> No</span> <i class="fa fa-window-close" id="no"></i>
             </span>
           </span>
         </div>
         <div class="col-4">
           <span class="info">¿Agrega sal a la comida?
-            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_consumo_sal == 'Si'"><span class="resp"> Si</span> <i class="fa fa-check-square" id="si"></i>
+            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_consumo_sal == 'Si'"><span
+                class="resp"> Si</span> <i class="fa fa-check-square" id="si"></i>
             </span>
-            <span class="info-" *ngIf="currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_consumo_sal == 'No'"><span class="resp"> No</span> <i class="fa fa-window-close" id="no"></i>
+            <span class="info-"
+              *ngIf="currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_consumo_sal == 'No'"><span class="resp">
+                No</span> <i class="fa fa-window-close" id="no"></i>
             </span>
           </span>
         </div>
@@ -1009,16 +1106,19 @@
       <br>
       <div class="row">
         <div class="col-4">
-          <span class="info" >Cantidad de comidas al día: <span class="resp">{{currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_comidas_al_dia}}</span></span>
+          <span class="info">Cantidad de comidas al día: <span
+              class="resp">{{currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_comidas_al_dia}}</span></span>
         </div>
         <div class="col-4">
-          <span class="info" >Cantidad de grupos alimenticios: <span class="resp">{{currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_gpos_alimenticios}}</span></span>
+          <span class="info">Cantidad de grupos alimenticios: <span
+              class="resp">{{currentPaciente.pac_antecedentes_data.No_Patolgicos.pac_gpos_alimenticios}}</span></span>
         </div>
         <div class="col-4"></div>
       </div>
       <hr class="line">
       <h4>Actividad Física</h4>
-      <div class="row" *ngFor="let act of currentPaciente.pac_antecedentes_data.No_Patolgicos.Actividades_Fisicas; let i = index">
+      <div class="row"
+        *ngFor="let act of currentPaciente.pac_antecedentes_data.No_Patolgicos.Actividades_Fisicas; let i = index">
         <div class="col-4">
           <span class="info">
             Actividad Física: <span class="resp">{{act.pac_actividad_fisica}}</span>
@@ -1034,117 +1134,179 @@
     <hr class="line">
 
     <h3>Patologias</h3>
-    <span (click)="patologias = !patologias" [attr.aria-expanded]="!patologias" class="NoPatologicos"><i class="fa fa-eye"></i>Ver/Ocultar Patologías</span>
-      <div id="collapseBasic" [collapse]="patologias" [isAnimated]="true">
-        <br>
-        <h4>Enfermedades cronico degenerativas</h4>
-        <div class="row">
-          <div class="col-3" *ngFor="let enf of currentPaciente.pac_antecedentes_data.Patologicos.cronico_degenerativas; let i=index">
-            <span class="badge badge-warning" id="cronica">{{enf}}</span>
-          </div>
+    <span (click)="patologias = !patologias" [attr.aria-expanded]="!patologias" class="NoPatologicos"><i
+        class="fa fa-eye"></i>Ver/Ocultar Patologías</span>
+    <div id="collapseBasic" [collapse]="patologias" [isAnimated]="true">
+      <br>
+      <h4>Enfermedades cronico degenerativas</h4>
+      <div class="row">
+        <div class="col-3"
+          *ngFor="let enf of currentPaciente.pac_antecedentes_data.Patologicos.cronico_degenerativas; let i=index">
+          <span class="badge badge-warning" id="cronica">{{enf}}</span>
         </div>
-        <hr class="line">
-        <h4>Alergias</h4>
-        <div class="row">
+      </div>
+      <hr class="line">
+      <h4>Alergias</h4>
+      <div class="row">
         <div class="col-12">
           <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.alergias.alergias == 'Si'">
-            <span class="infoME">El paciente padece alergias:  <span class="resp">Si <i class="fa fa-check-square" id="si"> </i></span></span>
-            <span class="infoME">¿De qué tipo? <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.alergias.alergia_tipo}}</span></span>
+            <span class="infoME">El paciente padece alergias: <span class="resp">Si <i class="fa fa-check-square"
+                  id="si"> </i></span></span>
+            <span class="infoME">¿De qué tipo? <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.alergias.alergia_tipo}}</span></span>
           </span>
           <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.alergias.alergias == 'No'">
-            <span class="infoME">El paciente padece alergias: <span class="resp" >No <i class="fa fa-window-close" id="no"></i></span></span>
+            <span class="infoME">El paciente padece alergias: <span class="resp">No <i class="fa fa-window-close"
+                  id="no"></i></span></span>
           </span>
         </div>
-        </div>
-        <hr class="line">
+      </div>
+      <hr class="line">
 
-        <h4>Hospitalizaciones</h4>
-        <div class="row">
-          <span class="col-12">
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.Hospitalizaciones.hospitalizaciones == 'No'">
-              <span class="infoME">El paciente ha sido hospitalizado <span class="resp">No <i class="fa fa-window-close" id="no"></i></span></span>
+      <h4>Hospitalizaciones</h4>
+      <div class="row">
+        <span class="col-12">
+          <span class="containerME"
+            *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.Hospitalizaciones.hospitalizaciones == 'No'">
+            <span class="infoME">El paciente ha sido hospitalizado <span class="resp">No <i class="fa fa-window-close"
+                  id="no"></i></span></span>
+          </span>
+          <span class="containerME"
+            *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.Hospitalizaciones.hospitalizaciones == 'Si'">
+            <span class="infoME">El paciente ha sido hospitalizado: <span class="resp">Si <i class="fa fa-check-square"
+                  id="si"> </i></span></span>
+            <span class="infoME">Fecha Aproximada: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.Hospitalizaciones.hospitalizacion_fecha}}</span>
             </span>
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.Hospitalizaciones.hospitalizaciones == 'Si'">
-              <span class="infoME">El paciente ha sido hospitalizado: <span class="resp">Si <i class="fa fa-check-square" id="si"> </i></span></span>
-              <span class="infoME">Fecha Aproximada: <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.Hospitalizaciones.hospitalizacion_fecha}}</span> </span>
+          </span>
+          <span class="containerME"
+            *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.Hospitalizaciones.hospitalizaciones == 'Si'">
+            <span class="infoME">Causa: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.Hospitalizaciones.hospitalizacion_causa}}</span>
             </span>
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.Hospitalizaciones.hospitalizaciones == 'Si'">
-              <span class="infoME">Causa: <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.Hospitalizaciones.hospitalizacion_causa}}</span> </span>
-              <span class="infoME">Secuela: <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.Hospitalizaciones.hospitalizacion_secuela}}</span> </span>
+            <span class="infoME">Secuela: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.Hospitalizaciones.hospitalizacion_secuela}}</span>
+            </span>
+          </span>
+        </span>
+      </div>
+      <hr class="line">
+
+      <h4>Quirurgícas</h4>
+      <div class="row">
+        <div class="col-12">
+          <span class="containerME"
+            *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.quirurgicas.quirurgicas == 'No'">
+            <span class="infoME">El paciente cuenta con operaciones quirurgicas <span class="resp">No <i
+                  class="fa fa-window-close" id="no"></i></span></span>
+          </span>
+          <span class="containerME"
+            *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.quirurgicas.quirurgicas == 'Si'">
+            <span class="infoME">El paciente cuenta con operaciones quirurgicas <span class="resp">Si <i
+                  class="fa fa-check-square" id="si"></i></span></span>
+            <span class="infoME">Fecha Aproximada: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.quirurgicas.quirurgica_fecha}}</span>
+            </span>
+          </span>
+          <span class="containerME"
+            *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.quirurgicas.quirurgicas == 'Si'">
+            <span class="infoME">Causa: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.quirurgicas.quirurgica_causa}}</span>
+            </span>
+            <span class="infoME">Secuela: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.quirurgicas.quirurgica_secuela}}</span>
             </span>
           </span>
         </div>
-        <hr class="line">
+      </div>
+      <hr class="line">
 
-        <h4>Quirurgícas</h4>
-        <div class="row">
-          <div class="col-12">
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.quirurgicas.quirurgicas == 'No'">
-              <span class="infoME">El paciente cuenta con operaciones quirurgicas <span class="resp">No <i class="fa fa-window-close" id="no"></i></span></span>
+      <h4>Traumatismos</h4>
+      <div class="row">
+        <div class="col-12">
+          <span class="containerME"
+            *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.traumaticos == 'No'">
+            <span class="infoME">El paciente cuenta con traumatismos: <span class="resp">No <i
+                  class="fa fa-window-close" id="no"></i></span></span>
+          </span>
+          <span class="containerME"
+            *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.traumaticos == 'Si'">
+            <span class="infoME">El paciente padeció algúntraumatismo: <span class="resp">Si <i
+                  class="fa fa-check-square" id="si"> </i></span></span>
+            <span class="infoME">Fecha Aproximada: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.fecha_traumaticos}}</span>
             </span>
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.quirurgicas.quirurgicas == 'Si'">
-              <span class="infoME">El paciente cuenta con operaciones quirurgicas <span class="resp">Si <i class="fa fa-check-square" id="si"></i></span></span>
-              <span class="infoME">Fecha Aproximada: <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.quirurgicas.quirurgica_fecha}}</span> </span>
+          </span>
+          <span class="containerME"
+            *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.traumaticos == 'Si'">
+            <span class="infoME">Causa: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.causas_traumaticos}}</span>
             </span>
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.quirurgicas.quirurgicas == 'Si'">
-              <span class="infoME">Causa: <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.quirurgicas.quirurgica_causa}}</span> </span>
-              <span class="infoME">Secuela: <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.quirurgicas.quirurgica_secuela}}</span> </span>
+            <span class="infoME">Secuela: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.secuelas_traumaticos}}</span>
             </span>
-          </div>
+          </span>
+          <span class="containerME"
+            *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.traumaticos == 'Si'">
+            <span class="infoME">Tipo de traumatismo: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.tipos_traumaticos}}</span>
+            </span>
+          </span>
         </div>
-        <hr class="line">
+        <br>
+      </div>
+      <hr class="line">
 
-        <h4>Traumatismos</h4>
-        <div class="row">
-          <div class="col-12">
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.traumaticos == 'No'">
-              <span class="infoME">El paciente cuenta con traumatismos: <span class="resp" >No <i class="fa fa-window-close" id="no"></i></span></span>
+      <h4>Transfusiones</h4>
+      <div class="row">
+        <div class="col-12">
+          <span class="containerME"
+            *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.transfusiones.transfusiones == 'No'">
+            <span class="infoME">El paciente ha recibido transfusiones <span class="resp">No <i
+                  class="fa fa-window-close" id="no"></i></span></span>
+          </span>
+          <span class="containerME"
+            *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.transfusiones.transfusiones == 'Si'">
+            <span class="infoME">El paciente cuenta con transfusiones <span class="resp">Si <i
+                  class="fa fa-check-square" id="si"> </i></span></span>
+            <span class="infoME">Fecha Aproximada: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.transfusiones.transfusiones_fecha}}</span>
             </span>
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.traumaticos == 'Si'">
-              <span class="infoME">El paciente padeció algúntraumatismo: <span class="resp">Si <i class="fa fa-check-square" id="si"> </i></span></span>
-              <span class="infoME">Fecha Aproximada: <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.fecha_traumaticos}}</span> </span>
+          </span>
+          <span class="containerME"
+            *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.transfusiones.transfusiones == 'Si'">
+            <span class="infoME">Causa: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.transfusiones.transfusiones_causas}}</span>
             </span>
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.traumaticos == 'Si'">
-              <span class="infoME">Causa: <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.causas_traumaticos}}</span> </span>
-              <span class="infoME">Secuela: <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.secuelas_traumaticos}}</span> </span>
-            </span>
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.traumaticos == 'Si'">
-              <span class="infoME">Tipo de traumatismo: <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.tipos_traumaticos}}</span> </span>
-            </span>
-          </div>
-          <br>
+          </span>
         </div>
-        <hr class="line">
+      </div>
+      <hr class="line">
 
-        <h4>Transfusiones</h4>
-        <div class="row">
-          <div class="col-12">
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.transfusiones.transfusiones == 'No'">
-              <span class="infoME">El paciente ha recibido transfusiones <span class="resp">No <i class="fa fa-window-close" id="no"></i></span></span>
-            </span>
-            <span class="containerME"  *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.transfusiones.transfusiones == 'Si'">
-              <span class="infoME">El paciente cuenta con transfusiones <span class="resp">Si <i class="fa fa-check-square" id="si"> </i></span></span>
-              <span class="infoME">Fecha Aproximada: <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.transfusiones.transfusiones_fecha}}</span> </span>
-            </span>
-            <span class="containerME"  *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.transfusiones.transfusiones == 'Si'">
-              <span class="infoME">Causa: <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.transfusiones.transfusiones_causas}}</span> </span>
-            </span>
-          </div>
-        </div>
-        <hr class="line">
-
-        <h4>Sustancias Psicoactivas</h4>
-        <div class="row">
+      <h4>Sustancias Psicoactivas</h4>
+      <div class="row">
         <div class="col-5">
           <h5>Consumo de alcohol</h5>
           <span class="info">El paciente connsume bebidas alcoholicas:
-            <span class="resp" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.alcoholismo == 'No'">No <i class="fa fa-window-close" id="no"></i></span>
+            <span class="resp"
+              *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.alcoholismo == 'No'">No
+              <i class="fa fa-window-close" id="no"></i></span>
             <span *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.alcoholismo == 'Si'">
-              <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.alcoholismo == 'Si'"> <span class="resp">Si <i class="fa fa-check-square" id="si"> </i></span></span>
+              <span class="info"
+                *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.alcoholismo == 'Si'">
+                <span class="resp">Si <i class="fa fa-check-square" id="si"> </i></span></span>
               <br>
-              <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.alcoholismo == 'Si'"> ¿Con que frecuencia? <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.alcoholismo_frecuencia}}</span> </span>
+              <span class="info"
+                *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.alcoholismo == 'Si'">
+                ¿Con que frecuencia? <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.alcoholismo_frecuencia}}</span>
+              </span>
               <br>
-              <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.alcoholismo == 'Si'"> ¿En qué cantidades? <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.alcoholismo_cantidad}}</span> </span>
+              <span class="info"
+                *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.alcoholismo == 'Si'">
+                ¿En qué cantidades? <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.alcoholismo_cantidad}}</span>
+              </span>
               <br>
             </span>
           </span>
@@ -1153,14 +1315,26 @@
         <div class="col-5">
           <h5>Consumo de Tabaco</h5>
           <span class="info">El paciente fuma:
-            <span class="resp" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.tabaquismo == 'No'">No <i class="fa fa-window-close" id="no"></i></span>
+            <span class="resp"
+              *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.tabaquismo == 'No'">No <i
+                class="fa fa-window-close" id="no"></i></span>
           </span>
           <span *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.tabaquismo == 'Si'">
-            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.tabaquismo == 'Si'"> <span class="resp">Si <i class="fa fa-check-square" id="si"> </i></span></span>
+            <span class="info"
+              *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.tabaquismo == 'Si'">
+              <span class="resp">Si <i class="fa fa-check-square" id="si"> </i></span></span>
             <br>
-            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.tabaquismo == 'Si'"> ¿Con que frecuencia? <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.tabaquismo_frecuencia}}</span> </span>
+            <span class="info"
+              *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.tabaquismo == 'Si'"> ¿Con
+              que frecuencia? <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.tabaquismo_frecuencia}}</span>
+            </span>
             <br>
-            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.tabaquismo == 'Si'"> ¿En qué cantidades? <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.tabaquismo_cantidad}}</span> </span>
+            <span class="info"
+              *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.tabaquismo == 'Si'"> ¿En
+              qué cantidades? <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.tabaquismo_cantidad}}</span>
+            </span>
             <br>
           </span>
         </div>
@@ -1169,63 +1343,86 @@
           <br>
           <h5>Consumo de alguna otra sustancia</h5>
           <span class="info">El paciente consume alguna sustancia psicoactiva:
-            <span class="resp" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras == 'No'">No <i class="fa fa-window-close" id="no"></i></span>
+            <span class="resp"
+              *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras == 'No'">No <i
+                class="fa fa-window-close" id="no"></i></span>
           </span>
           <span *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras == 'Si'">
-            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras == 'Si'"> <span class="resp">Si <i class="fa fa-check-square" id="si"> </i></span></span>
+            <span class="info"
+              *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras == 'Si'"> <span
+                class="resp">Si <i class="fa fa-check-square" id="si"> </i></span></span>
             <br>
-            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras == 'Si'"> ¿De qué tipo? <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras_tipo}}</span> </span>
+            <span class="info"
+              *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras == 'Si'"> ¿De qué
+              tipo? <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras_tipo}}</span>
+            </span>
             <br>
-            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras == 'Si'"> Último Consumo <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras_ultimo_consumo}}</span> </span>
+            <span class="info"
+              *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras == 'Si'"> Último
+              Consumo <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras_ultimo_consumo}}</span>
+            </span>
             <br>
-            <span class="info" *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras == 'Si'"> ¿Con que frecuencia? <span class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras_frecuencia}}</span> </span>
+            <span class="info"
+              *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras == 'Si'"> ¿Con que
+              frecuencia? <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.sustancias_psicoactivas.otras_frecuencia}}</span>
+            </span>
             <br>
           </span>
         </div>
-        </div>
+      </div>
 
-        <span *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.Medicamentos">
-          <hr class="line">
+      <span *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.Medicamentos">
+        <hr class="line">
 
-          <h4>Medicamentos</h4>
-          <div class="row" *ngFor="let med of currentPaciente.pac_antecedentes_data.Patologicos.Medicamentos; let i = index">
-            <div class="col-4">
-              <span class="info">
-                Medicamento: <span class="resp">{{med.pac_medicamento}}</span>
-              </span>
-            </div>
-            <div class="col-4">
-              <span class="info">
-                Frecuencia de Consumo: <span class="resp">{{med.pac_frecuencia_consumo}}</span>
-              </span>
-            </div>
-            <div class="col-4">
-              <span class="info">
-                Fecha de Inicio de Consumo: <span class="resp">{{med.pac_inicio_consumo}}</span>
-              </span>
-            </div>
+        <h4>Medicamentos</h4>
+        <div class="row"
+          *ngFor="let med of currentPaciente.pac_antecedentes_data.Patologicos.Medicamentos; let i = index">
+          <div class="col-4">
+            <span class="info">
+              Medicamento: <span class="resp">{{med.pac_medicamento}}</span>
+            </span>
           </div>
-        </span>
+          <div class="col-4">
+            <span class="info">
+              Frecuencia de Consumo: <span class="resp">{{med.pac_frecuencia_consumo}}</span>
+            </span>
+          </div>
+          <div class="col-4">
+            <span class="info">
+              Fecha de Inicio de Consumo: <span class="resp">{{med.pac_inicio_consumo}}</span>
+            </span>
+          </div>
+        </div>
+      </span>
     </div>
     <hr class="line">
 
     <h3>Gineco-obstétricos</h3>
-    <span (click)="ginecoObstetrico = !ginecoObstetrico" [attr.aria-expanded]="!ginecoObstetrico" class="NoPatologicos"><i class="fa fa-eye"></i>Ver/Ocultar Gineco-Obstetricos</span>
+    <span (click)="ginecoObstetrico = !ginecoObstetrico" [attr.aria-expanded]="!ginecoObstetrico"
+      class="NoPatologicos"><i class="fa fa-eye"></i>Ver/Ocultar Gineco-Obstetricos</span>
     <div id="collapseBasic" [collapse]="ginecoObstetrico" [isAnimated]="true">
       <h5>Información</h5>
       <h4>Actividad Sexual</h4>
       <div class="row">
         <div class="col-12">
           <span class="containerRespGO">
-            <span class="infoGO">Paciente con vida sexual activa: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_vida_sexual_activa}}</span></span>
-            <span class="infoGO">Inicio de la vida sexual del paciente: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_inicio_vida_sexual}}</span></span>
+            <span class="infoGO">Paciente con vida sexual activa: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_vida_sexual_activa}}</span></span>
+            <span class="infoGO">Inicio de la vida sexual del paciente: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_inicio_vida_sexual}}</span></span>
           </span>
           <span class="containerRespGO">
-            <span class="infoGO">Metodo anticonceptivo que usa el paciente: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_metodo_anticonceptivo}}</span></span>
-            <span class="infoGO">Tipo de relaciones sexuales: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_tipo_relaciones}}</span></span>
+            <span class="infoGO">Metodo anticonceptivo que usa el paciente: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_metodo_anticonceptivo}}</span></span>
+            <span class="infoGO">Tipo de relaciones sexuales: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_tipo_relaciones}}</span></span>
           </span>
           <span class="containerRespGO">
-            <span class="infoME1">Enfermedades de transmisión sexual: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ets}}</span></span>
+            <span class="infoME1">Enfermedades de transmisión sexual: <span
+                class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ets}}</span></span>
           </span>
         </div>
       </div>
@@ -1236,16 +1433,22 @@
         <div class="row">
           <div class="col-12">
             <span class="containerME">
-              <span class="infoME">Menarquía: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_menarquia}}</span></span>
-              <span class="infoME">Última menstruación: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_carac_mens}}</span></span>
+              <span class="infoME">Menarquía: <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_menarquia}}</span></span>
+              <span class="infoME">Última menstruación: <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_carac_mens}}</span></span>
             </span>
             <span class="containerME">
-              <span class="infoME">Duración: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_dias_mens}}</span></span>
-              <span class="infoME">Cantidad de sangre: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_mens}}</span></span>
+              <span class="infoME">Duración: <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_dias_mens}}</span></span>
+              <span class="infoME">Cantidad de sangre: <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_mens}}</span></span>
             </span>
             <span class="containerME">
-              <span class="infoME">Frecuencia: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_frec_mens}}</span></span>
-              <span class="infoME">Presencia del dolor: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_precencia_dolor_mens}}</span></span>
+              <span class="infoME">Frecuencia: <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_frec_mens}}</span></span>
+              <span class="infoME">Presencia del dolor: <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_precencia_dolor_mens}}</span></span>
             </span>
           </div>
         </div>
@@ -1256,19 +1459,25 @@
         <h4>Información de embarazos</h4>
         <div class="row">
           <span *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones == 'Si'">
-              <span class="containerME">
-                <span class="infoME">No. de Gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones}}</span></span>
-                <span class="infoME">Última Gestación: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_gestacion}}</span></span>
-              </span>
+            <span class="containerME">
+              <span class="infoME">No. de Gestaciones: <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones}}</span></span>
+              <span class="infoME">Última Gestación: <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_gestacion}}</span></span>
+            </span>
           </span>
           <div class="col-12">
             <span class="containerME">
-              <span class="infoME">Gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_gestaciones}}</span></span>
-              <span class="infoME">Partos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos}}</span></span>
+              <span class="infoME">Gestaciones: <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_gestaciones}}</span></span>
+              <span class="infoME">Partos: <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos}}</span></span>
             </span>
             <span class="containerME">
-              <span class="infoME">Abortos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos}}</span></span>
-              <span class="infoME">Cesareas: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas}}</span></span>
+              <span class="infoME">Abortos: <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos}}</span></span>
+              <span class="infoME">Cesareas: <span
+                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas}}</span></span>
             </span>
             <span class="containerME" *ngIf="">
             </span>

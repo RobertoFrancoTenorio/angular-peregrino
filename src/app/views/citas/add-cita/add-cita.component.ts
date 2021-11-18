@@ -5,6 +5,7 @@ import moment from 'moment';
 import { CitaService } from '../../../service/cita/cita.service';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../service/auth/auth.service';
 
 @Component({
   selector: 'app-add-cita',
@@ -23,7 +24,8 @@ export class AddCitaComponent implements OnInit {
 
   minDate: Date;
   date_select: any;
-
+  date_ini: any;
+  date_fin: any;
   currentDoctor: any = null;
   @Input() currentPaciente: any = null;
 
@@ -209,7 +211,8 @@ export class AddCitaComponent implements OnInit {
     private fb: FormBuilder,
     private docService: DoctorService,
     private citaServ: CitaService,
-    public datepipe: DatePipe
+    public datepipe: DatePipe,
+    private auth: AuthService
   ) {
     this.citaForm = this.fb.group({
       idDoctor: [null, Validators.required],
@@ -218,6 +221,9 @@ export class AddCitaComponent implements OnInit {
   }
 
   async ngOnInit() {
+
+    await this.auth.getUserAccount();
+
     await new Promise<void>((resolve) => {
       this.docService.getDoctorsListActive().subscribe(dataDocs => {
         this.doctorList = dataDocs;
@@ -244,30 +250,55 @@ export class AddCitaComponent implements OnInit {
     });
 
     this.citaForm.get('cita_fecha').valueChanges.subscribe(val => {
-      this.date_select=this.datepipe.transform(new Date(val), 'yyyy-MM-dd')
+      this.date_select = this.datepipe.transform(new Date(val), 'yyyy-MM-dd');
+      this.date_ini = new Date(this.date_select + ' 00:30')
+      this.date_fin = new Date(this.date_select + ' 23:30')
+
+      console.log(this.date_ini)
+      console.log(this.date_fin)
       this.printCalendar();
     });
 
   }
 
-  printCalendar() {
+  async printCalendar() {
     this.bandHorario = false;
     if (this.citaForm.get('cita_fecha').value != null && this.citaForm.get('idDoctor').value != null) {
-      var doc_hora_inicio = moment(this.currentDoctor.doc_horario_ini, 'hh:mm')
-      var doc_hora_fin = moment(this.currentDoctor.doc_horario_fin, 'hh:mm')
+      var doc_hora_inicio = moment(this.currentDoctor.doc_horario_ini, 'hh:mm');
+      var doc_hora_fin = moment(this.currentDoctor.doc_horario_fin, 'hh:mm');
 
-      for (let h of this.horarios) {
-        h.visible = false;
-        var hora1 = moment(h.hora_inicio, 'hh:mm')
-        var hora2 = moment(h.hora_fin, 'hh:mm')
-        console.log(h.hora_inicio)
-        console.log(hora1.isBetween(doc_hora_inicio, doc_hora_fin) + ' --- ' + hora2.isBetween(doc_hora_inicio, doc_hora_fin));
-        if (hora1.isBetween(doc_hora_inicio, doc_hora_fin) && hora2.isBetween(doc_hora_inicio, doc_hora_fin)) {
-          console.log('visible')
-          h.visible = true;
-        } else h.visible = false;
-      }
-      console.log(this.horarios);
+      var idsHorarios = []
+      await new Promise<void>((resolve) => {
+        this.citaServ.getCitasDiaDoctor(this.currentDoctor.id, this.date_ini, this.date_fin).subscribe(dataCitas => {
+          console.log(dataCitas)
+
+          for (let c of dataCitas) {
+            idsHorarios.push(c['idHorario'])
+          }
+
+
+          for (let h of this.horarios) {
+            h.visible = false;
+            var hora1 = moment(h.hora_inicio, 'hh:mm')
+            var hora2 = moment(h.hora_fin, 'hh:mm')
+
+            if (hora1.isBetween(doc_hora_inicio, doc_hora_fin) && hora2.isBetween(doc_hora_inicio, doc_hora_fin)) {
+              //console.log('visible')
+              h.visible = true;
+              if (idsHorarios.includes(h.idHorario)) {
+                h.estatus = "Horario ocupado"
+                h.paciente = dataCitas.filter(c => c['idHorario'] == h.idHorario)[0]['detPaciente']['nombre']
+              }
+
+            } else h.visible = false;
+          }
+
+          resolve();
+        })
+      })
+
+
+
       this.bandHorario = true;
     } else {
       this.bandHorario = false;
@@ -278,59 +309,99 @@ export class AddCitaComponent implements OnInit {
   async crearCita(horario) {
 
     Swal.fire({
-      title: 'Registrando cita',
-      text: 'Los datos de la cita estan ciendo almacenados',
-      icon: 'info',
-      showConfirmButton: false,
-      showCancelButton: false,
-      showCloseButton: false,
-      allowOutsideClick: false,
-      allowEscapeKey: false
+      title: 'Ingresar comentarios de la cita',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Guardar',
+      input: "text",
+      inputValidator: comentario => {
+        // Si el valor es válido, debes regresar undefined. Si no, una cadena
+        if (!comentario) {
+          return "Por favor escribe los comentarios generale de la cita.";
+        } else {
+          return undefined;
+        }
+      }
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        if (result.value) {
+          let comentario = result.value;
+          
+          Swal.fire({
+            title: 'Registrando cita',
+            text: 'Los datos de la cita estan ciendo almacenados',
+            icon: 'info',
+            showConfirmButton: false,
+            showCancelButton: false,
+            showCloseButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false
+          });
+      
+      
+          console.log(String(this.citaForm.value['cita_fecha']).substring(0, 10) + ' ' + horario.hora_inicio);
+          let citaData = {
+            idDoctor: this.currentDoctor.id,
+            idPaciente: this.currentPaciente.id,
+            detDoctor: {
+              id: this.currentDoctor.id,
+              nombre: this.currentDoctor.doc_nombre_completo
+            },
+            detPaciente: {
+              id: this.currentPaciente.id,
+              nombre: this.currentPaciente.pac_nombre_completo,
+              celular: this.currentPaciente.pac_celular,
+              email:this.currentPaciente.pac_email,
+              telefono:this.currentPaciente.pac_telefono
+            },
+            f_cita: new Date(this.date_select + ' ' + horario.hora_inicio),
+            idHorario: horario.idHorario,
+            cita_hora_ini: horario.hora_inicio,
+            cita_hora_fin: horario.hora_fin,
+            estatus: 'asignada',
+            comentarios: comentario,
+            historial: [
+              {
+                idUser: this.auth.currentUserId,
+                motivo: 'Creacion de cita',
+                accion: 'Crear',
+                f_accion: new Date(),
+                userName: this.auth.userData.userName
+              }
+            ]
+          }
+      
+          console.log(citaData);
+          /*
+          ↓↓↓Esta parte recibe el formulario y lo pasa como parametro
+          al servicio en su metodo crearDoctor↓↓↓*/
+          await this.citaServ.crearCita(citaData);
+          /*Ejecución de Sweet Alert con los parametros necesarios*/
+      
+          Swal.close();
+      
+          Swal.fire({
+            title: 'Cita registrada',
+            text: 'La cita ha sido registrada correctamente.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          })
+            /*Una vez ejecutado el Sweet alert limpia el formulario
+            y redirige al componente de doctores*/
+            .then(() => {
+              this.citaForm.reset();
+              //this.router.navigate(['doctores']);
+              this.citaSave.emit({ citaSave: true })
+              return false;
+            })
+
+        }
+      }
     });
 
+
+
     
-    console.log(String(this.citaForm.value['cita_fecha']).substring(0,10)+' '+horario.hora_inicio);
-    let citaData = {
-      idDoctor: this.currentDoctor.id,
-      idPaciente: this.currentPaciente.id,
-      detDoctor: {
-        id: this.currentDoctor.id,
-        nombre: this.currentDoctor.doc_nombre_completo
-      },
-      detPaciente: {
-        id: this.currentPaciente.id,
-        nombre: this.currentPaciente.pac_nombre_completo
-      },
-      f_cita: new Date(this.date_select+' '+horario.hora_inicio),
-      idHorario: horario.idHorario,
-      cita_hora_ini: horario.hora_inicio,
-      cita_hora_fin: horario.hora_fin,
-      estatus: 'asignada',
-    }
-
-    console.log(citaData);
-    /*
-    ↓↓↓Esta parte recibe el formulario y lo pasa como parametro
-    al servicio en su metodo crearDoctor↓↓↓*/
-    await this.citaServ.crearCita(citaData);
-    /*Ejecución de Sweet Alert con los parametros necesarios*/
-
-    Swal.close();
-
-    Swal.fire({
-      title: 'Cita registrada',
-      text: 'La cita ha sido registrada correctamente.',
-      icon: 'success',
-      confirmButtonText: 'OK'
-    })
-      /*Una vez ejecutado el Sweet alert limpia el formulario
-      y redirige al componente de doctores*/
-      .then(() => {
-        this.citaForm.reset();
-        //this.router.navigate(['doctores']);
-        this.citaSave.emit({ citaSave: true })
-        return false;
-      })
 
   }
 }

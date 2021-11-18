@@ -33,6 +33,18 @@ export const navItems: INavData[] = [
     ]
   },
   {
+    name: 'Administración',
+    icon: 'fa fa-archive',
+    variant: 'true',
+    children: [
+      {
+        name: 'Citas',
+        icon: 'fas fa-file-medical',
+        url: '/citas'
+      },
+    ]
+  },
+  {
     name: 'Utilidades',
     icon: 'fa fa-folder-open',
     variant: 'true',

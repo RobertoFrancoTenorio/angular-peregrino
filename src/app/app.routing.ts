@@ -22,6 +22,7 @@ import { AddDoctorComponent } from './views/doctores/add-doctor/add-doctor.compo
 import { AddPacienteComponent } from './views/pacientes/add-paciente/add-paciente.component';
 import { CalendarioComponent } from './views/calendario/calendario.component';
 import { CalendarComponent } from './views/calendar/calendar.component';
+import { CitasComponent } from './views/citas/citas.component';
 
 
 export const routes: Routes = [
@@ -147,6 +148,16 @@ export const routes: Routes = [
           cat: false,
           categoria: 'Catalogos',
           pagina: 'Pacientes'
+        }
+      },
+      {
+        path: 'citas',
+        component: CitasComponent,
+        canActivate: [AuthGuard],
+        data: {
+          cat: false,
+          categoria: 'Administración',
+          pagina: 'Citas'
         }
       },
       {

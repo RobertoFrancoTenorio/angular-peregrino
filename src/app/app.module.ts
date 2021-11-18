@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,6 +10,11 @@ import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
 import { IconModule, IconSetModule, IconSetService } from '@coreui/icons-angular';
+
+import localEs from '@angular/common/locales/es';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localEs, 'es')
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -103,6 +108,7 @@ FullCalendarModule.registerPlugins([
   timeGridWeek
 ]);
 import { AddCitaComponent } from './views/citas/add-cita/add-cita.component';
+import { CitasComponent } from './views/citas/citas.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -166,13 +172,17 @@ import { AddCitaComponent } from './views/citas/add-cita/add-cita.component';
     ModalEditPacComponent,
     CalendarioComponent,
     ModalInfoPacComponent,
-    AddCitaComponent
+    AddCitaComponent,
+    CitasComponent
 
   ],
   providers: [
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
+    },
+    {
+      provide: LOCALE_ID, useValue: 'es'
     },
     IconSetService,
     AuthService,

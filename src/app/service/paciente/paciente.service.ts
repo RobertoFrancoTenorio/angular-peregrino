@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, Subject } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 @Injectable({
@@ -17,7 +16,7 @@ export class PacienteService {
     return this.afs.collection('/SegMedico/peregrino/Pacientes', ref =>
       ref
         .orderBy('idNumerico', 'asc')
-        .limit(5)
+        .limit(10)
         ).valueChanges();
   }
 

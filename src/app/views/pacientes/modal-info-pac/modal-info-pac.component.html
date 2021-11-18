@@ -1414,15 +1414,18 @@
             <span class="infoGO">Inicio de la vida sexual del paciente: <span
                 class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_inicio_vida_sexual}}</span></span>
           </span>
-          <span class="containerRespGO">
-            <span class="infoGO">Metodo anticonceptivo que usa el paciente: <span
-                class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_metodo_anticonceptivo}}</span></span>
-            <span class="infoGO">Tipo de relaciones sexuales: <span
-                class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_tipo_relaciones}}</span></span>
+          <span class="containerRespGO" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_metodo_anticonceptivo_hormonal == 'DIU'">
+            <span class="infoGO">Metodo anticonceptivo que usa el paciente: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_metodo_anticonceptivo}} ({{
+              currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_metodo_anticonceptivo_hormonal_diu}})</span></span>
+            <span class="infoGO">Tipo de relaciones sexuales: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_tipo_relaciones}}</span></span>
           </span>
           <span class="containerRespGO">
-            <span class="infoME1">Enfermedades de transmisión sexual: <span
-                class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ets}}</span></span>
+            <span class="infoME1">Número de compañeros sexuales: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_no_comp_sexuales }}</span></span>
+            <span class="infoME1">Enfermedades de transmisión sexual: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ets}}</span></span>
+          </span>
+          <span class="containerRespGO" *ngIf="currentPaciente.pac_sexo == 'M'">
+            <span class="infoGO">Tipo de relaciones sexuales: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_tipo_relaciones}}</span></span>
+            <span class="infoGO">Metodo anticonceptivo que usa el paciente: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_metodo_anticonceptivo}} </span></span>
           </span>
         </div>
       </div>
@@ -1456,32 +1459,89 @@
       <hr class="line">
 
       <span *ngIf="currentPaciente.pac_sexo == 'F'">
-        <h4>Información de embarazos</h4>
         <div class="row">
-          <span *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones == 'Si'">
-            <span class="containerME">
-              <span class="infoME">No. de Gestaciones: <span
-                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones}}</span></span>
-              <span class="infoME">Última Gestación: <span
-                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_gestacion}}</span></span>
-            </span>
-          </span>
           <div class="col-12">
-            <span class="containerME">
-              <span class="infoME">Gestaciones: <span
-                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_gestaciones}}</span></span>
-              <span class="infoME">Partos: <span
-                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos}}</span></span>
+            <h4>Información de embarazos</h4>
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos == 'Si'">
+              <span class="infoME">La paciente cuenta con embarazos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos}}</span></span>
+              <span class="infoME">Número de embarazos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_partos}}</span></span>
             </span>
-            <span class="containerME">
-              <span class="infoME">Abortos: <span
-                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos}}</span></span>
-              <span class="infoME">Cesareas: <span
-                  class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas}}</span></span>
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos == 'Si'">
+              <span class="infoME">Fecha Aproximada del último parto: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultimo_parto}}</span></span>
+              <span class="infoME">Observaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultimo_parto_observacion}}</span></span>
             </span>
-            <span class="containerME" *ngIf="">
+
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos == 'No'">
+              <span class="infoME">La paciente cuenta con embarazos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos}}</span></span>
             </span>
+            <hr class="line">
+
+            <h4>Información de gestaciones</h4>
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones == 'Si'">
+              <span class="infoME">La paciente cuenta con gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones}}</span></span>
+              <span class="infoME">Número de gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_gestaciones}}</span></span>
+            </span>
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos == 'Si'">
+              <span class="infoME">Fecha Aproximada de la última gestación: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_gestacion}}</span></span>
+              <span class="infoME">Observaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_gestacion_observacion}}</span></span>
+            </span>
+            <hr class="line">
+
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones == 'No'">
+              <span class="infoME">La paciente cuenta con gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones}}</span></span>
+              <hr class="line">
+            </span>
+
+            <h4>Información de abortos</h4>
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos == 'Si'">
+              <span class="infoME">La paciente cuenta con gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos}}</span></span>
+              <span class="infoME">Número de gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_abortos}}</span></span>
+            </span>
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos == 'Si'">
+              <span class="infoME">Fecha Aproximada del último aborto: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultimo_aborto}}</span></span>
+              <span class="infoME">Observaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultimo_aborto_observacion}}</span></span>
+            </span>
+            <hr class="line">
+
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos == 'No'">
+              <span class="infoME">La paciente cuenta con gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos}}</span></span>
+              <hr class="line">
+            </span>
+
+            <h4>Información de cesareas</h4>
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas == 'Si'">
+              <span class="infoME">La paciente cuenta con cesaresa: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas}}</span></span>
+              <span class="infoME">Número de cesareas: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_cesareas}}</span></span>
+            </span>
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos == 'Si'">
+              <span class="infoME">Fecha Aproximada de la última cesarea: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_cesarea}}</span></span>
+              <span class="infoME">Observaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_cesarea_observacion}}</span></span>
+            </span>
+            <hr class="line">
+
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas == 'No'">
+              <span class="infoME">La paciente cuenta con cesaresa: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas}}</span></span>
+              <hr class="line">
+            </span>
+
+            <h4>Información de papanicolau</h4>
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau == 'Si'">
+              <span class="infoME">La paciente se ha realizado papanicolau: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas}}</span></span>
+              <span class="infoME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau == 'Si'">Fecha Aproximada: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau_fecha}}</span></span>
+            </span>
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau == 'Si'">
+              <span class="infoME" >Observaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau_observacion}}</span></span>
+            </span>
+
+            <hr class="line">
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau == 'No'">
+              <span class="infoME">La paciente se ha realizado papanicolau: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas}}</span></span>
+              <hr class="line">
+
+            </span>
+
           </div>
+
         </div>
       </span>
 

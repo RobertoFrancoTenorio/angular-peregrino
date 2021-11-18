@@ -6,6 +6,8 @@ import { CitaService } from '../../../service/cita/cita.service';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../service/auth/auth.service';
+import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-add-cita',
@@ -13,9 +15,9 @@ import { AuthService } from '../../../service/auth/auth.service';
   styleUrls: ['./add-cita.component.scss']
 })
 export class AddCitaComponent implements OnInit {
-
-  done: boolean = false;
-
+  done: boolean = true;
+  bandCita = false;
+  fechaCita: any;
   basePath;
   citaForm: FormGroup;
 
@@ -28,6 +30,8 @@ export class AddCitaComponent implements OnInit {
   date_fin: any;
   currentDoctor: any = null;
   @Input() currentPaciente: any = null;
+  @Input() currentCita: any = null;
+  @Output() cerrarModal: EventEmitter<any> = new EventEmitter<any>();
 
   bandCalendar
 
@@ -204,7 +208,9 @@ export class AddCitaComponent implements OnInit {
     },
   ]
   bandHorario: boolean = false;
-
+  prueba: any;
+  hIni: any;
+  hFin: any
   @Output() citaSave: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
@@ -212,7 +218,9 @@ export class AddCitaComponent implements OnInit {
     private docService: DoctorService,
     private citaServ: CitaService,
     public datepipe: DatePipe,
-    private auth: AuthService
+    private auth: AuthService,
+    private router: Router,
+    private modalService: BsModalService
   ) {
     this.citaForm = this.fb.group({
       idDoctor: [null, Validators.required],
@@ -303,11 +311,9 @@ export class AddCitaComponent implements OnInit {
     } else {
       this.bandHorario = false;
     }
-
   }
 
   async crearCita(horario) {
-
     Swal.fire({
       title: 'Ingresar comentarios de la cita',
       icon: 'question',
@@ -399,9 +405,17 @@ export class AddCitaComponent implements OnInit {
       }
     });
 
-
+  }
 
     
 
+  loadInfo(){
+    this.citaForm.patchValue({
+    })
   }
+
+  close(){
+    this.cerrarModal.emit({ cerrar: true })
+  }
+
 }

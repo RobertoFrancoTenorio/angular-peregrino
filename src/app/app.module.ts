@@ -109,6 +109,8 @@ FullCalendarModule.registerPlugins([
 ]);
 import { AddCitaComponent } from './views/citas/add-cita/add-cita.component';
 import { CitasComponent } from './views/citas/citas.component';
+import { ModalConsultaComponent } from './views/citas/modal-consulta/modal-consulta.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -173,8 +175,8 @@ import { CitasComponent } from './views/citas/citas.component';
     CalendarioComponent,
     ModalInfoPacComponent,
     AddCitaComponent,
-    CitasComponent
-
+    CitasComponent,
+    ModalConsultaComponent
   ],
   providers: [
     {

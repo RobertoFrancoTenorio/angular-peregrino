@@ -11,7 +11,6 @@ export class ModalEditPacComponent implements OnInit {
 
   @Input() idAdicional: string = null;
 
-
   constructor(
     public auth: AuthService,
     public modalRef: BsModalRef,

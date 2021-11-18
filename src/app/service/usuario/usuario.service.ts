@@ -2,12 +2,13 @@ import { resolve } from '@angular/compiler-cli/src/ngtsc/file_system';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from './../auth/auth.service';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
+  datos: any
   constructor(
     private afs: AngularFirestore,
     public auth: AuthService,
@@ -44,6 +45,7 @@ export class UsuarioService {
         Model['activo'] = true;
         Model['f_registro'] = new Date();
         Model['user_reg'] = this.auth.currentUserId;
+        Model['is_Doctor'] = 'Si'
         if(id){
           console.log('ID', id),
           Model['idNumerico']=idNum;
@@ -91,6 +93,22 @@ export class UsuarioService {
       ref
         .orderBy('idNumerico','asc')
     ).valueChanges();
+  }
+
+  getUserData(id: string){
+    return this.afs.collection('/SegMedico/peregrino/usuarios',ref=>
+    ref.where('id', '==', id)).snapshotChanges().pipe(
+      map(actions => actions.map(a =>{
+        const data = a.payload.doc.data()
+        //console.log(data)
+        var userName = data['user_nombre_completo']
+        let usuario = {}
+        usuario = {
+          currentUser: data['user_nombre_completo']
+        }
+        return usuario;
+      }))
+    )
   }
 
 }

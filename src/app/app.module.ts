@@ -103,6 +103,7 @@ FullCalendarModule.registerPlugins([
   timeGridWeek
 ]);
 import { AddCitaComponent } from './views/citas/add-cita/add-cita.component';
+import { ModalConsultaComponent } from './views/citas/modal-consulta/modal-consulta.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -166,7 +167,8 @@ import { AddCitaComponent } from './views/citas/add-cita/add-cita.component';
     ModalEditPacComponent,
     CalendarioComponent,
     ModalInfoPacComponent,
-    AddCitaComponent
+    AddCitaComponent,
+    ModalConsultaComponent
 
   ],
   providers: [

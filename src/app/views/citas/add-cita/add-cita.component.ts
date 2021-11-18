@@ -5,6 +5,8 @@ import moment from 'moment';
 import { CitaService } from '../../../service/cita/cita.service';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-add-cita',
@@ -12,9 +14,9 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./add-cita.component.scss']
 })
 export class AddCitaComponent implements OnInit {
-
-  done: boolean = false;
-
+  done: boolean = true;
+  bandCita = false;
+  fechaCita: any;
   basePath;
   citaForm: FormGroup;
 
@@ -26,6 +28,8 @@ export class AddCitaComponent implements OnInit {
 
   currentDoctor: any = null;
   @Input() currentPaciente: any = null;
+  @Input() currentCita: any = null;
+  @Output() cerrarModal: EventEmitter<any> = new EventEmitter<any>();
 
   bandCalendar
 
@@ -202,14 +206,18 @@ export class AddCitaComponent implements OnInit {
     },
   ]
   bandHorario: boolean = false;
-
+  prueba: any;
+  hIni: any;
+  hFin: any
   @Output() citaSave: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private fb: FormBuilder,
     private docService: DoctorService,
     private citaServ: CitaService,
-    public datepipe: DatePipe
+    public datepipe: DatePipe,
+    private router: Router,
+    private modalService: BsModalService
   ) {
     this.citaForm = this.fb.group({
       idDoctor: [null, Validators.required],
@@ -255,7 +263,6 @@ export class AddCitaComponent implements OnInit {
     if (this.citaForm.get('cita_fecha').value != null && this.citaForm.get('idDoctor').value != null) {
       var doc_hora_inicio = moment(this.currentDoctor.doc_horario_ini, 'hh:mm')
       var doc_hora_fin = moment(this.currentDoctor.doc_horario_fin, 'hh:mm')
-
       for (let h of this.horarios) {
         h.visible = false;
         var hora1 = moment(h.hora_inicio, 'hh:mm')
@@ -272,11 +279,9 @@ export class AddCitaComponent implements OnInit {
     } else {
       this.bandHorario = false;
     }
-
   }
 
   async crearCita(horario) {
-
     Swal.fire({
       title: 'Registrando cita',
       text: 'Los datos de la cita estan ciendo almacenados',
@@ -288,7 +293,6 @@ export class AddCitaComponent implements OnInit {
       allowEscapeKey: false
     });
 
-    
     console.log(String(this.citaForm.value['cita_fecha']).substring(0,10)+' '+horario.hora_inicio);
     let citaData = {
       idDoctor: this.currentDoctor.id,
@@ -331,6 +335,15 @@ export class AddCitaComponent implements OnInit {
         this.citaSave.emit({ citaSave: true })
         return false;
       })
-
   }
+
+  loadInfo(){
+    this.citaForm.patchValue({
+    })
+  }
+
+  close(){
+    this.cerrarModal.emit({ cerrar: true })
+  }
+
 }

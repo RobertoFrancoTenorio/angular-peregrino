@@ -1,9 +1,11 @@
-<div *ngIf="!done">
+<!-- <div *ngIf="!done">
     cargando...
-</div>
+</div> -->
 
 <div *ngIf="done">
-    <form [formGroup]="citaForm">
+  <div class="container">
+  </div>
+    <form [formGroup]="citaForm" class="col-12">
         <div class="form-row">
             <div class="col-md-4 form-group">
                 <label for="cita_fecha">Selecciona la fecha:</label>
@@ -18,7 +20,6 @@
                 </ng-select>
             </div>
         </div>
-
 
         <table class="table" *ngIf='bandHorario'>
             <thead>
@@ -38,19 +39,15 @@
                            {{ h.paciente }}
                         </td>
                         <td>
-                            <button *ngIf="h.estatus=='libre'" type="button" (click)="crearCita(h)" class='btn btn-primary' [disabled]="!citaForm.valid">
-                                <span class='fa fa-check-circle'> </span> Seleccionar horario
-                            </button>
+                          <button *ngIf="h.estatus=='libre'" type="button" (click)="crearCita(h)" class='btn btn-primary' [disabled]="!citaForm.valid">
+                            <span class='fa fa-check-circle'> </span> Seleccionar horario
+                          </button>
                         </td>
                     </tr>
                 </ng-container>
             </tbody>
         </table>
 
-
+        <pre>{{ citaForm.value | json }}</pre>
     </form>
-
-    <pre>{{ citaForm.value | json }}</pre>
-
-
 </div>

@@ -9,7 +9,7 @@ import { ModalInfoPacComponent } from '../modal-info-pac/modal-info-pac.componen
   styleUrls: ['./acciones-paciente.component.scss']
 })
 export class AccionesPacienteComponent implements ICellRendererAngularComp {
-  
+
   public params: any;
   public activo: boolean;
 
@@ -58,7 +58,6 @@ export class AccionesPacienteComponent implements ICellRendererAngularComp {
   }
 
   verInfoShow(){
-
     const initialState = {
       currentPaciente: this.params,
       keyboard: false,

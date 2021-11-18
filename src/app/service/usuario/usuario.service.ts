@@ -95,26 +95,20 @@ export class UsuarioService {
     ).valueChanges();
   }
 
-  determinaUsuario(id?: string) {
-    return this.afs.collection('/SegMedico/peregrino/usuarios', ref =>
-    ref.where('id', '==', id).where('is_Doctor', '!=', null)).snapshotChanges().pipe(
-      map(actions => actions.map(a => {
+  getUserData(id: string){
+    return this.afs.collection('/SegMedico/peregrino/usuarios',ref=>
+    ref.where('id', '==', id)).snapshotChanges().pipe(
+      map(actions => actions.map(a =>{
         const data = a.payload.doc.data()
-        console.log(data)
-        let evento = {};
-        if(data['is_Doctor'] == 'Si'){
-          evento = {
-            is_Doctor: 'Si',
-          }
-        }else{
-          evento = {
-            is_Doctor: 'No',
-          }
+        //console.log(data)
+        var userName = data['user_nombre_completo']
+        let usuario = {}
+        usuario = {
+          currentUser: data['user_nombre_completo']
         }
-
-        return evento
+        return usuario;
       }))
-    );
+    )
   }
 
 }

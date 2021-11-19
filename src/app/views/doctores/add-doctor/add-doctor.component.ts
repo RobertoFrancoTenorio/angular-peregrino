@@ -80,6 +80,8 @@ export class AddDoctorComponent implements OnInit {
       metodos_contacto: this.fb.array([]),
     })
 
+    console.log('valopr de ruta add docotr',this.router.getCurrentNavigation())
+
 
     if(this.router.getCurrentNavigation() != null){
       /*queryParams: parámetro muy útil para enviar objetos complejos utilizando la navegación de ruta.

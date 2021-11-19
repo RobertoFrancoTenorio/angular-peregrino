@@ -74,18 +74,18 @@ export class CitaService {
 
   getCitasAtendidas(id: string){
     return this.afs.collection('/SegMedico/peregrino/citas', ref =>
-        ref.where('detDoctor.id', '==', id,).where('estatus', '==', 'atendida')).snapshotChanges().pipe(
-          map(actions => actions.map(a => {
-            const data = a.payload.doc.data()
-            var fecha = data['f_cita']
-            let evento = {};
-            evento = {
-              title: data['detPaciente'].nombre,
-              start: this.DatePipe.transform(fecha.toDate(), 'yyyy-MM-dd' + 'T'),
-            }
-            return evento
-          }))
-        )
+      ref.where('detDoctor.id', '==', id,).where('estatus', '==', 'terminada')).snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data()
+          var fecha = data['f_cita']
+          let evento = {};
+          evento = {
+            title: data['detPaciente'].nombre,
+            start: this.DatePipe.transform(fecha.toDate(), 'yyyy-MM-dd' + 'T'),
+          }
+          return evento
+        }))
+      )
   }
 
   getAceptadas(id: string){
@@ -155,18 +155,22 @@ export class CitaService {
               }
             }
             if(data['estatus'] != 'rechazada'){
-              evento = {
-                title: data['detPaciente'].nombre,
-                start: ini+'T'+horaInicio,
-                end: fin+'T'+horaFin,
-                //textColor: background,
-                color: color,
-                estatus: data['estatus'],
-                extendedProps: {
-                  tipoEvento: 'Cita',
-                  currentCita: data,
+              if(data['estatus'] != 'reagendada'){
+                if(data['estatus'] != 'terminada'){
+                  evento = {
+                    title: data['detPaciente'].nombre,
+                    start: ini+'T'+horaInicio,
+                    end: fin+'T'+horaFin,
+                    //textColor: background,
+                    color: color,
+                    estatus: data['estatus'],
+                    extendedProps: {
+                      tipoEvento: 'Cita',
+                      currentCita: data,
+                    }
+                  };
                 }
-              };
+              }
             }
             return evento
         }))
@@ -177,5 +181,6 @@ export class CitaService {
     return this.afs.collection('/SegMedico/peregrino/usuarios',ref=>
     ref.where('detDoctor.id', '==', 'id').where('estatus', '==', 'rechazada')).valueChanges();
   }
+
 
 }

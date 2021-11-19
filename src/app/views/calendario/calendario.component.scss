@@ -2,6 +2,11 @@
 .card{
   border-radius: 20px;
   height:140px;
+  width: 10rem;
+  -webkit-transition: all 0.5s 0s ease;
+-moz-transition: all 0.5s 0s ease;
+-o-transition: all 0.5s 0s ease;
+transition: all 0.5s 0s ease;
 }
 
 .card-body{
@@ -9,21 +14,18 @@
 }
 
 
-#totales{
-  background-color: rgb(120, 53, 228);
-  border-radius: 20px;
-}
-
-
-#title_totales{
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: rgb(78, 34, 148);
-}
-
-.sub_totales{
-  font-weight: bold;
-  color: rgb(78, 34, 148);
+.card:hover{
+  border-radius: 40px;
+  height:160px;
+  width: 12rem;
+  -webkit-transition: all 0.5s 0s ease;
+-moz-transition: all 0.5s 0s ease;
+-o-transition: all 0.5s 0s ease;
+transition: all 0.5s 0s ease;
+-webkit-box-shadow: 0px 0px 30px 13px rgba(0,0,0,0.23);
+box-shadow: 0px 0px 30px 13px rgba(0,0,0,0.23);
+ color: #fff;
+ font-size: 2rem;
 }
 
 #asignadas{
@@ -33,6 +35,11 @@
 
 #title_asignada{
   font-size: 1.3rem;
+  font-weight: bold;
+  color: rgb(11, 27, 122);
+}
+
+.sub_asignada{
   font-weight: bold;
   color: rgb(11, 27, 122);
 }
@@ -58,22 +65,6 @@
   color: rgb(177, 80, 23)
 }
 
-#rechazadas{
-  background-color: rgb(223, 25, 25);
-  border-radius: 20px;
-}
-
-#title_rechazadas{
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: rgb(139, 4, 4)
-}
-
-.sub_rechazada{
-  font-weight: bold;
-  color: rgb(139, 4, 4);
-}
-
 #terminadas{
   background-color: rgb(8, 175, 3);
   border-radius: 20px;
@@ -94,11 +85,26 @@
   display: flex;
 }
 
-.cardd{
-
-}
 
 .buttons{
   display: flex;
 }
 
+.container{
+  background-color:white;
+}
+
+.fullcalendar{
+  padding: 2rem;
+}
+
+.col-1{
+  align-items: center;
+  justify-content: center;
+}
+
+.row{
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 9rem;
+}

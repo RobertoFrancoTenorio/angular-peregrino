@@ -23,6 +23,7 @@ import { AddPacienteComponent } from './views/pacientes/add-paciente/add-pacient
 import { CalendarioComponent } from './views/calendario/calendario.component';
 import { CalendarComponent } from './views/calendar/calendar.component';
 import { CitasComponent } from './views/citas/citas.component';
+import { ConsultaComponent } from './views/citas/consulta/consulta.component';
 
 
 export const routes: Routes = [
@@ -118,6 +119,15 @@ export const routes: Routes = [
       {
         path: 'calendario',
         component: CalendarioComponent,
+        data: {
+          cat: false,
+          categoria: 'Utilidades',
+          pagina: 'Calendario'
+        }
+      },
+      {
+        path: 'consulta',
+        component: ConsultaComponent,
         data: {
           cat: false,
           categoria: 'Utilidades',

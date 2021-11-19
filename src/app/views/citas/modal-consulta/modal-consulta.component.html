@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">Información de la consulta</h4>
+    <h4 class="modal-title pull-left"><i class="fa fa-info-circle" aria-hidden="true"></i> Información de la consulta</h4>
 </div>
 
 <div class="modal-body">
@@ -51,7 +51,7 @@
   <span class="action">
     <h5 class="respuesta">¿Obtuvo respuesta del paciente?</h5>
     <div class="btns">
-      <button class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> Si</button>
+      <button class="btn btn-success" (click)="realizarConsulta()"><i class="fa fa-check" aria-hidden="true"></i> Si</button>
       <button class="btn btn-danger" (click)="sinRespuesta()"><i class="fa fa-times" aria-hidden="true"></i> No</button>
     </div>
   </span>

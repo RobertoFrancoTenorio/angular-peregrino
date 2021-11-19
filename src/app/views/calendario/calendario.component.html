@@ -1,24 +1,23 @@
-<div class="cont_card">
-  <div class="cardd-4">
-    <div class="card" style="width: 10rem;">
+
+<div class="row">
+  <div class="col-1">
+    <div class="card" style="">
       <div class="card-body" id="asignadas">
-        <h1 class="card-title" id="title_asignada"><i class="fa fa-calendar-plus-o" aria-hidden="true"></i></h1>
+        <h1 class="card-title" id="title_asignada"><i class="fa fa-clock-o" aria-hidden="true"></i></h1>
         <h1 class="card-text" id="title_asignada">{{asignadas}}</h1>
         <h5 class="sub_asignada">Asignadas</h5>
       </div>
     </div>
-  </div>
-  <div class="cardd">
-    <div class="card" style="width: 10rem;">
+
+    <div class="card" style="">
       <div class="card-body" id="pendientes">
-        <h1 class="card-title" id="title_pendiente"><i class="fa fa-clock-o" aria-hidden="true"></i></h1>
+        <h1 class="card-title" id="title_pendiente"><i class="fa fa-calendar-plus-o" aria-hidden="true"></i></h1>
         <h1 class="card-text" id="title_pendiente">{{atendidas}}</h1>
         <h5 class="sub_pendiente">Atendidas</h5>
       </div>
     </div>
-  </div>
-  <div class="cardd">
-    <div class="card" style="width: 10rem;">
+
+    <div class="card" style="">
       <div class="card-body" id="terminadas">
         <h1 class="card-title" id="title_terminada"><i class="fa fa-check-square-o" aria-hidden="true"></i></h1>
         <h1 class="card-text" id="title_terminada">{{aceptadas}}</h1>
@@ -26,15 +25,13 @@
       </div>
     </div>
   </div>
-</div>
-<div class="container">
-  <div class="row">
-    <div class="col-sm">
-      <full-calendar [options]="calendarOptions"></full-calendar>
-    </div>
+
+
+  <div class="col-9">
+    <div class="container container-lg">
+        <div class="col-sm">
+          <full-calendar class="fullcalendar" [options]="calendarOptions"></full-calendar>
+        </div>
+      </div>
   </div>
 </div>
-
-
-
-

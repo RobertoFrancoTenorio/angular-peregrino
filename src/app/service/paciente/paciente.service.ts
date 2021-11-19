@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { take, tap } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 @Injectable({
   providedIn: 'root'
@@ -66,6 +66,21 @@ export class PacienteService {
         resolve()
       })
     })
+  }
+
+  getPacienteInfo(id:string) {
+    return this.afs.collection('/SegMedico/peregrino/Pacientes',ref=>
+    ref.where('id', '==', id)).snapshotChanges().pipe(
+      map(actions => actions.map(a =>{
+        const data = a.payload.doc.data()
+        //console.log(data)
+        let paciente = {}
+        paciente = {
+          infoPaciente: data
+        }
+        return paciente;
+      }))
+    )
   }
 
 }

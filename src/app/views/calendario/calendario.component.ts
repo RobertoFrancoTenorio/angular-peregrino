@@ -7,6 +7,8 @@ import { UsuarioService } from '../../service/usuario/usuario.service'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import Swal from 'sweetalert2';
 import { ModalConsultaComponent } from '../citas/modal-consulta/modal-consulta.component'
+import { PacienteService } from '../../service/paciente/paciente.service';
+
 
 @Component({
   selector: 'app-calendario',
@@ -28,9 +30,10 @@ export class CalendarioComponent implements OnInit {
   calendarOptions: CalendarOptions;
 
   constructor(private AuthService: AuthService,
-    private CitaService: CitaService,
-    private UsuarioService: UsuarioService,
-    private modalService: BsModalService) {
+              private CitaService: CitaService,
+              private UsuarioService: UsuarioService,
+              private modalService: BsModalService,
+              private PacienteService: PacienteService,) {
   }
 
   ngOnInit() {
@@ -55,8 +58,8 @@ export class CalendarioComponent implements OnInit {
 
   eventClick(model: any) {
     this.displayEvent = model.event._def
-    console.log('Detalles cita', this.displayEvent.extendedProps.currentCita.estatus)
-    console.log('Detalles paciente', this.displayEvent.extendedProps.currentCita.detPaciente)
+    /*console.log('Detalles cita', this.displayEvent.extendedProps.currentCita.estatus)
+    console.log('Detalles paciente', this.displayEvent.extendedProps.currentCita.detPaciente)*/
     if (this.displayEvent.extendedProps.currentCita.estatus == 'asignada') {
       Swal.fire({
         title: '¿Qué desea realizar con esta consulta?',
@@ -122,12 +125,6 @@ export class CalendarioComponent implements OnInit {
         }
       })
     }
-    if (this.displayEvent.extendedProps.currentCita.estatus == 'atendida') {
-      Swal.fire({
-        title: 'Esta consulta ha sido realizada',
-        icon: 'info',
-      })
-    }
   }
 
   getConsultas() {
@@ -153,6 +150,7 @@ export class CalendarioComponent implements OnInit {
   }
 
   launchModal(){
+
     const initialState = {
       currentCita: this.displayEvent.extendedProps,
       keyboard: false,

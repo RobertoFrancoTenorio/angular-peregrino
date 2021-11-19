@@ -1,0 +1,155 @@
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> Consulta</h3>
+  </div>
+  <form [formGroup]="consultaForm" (onSubmit)="enviarConsulta()">
+    <ul class="list-group list-group-flush">
+      <span class="cont">
+        <h4>Información del Paciente</h4>
+
+        <div class="row">
+          <div class="col-6">
+            <label for="" class="form-label">Nombre(s) del Paciente</label>
+            <input type="text" formControlName="consulta_pac_nombre" readonly value="{{currentPaciente.nombres}}" class="form-control">
+          </div>
+          <div class="col-3">
+            <label for="" class="form-label">Primer Apellido del Paciente: </label>
+            <input type="text" formControlName="consulta_paciente_primer_apellido" readonly value="{{currentPaciente.primerApellido}}" class="form-control">
+          </div>
+          <div class="col-3">
+            <label for="" class="form-label">Segundo Apellido del Paciente: </label>
+            <input type="text" formControlName="consulta_paciente_segundo_apellido" readonly value="{{currentPaciente.segundoApellido}}" class="form-control">
+          </div>
+          <br>
+          <div class="col-4">
+            <label for="" class="form-label">Telefono: </label>
+            <input type="text" formControlName="consulta_pac_telefono" readonly value="{{currentConsulta.detPaciente.telefono}}" class="form-control">
+          </div>
+          <div class="col-4">
+            <label for="" class="form-label">Celular: </label>
+            <input type="text" formControlName="consulta_pac_celular" readonly value="{{currentConsulta.detPaciente.celular}}" class="form-control">
+          </div>
+          <div class="col-4">
+            <label for="" class="form-label">Email: </label>
+            <input type="text" formControlName="consulta_pac_celular" readonly value="{{currentConsulta.detPaciente.email}}" class="form-control">
+          </div>
+          <div class="col-6">
+            <label for="" class="form-label">Fecha de nacimiento: </label>
+            <input type="text" formControlName="consulta_pac_f_nacimiento" readonly value="{{currentPaciente.f_nac}}" class="form-control">
+          </div>
+        </div>
+        <br>
+      </span>
+    </ul>
+
+    <div class="card-body">
+      <h3 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> Registro de consulta</h3>
+    </div>
+    <ul class="list-group list-group-flush">
+      <span class="cont">
+        <div class="row">
+          <div class="col-4">
+            <label for="" class="form-label">Fecha de la consulta</label>
+            <input type="text" value="{{fechaHoy}}" readonly id="" class="form-control">
+          </div>
+          <div class="col-4"></div>
+          <div class="col-4"></div>
+        </div>
+      </span>
+      <span class="cont">
+        <h5>Signos vitales</h5>
+        <br>
+        <div class="row">
+            <div class="col-3">
+              <label for="" class="form-label">Presión Arterial</label>
+              <input type="text" formControlName="consulta_presion_arterial" id="" class="form-control">
+            </div>
+            <div class="col-3">
+              <label for="" class="form-label">Frecuencia cardiaca</label>
+              <input type="text" formControlName="consulta_frec_cardiaca" id="" class="form-control">
+            </div>
+            <div class="col-3">
+              <label for="" class="form-label">Frecuencia respiratoria</label>
+              <input type="text" formControlName="consulta_frec_respiratoria" id="" class="form-control">
+            </div>
+            <div class="col-3">
+              <label for="" class="form-label">Temperatura (°C)</label>
+              <input type="text" formControlName="consulta_temp" id="" class="form-control">
+            </div>
+        </div>
+      </span>
+    </ul>
+    <div class="card-body">
+      <h3 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> Nota Medica</h3>
+    </div>
+    <ul class="list-group list-group-flush">
+      <span class="cont">
+        <div class="col-12">
+          <textarea class="form-control" formControlName="consulta_nota_medica" rows="5"></textarea>
+        </div>
+      </span>
+    </ul>
+    <div class="card-body">
+      <h3 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> Diagnostico</h3>
+    </div>
+    <ul class="list-group list-group-flush">
+      <span class="cont">
+        <div class="col-12">
+          <textarea class="form-control" formControlName="consulta_diagnostico" rows="3"></textarea>
+        </div>
+      </span>
+    </ul>
+    <div class="card-body">
+      <h3 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> Tratamiento</h3>
+    </div>
+    <ul class="list-group list-group-flush">
+      <span class="cont">
+        <div class="col-12">
+          <textarea class="form-control" formControlName="consulta_tratamiento" rows="3"></textarea>
+        </div>
+      </span>
+      <span class="cont">
+        <div class="row">
+          <div class="col-4">
+            <label for="" class="form-label">¿Aplica incapacidad?</label>
+            <span class="cont2">
+              <div class="col-2">
+                <input class="form-check-input" type="radio" formControlName="consulta_incapacidad" id="exampleRadios1" value="si" checked>
+                <label class="form-check-label" for="exampleRadios1">
+                  Si
+                </label>
+              </div>
+              <div class="col-2">
+                <input class="form-check-input" type="radio" formControlName="consulta_incapacidad" id="exampleRadios2" value="no">
+                <label class="form-check-label" for="exampleRadios2">
+                  No
+                </label>
+              </div>
+            </span>
+          </div>
+          <div class="col-4">
+            <label for="exampleFormControlSelect1">Despues de la consulta el paciente</label>
+            <select class="form-control" formControlName="consulta_post_accion" id="exampleFormControlSelect1">
+              <option selected="selected" value="">Selecciona el turno</option>
+              <option value="Matutino">Matutino</option>
+              <option value="Vespertino">Vespertino</option>
+              <option value="Nocturno">Nocturno</option>
+            </select>
+          </div>
+          <div class="col-4">
+            <label for="" class="form-label">Nombre de quien lo atendió: </label>
+            <input type="text" formControlName="consulta_doc" readonly value="{{currentUsuario}}" class="form-control">
+          </div>
+        </div>
+      </span>
+      <span class="mensaje">
+        <h5>Guarda la consulta para continuar con los datos de la incapacidad</h5>
+      </span>
+    </ul>
+  </form>
+  <div class="modal-footer">
+    <button class="btn btn-success" (click)="enviarConsulta()" [disabled]="!consultaForm.valid">Guardar</button>
+    <button class="btn btn-danger">Cancelar</button>
+  </div>
+</div>
+<p>{{currentPaciente | json}}</p>

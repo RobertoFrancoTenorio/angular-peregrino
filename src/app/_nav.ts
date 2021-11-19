@@ -54,10 +54,17 @@ export const navItems: INavData[] = [
         icon: 'fa fa-calendar',
         url: '/calendario'
       },
+    ]
+  },
+  {
+    name: 'Consultas',
+    icon: 'fa fa-folder-open',
+    variant: 'true',
+    children: [
       {
-        name: 'Agenda',
-        icon: 'fa fa-list-ol',
-        url: '/historia-clinica'
+        name: 'Atendidas',
+        icon: 'fa fa-calendar',
+        url: '/calendario'
       },
     ]
   },

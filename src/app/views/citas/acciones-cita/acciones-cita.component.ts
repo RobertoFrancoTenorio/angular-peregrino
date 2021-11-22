@@ -2,33 +2,38 @@ import { Component } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { ModalInfoConsultaComponent } from '../../citas/modal-info-consulta/modal-info-consulta.component';
+import { AddCitaComponent } from '../add-cita/add-cita.component';
 
 @Component({
-  selector: 'app-acciones-consulta',
-  templateUrl: './acciones-consulta.component.html',
-  styleUrls: ['./acciones-consulta.component.scss']
+  selector: 'app-acciones-cita',
+  templateUrl: './acciones-cita.component.html',
+  styleUrls: ['./acciones-cita.component.scss']
 })
-export class AccionesConsultaComponent implements ICellRendererAngularComp {
+export class AccionesCitaComponent implements ICellRendererAngularComp {
   public params: any;
   modalRef: BsModalRef;
+
   constructor(
     private modalService: BsModalService,
   ) { }
 
+  refresh(params: ICellRendererParams): boolean {
+    throw new Error('Method not implemented.');
+  }
   agInit(params: ICellRendererParams): void {
     console.log(params);
     this.params = params;
   }
 
-  refresh(params: ICellRendererParams): boolean {
-    throw new Error('Method not implemented.');
+  ngOnInit(): void {
   }
 
-  verConsulta(){
-    //this.router.navigate(['add-doctor'], navigationExtras);
+  editarConsulta(){
     const initialState = {
-      currentConsulta: this.params.data,
+      currentCita: {
+        currentCita: this.params.data,
+        editarCita: true,
+      },
       keyboard: false,
       backdrop: true,
       ignoreBackdropClick: true,
@@ -36,7 +41,7 @@ export class AccionesConsultaComponent implements ICellRendererAngularComp {
     };
     console.log('Params', this.params.data);
 
-    this.modalRef = this.modalService.show(ModalInfoConsultaComponent, {
+    this.modalRef = this.modalService.show(AddCitaComponent, {
       keyboard: false,
       backdrop: true,
       ignoreBackdropClick: true,

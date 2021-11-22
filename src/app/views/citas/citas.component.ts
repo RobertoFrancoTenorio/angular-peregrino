@@ -4,7 +4,7 @@ import moment from 'moment';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../service/auth/auth.service';
 import { CitaService } from '../../service/cita/cita.service';
-import { take } from 'rxjs/operators';
+import { AccionesCitaComponent } from './acciones-cita/acciones-cita.component';
 
 @Component({
   selector: 'app-citas',
@@ -23,6 +23,9 @@ export class CitasComponent implements OnInit {
   citasRechazadasData = [];
   totalRec: number = 0;
 
+  tablaReagendar: GridOptions;
+  citasReagendarData = [];
+  totalReagendar: number = 0;
 
   columGral = [
     { width: 60, headerName: 'Item', field: 'item', pinned: 'left' },
@@ -41,7 +44,6 @@ export class CitasComponent implements OnInit {
         comparator: function (filterLocalDateAtMidnight, cellValue) {
           var val = moment(cellValue.seconds * 1000).format('YYYY/MM/DD');
           var cellDate = new Date(val);
-
           if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
             return 0;
           }
@@ -63,6 +65,7 @@ export class CitasComponent implements OnInit {
       }
     },
     { width: 240, headerName: 'Estatus', field: 'estatus' },
+    { width: 240, headerName: 'Acciones', field: 'name', cellRendererFramework: AccionesCitaComponent },
   ]
 
   constructor(
@@ -85,10 +88,8 @@ export class CitasComponent implements OnInit {
         this.tablaAsignadas.api.setRowData(this.citasAsigData);
       },
       onRowClicked: ($event) => {
-        //this.currentProsp = $event.data;
       },
       rowData: null,
-      //getRowStyle: this.styleSeg,
     };
 
     this.tablaRechazadas = <GridOptions>{
@@ -106,35 +107,50 @@ export class CitasComponent implements OnInit {
         this.tablaRechazadas.api.setRowData(this.citasRechazadasData);
       },
       onRowClicked: ($event) => {
-        //this.currentProsp = $event.data;
       },
       rowData: null,
-      //getRowStyle: this.styleSeg,
+    };
+
+    this.tablaReagendar = <GridOptions>{
+      defaultColDef: {
+        sortable: true
+      },
+      columnDefs: [
+        ...this.columGral,
+      ],
+      onGridReady: () => {
+        const allColumnIds = [];
+        this.tablaReagendar.columnApi.getAllColumns().forEach(function (column) {
+          allColumnIds.push(column['colId']);
+        });
+        this.tablaReagendar.api.setRowData(this.citasReagendarData);
+      },
+      onRowClicked: ($event) => {
+      },
+      rowData: null,
     };
   }
 
-  async ngOnInit(): Promise<void> {
-
-    await new Promise<void>((resolve) => {
-      this.citaServ.getCitasEstatus('rechazada').pipe(take(1)).subscribe(data => {
-        this.citasRechazadasData = data;
-        this.totalRec = this.citasRechazadasData.length;
-        if (this.tablaRechazadas.api) this.tablaRechazadas.api.setRowData(this.citasRechazadasData);
-        resolve();
-      })
+  ngOnInit() {
+    this.done = true
+    this.citaServ.getCitasEstatus('rechazada').subscribe(data => {
+      this.citasRechazadasData = data;
+      this.totalRec = this.citasRechazadasData.length;
+      this.tablaRechazadas.api.setRowData(this.citasRechazadasData);
     })
 
-    await new Promise<void>((resolve) => {
-      this.citaServ.getCitasEstatus('asignada').pipe(take(1)).subscribe(data => {
-        this.citasAsigData = data;
-        this.totalAsig = this.citasAsigData.length;
-        if (this.tablaAsignadas.api) this.tablaAsignadas.api.setRowData(this.citasAsigData);
-        resolve();
-      })
-    }).then(() => {
-      this.done = true;
+    this.citaServ.getCitasEstatus('asignada').subscribe(data => {
+      this.citasAsigData = data;
+      this.totalAsig = this.citasAsigData.length;
+      this.tablaAsignadas.api.setRowData(this.citasAsigData);
     })
 
+    this.citaServ.getCitasEstatus('reagendar').subscribe(data => {
+      console.log('Reagendar', data)
+      this.citasReagendarData = data;
+      this.totalReagendar = this.citasReagendarData.length;
+      this.tablaReagendar.api.setRowData(this.citasReagendarData);
+    })
   }
 
 }

@@ -6,7 +6,6 @@ import { CitaService } from '../../../service/cita/cita.service';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../service/auth/auth.service';
-import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -29,10 +28,10 @@ export class AddCitaComponent implements OnInit {
   date_ini: any;
   date_fin: any;
   currentDoctor: any = null;
+  drName: any = null;
   @Input() currentPaciente: any = null;
   @Input() currentCita: any = null;
   @Output() cerrarModal: EventEmitter<any> = new EventEmitter<any>();
-
   bandCalendar
 
   horarios = [
@@ -219,8 +218,7 @@ export class AddCitaComponent implements OnInit {
     private citaServ: CitaService,
     public datepipe: DatePipe,
     private auth: AuthService,
-    private router: Router,
-    private modalService: BsModalService
+    public modalRef: BsModalRef,
   ) {
     this.citaForm = this.fb.group({
       idDoctor: [null, Validators.required],
@@ -228,11 +226,8 @@ export class AddCitaComponent implements OnInit {
     });
   }
 
-  async ngOnInit() {
-
-    await this.auth.getUserAccount();
-
-    await new Promise<void>((resolve) => {
+  ngOnInit() {
+    new Promise<void>((resolve) => {
       this.docService.getDoctorsListActive().subscribe(dataDocs => {
         this.doctorList = dataDocs;
         console.log(dataDocs);
@@ -242,8 +237,13 @@ export class AddCitaComponent implements OnInit {
 
     this.minDate = new Date();
     this.done = true;
-
+    if(this.currentCita != null){
+      console.log('Current Cita', this.currentCita.currentCita)
+      this.fechaCita = this.datepipe.transform(this.currentCita.currentCita.f_cita.toDate(), 'yyyy-MM-dd');
+      console.log('cita', this.fechaCita)
+    }
     this.onChanges();
+    console.log(this.currentDoctor)
   }
 
   onChanges(): void {
@@ -251,9 +251,12 @@ export class AddCitaComponent implements OnInit {
       console.log(val)
       if (val) {
         this.currentDoctor = this.doctorList.filter(d => d.id == val)[0];
+        this.docService.getDoctorName(this.currentDoctor.id).subscribe(data => {
+          this.drName = data[0]['doc_nombre_completo']
+          console.log('Nombre', this.drName)
+        })
       }
       else this.currentDoctor = null;
-
       this.printCalendar();
     });
 
@@ -261,12 +264,10 @@ export class AddCitaComponent implements OnInit {
       this.date_select = this.datepipe.transform(new Date(val), 'yyyy-MM-dd');
       this.date_ini = new Date(this.date_select + ' 00:30')
       this.date_fin = new Date(this.date_select + ' 23:30')
-
       console.log(this.date_ini)
       console.log(this.date_fin)
       this.printCalendar();
     });
-
   }
 
   async printCalendar() {
@@ -279,34 +280,24 @@ export class AddCitaComponent implements OnInit {
       await new Promise<void>((resolve) => {
         this.citaServ.getCitasDiaDoctor(this.currentDoctor.id, this.date_ini, this.date_fin).subscribe(dataCitas => {
           console.log(dataCitas)
-
           for (let c of dataCitas) {
             idsHorarios.push(c['idHorario'])
           }
-
-
           for (let h of this.horarios) {
             h.visible = false;
             var hora1 = moment(h.hora_inicio, 'hh:mm')
             var hora2 = moment(h.hora_fin, 'hh:mm')
-
             if (hora1.isBetween(doc_hora_inicio, doc_hora_fin) && hora2.isBetween(doc_hora_inicio, doc_hora_fin)) {
-              //console.log('visible')
               h.visible = true;
               if (idsHorarios.includes(h.idHorario)) {
                 h.estatus = "Horario ocupado"
                 h.paciente = dataCitas.filter(c => c['idHorario'] == h.idHorario)[0]['detPaciente']['nombre']
               }
-
             } else h.visible = false;
           }
-
           resolve();
         })
       })
-
-
-
       this.bandHorario = true;
     } else {
       this.bandHorario = false;
@@ -321,7 +312,6 @@ export class AddCitaComponent implements OnInit {
       confirmButtonText: 'Guardar',
       input: "text",
       inputValidator: comentario => {
-        // Si el valor es válido, debes regresar undefined. Si no, una cadena
         if (!comentario) {
           return "Por favor escribe los comentarios generale de la cita.";
         } else {
@@ -332,7 +322,6 @@ export class AddCitaComponent implements OnInit {
       if (result.isConfirmed) {
         if (result.value) {
           let comentario = result.value;
-          
           Swal.fire({
             title: 'Registrando cita',
             text: 'Los datos de la cita estan ciendo almacenados',
@@ -343,9 +332,6 @@ export class AddCitaComponent implements OnInit {
             allowOutsideClick: false,
             allowEscapeKey: false
           });
-      
-      
-          console.log(String(this.citaForm.value['cita_fecha']).substring(0, 10) + ' ' + horario.hora_inicio);
           let citaData = {
             idDoctor: this.currentDoctor.id,
             idPaciente: this.currentPaciente.id,
@@ -376,38 +362,76 @@ export class AddCitaComponent implements OnInit {
               }
             ]
           }
-      
           console.log(citaData);
-          /*
-          ↓↓↓Esta parte recibe el formulario y lo pasa como parametro
-          al servicio en su metodo crearDoctor↓↓↓*/
           await this.citaServ.crearCita(citaData);
-          /*Ejecución de Sweet Alert con los parametros necesarios*/
-      
           Swal.close();
-      
           Swal.fire({
             title: 'Cita registrada',
             text: 'La cita ha sido registrada correctamente.',
             icon: 'success',
             confirmButtonText: 'OK'
           })
-            /*Una vez ejecutado el Sweet alert limpia el formulario
-            y redirige al componente de doctores*/
             .then(() => {
               this.citaForm.reset();
-              //this.router.navigate(['doctores']);
               this.citaSave.emit({ citaSave: true })
               return false;
             })
-
         }
       }
     });
-
   }
 
-    
+  actualizarCita(horario){
+    console.log('actualiza cita metodo')
+    Swal.fire(
+      'Registro completo',
+      'La cita ha sido reagendada correctamente',
+      'success'
+    );
+    this.currentCita.currentCita.idDoctor = this.currentDoctor.id;
+    this.currentCita.currentCita.idPaciente = this.currentCita.currentCita.detPaciente.id;
+    this.currentCita.currentCita.detDoctor.id = this.currentDoctor.id;
+    this.currentCita.currentCita.detDoctor.nombre = this.drName;
+    let detPaciente = {
+      id: this.currentCita.currentCita.detPaciente.id,
+      nombre: this.currentCita.currentCita.detPaciente.nombre,
+      celular: this.currentCita.currentCita.detPaciente.celular,
+      email:this.currentCita.currentCita.detPaciente.email,
+      telefono:this.currentCita.currentCita.detPaciente.telefono
+    }
+    this.currentCita.currentCita.detPaciente = detPaciente;
+    this.currentCita.currentCita.f_cita = new Date(this.date_select + ' ' + horario.hora_inicio);
+    this.currentCita.currentCita.idHorario = horario.idHorario
+
+    const historial =
+    {
+      idUser: this.auth.currentUserId,
+      motivo: 'cita reagendaa',
+      accion: 'asignar nueva cita',
+      f_accion: new Date(),
+      userName: this.auth.userData.userName,
+      DetalleCita: {
+        CitaAnterior: {
+          cita_hora_ini: this.currentCita.currentCita.cita_hora_ini,
+          cita_hora_fin: this.currentCita.currentCita.cita_hora_fin,
+          idHorario: this.currentCita.currentCita.idHorario,
+          f_cita: this.currentCita.currentCita.f_cita
+        },
+        CitaActual: {
+          idHorario: horario.idHorario,
+          cita_hora_ini: horario.hora_inicio,
+          cita_hora_fin: horario.hora_fin,
+          f_cita: new Date(this.date_select + ' ' + horario.hora_inicio),
+        }
+      }
+    }
+    this.currentCita.currentCita.cita_hora_ini = horario.hora_inicio
+    this.currentCita.currentCita.cita_hora_fin = horario.hora_fin
+    this.currentCita.currentCita.estatus = 'asignada'
+    this.currentCita.currentCita.historial.push(historial);
+    this.citaServ.updateCita(this.currentCita.currentCita);
+    this.modalRef.hide();
+  }
 
   loadInfo(){
     this.citaForm.patchValue({
@@ -417,5 +441,4 @@ export class AddCitaComponent implements OnInit {
   close(){
     this.cerrarModal.emit({ cerrar: true })
   }
-
 }

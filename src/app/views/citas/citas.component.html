@@ -16,7 +16,6 @@
         <br>
         <div class="row">
             <div class="col-6 col-lg-3"></div>
-            <div class="col-6 col-lg-3"></div>
             <div class="col-6 col-lg-3">
                 <div class="card">
                     <div class="card-body p-0 clearfix">
@@ -36,6 +35,15 @@
                     </div>
                 </div>
             </div>
+            <div class="col-6 col-lg-3">
+              <div class="card">
+                  <div class="card-body p-0 clearfix">
+                      <i class="fa fa-clock-o bg-warning p-4 px-5 font-2xl mr-3 float-left"></i>
+                      <div class="h5 text-warning mb-0 pt-3 text-center"> {{ totalReagendar }} </div>
+                      <div class="text-muted text-uppercase font-weight-bold font-xs text-center">Reagendar</div>
+                  </div>
+              </div>
+          </div>
         </div>
 
         <div class="row">
@@ -56,7 +64,6 @@
                     </tab>
 
                     <tab heading="Citas rechazadas" class="mt-2">
-
                         <div class="row">
                             <div class="col-lg-6 col-md-8">
                                 <input class="form-control" placeholder="Buscar cita..." type="text"
@@ -67,8 +74,20 @@
                         <ag-grid-angular #agGrid2 class="ag-theme-alpine" style="width: 100%; height: 450px;"
                             [gridOptions]="tablaRechazadas" [pagination]="true" enableFilter>
                         </ag-grid-angular>
-
                     </tab>
+
+                    <tab heading="Citas por reagendar" class="mt-2">
+                      <div class="row">
+                          <div class="col-lg-6 col-md-8">
+                              <input class="form-control" placeholder="Buscar cita..." type="text"
+                                  (keyup)="onFilterCitaRechazada($event)" />
+                          </div>
+                      </div>
+                      <br>
+                      <ag-grid-angular #agGrid2 class="ag-theme-alpine" style="width: 100%; height: 450px;"
+                          [gridOptions]="tablaReagendar" [pagination]="true" enableFilter>
+                      </ag-grid-angular>
+                  </tab>
                 </tabset>
             </div>
         </div>
@@ -76,3 +95,4 @@
     </div>
 
 </div>
+

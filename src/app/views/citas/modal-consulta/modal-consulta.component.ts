@@ -70,8 +70,8 @@ export class ModalConsultaComponent implements OnInit {
         if (result.value) {
           let motivo = result.value;
           this.UsuarioService.getUserData(this.AuthService.currentUserId).subscribe(user => {
-            let data = { motivo: motivo, idUser: this.AuthService.currentUserId, usuario: user[0]['currentUser'], accion: 'Rechazo', f_rechazo: new Date()}
-            this.currentCita.currentCita.estatus = 'reagendada';
+            let data = { motivo: motivo, idUser: this.AuthService.currentUserId, usuario: user[0]['currentUser'], accion: 'Rechazo', f_accion: new Date()}
+            this.currentCita.currentCita.estatus = 'reagendar';
             this.currentCita.currentCita.historial.push(data)
             console.log('Cita que se va a enviar', this.currentCita.currentCita)
             this.CitaService.updateCita(this.currentCita.currentCita)

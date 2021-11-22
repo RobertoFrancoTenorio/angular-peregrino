@@ -114,6 +114,7 @@ import { ConsultaComponent } from './views/citas/consulta/consulta.component';
 import { ConsultasComponent } from './views/citas/consultas/consultas.component';
 import { AccionesConsultaComponent } from './views/citas/acciones-consulta/acciones-consulta.component';
 import { ModalInfoConsultaComponent } from './views/citas/modal-info-consulta/modal-info-consulta.component';
+import { AccionesCitaComponent } from './views/citas/acciones-cita/acciones-cita.component';
 
 @NgModule({
   imports: [
@@ -184,7 +185,8 @@ import { ModalInfoConsultaComponent } from './views/citas/modal-info-consulta/mo
     ConsultaComponent,
     ConsultasComponent,
     AccionesConsultaComponent,
-    ModalInfoConsultaComponent
+    ModalInfoConsultaComponent,
+    AccionesCitaComponent,
   ],
   providers: [
     {

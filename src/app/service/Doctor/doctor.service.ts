@@ -76,4 +76,11 @@ export class DoctorService {
     })
   }
 
+  getDoctorName(post: any) {
+    return this.afs.collection('/SegMedico/peregrino/Doctores', ref =>
+      ref
+        .where('id', '==', post)
+    ).valueChanges();
+  }
+
 }

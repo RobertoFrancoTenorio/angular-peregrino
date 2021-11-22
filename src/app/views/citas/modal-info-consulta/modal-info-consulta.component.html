@@ -1,45 +1,60 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Información de la consulta</h4>
+  <div class="pull-right">
+      <button type="button" class="btn btn-secondary" title="Cerrar" (click)="cerrarModal()">
+          <span class="fa fa-times-circle"></span>
+      </button>
+  </div>
+</div>
+
+<div class="modal-body" *ngIf="currentConsulta != null">
 <div class="card">
   <div class="card-body">
     <h3 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> Consulta</h3>
   </div>
-  <form [formGroup]="consultaForm" (onSubmit)="enviarConsulta()">
     <ul class="list-group list-group-flush">
       <span class="cont">
         <h4>Información del Paciente</h4>
+
         <div class="row">
           <div class="col-6">
             <label for="" class="form-label">Nombre(s) del Paciente</label>
-            <input type="text" formControlName="consulta_pac_nombre" readonly value="{{currentPaciente.nombres}}" class="form-control">
+            <input type="text" readonly value={{currentConsulta.consulta_pac_nombre}} class="form-control">
           </div>
           <div class="col-3">
             <label for="" class="form-label">Primer Apellido del Paciente: </label>
-            <input type="text" formControlName="consulta_paciente_primer_apellido" readonly value="{{currentPaciente.primerApellido}}" class="form-control">
+            <input type="text" readonly value="{{currentConsulta.consulta_paciente_primer_apellido}}" class="form-control">
           </div>
           <div class="col-3">
             <label for="" class="form-label">Segundo Apellido del Paciente: </label>
-            <input type="text" formControlName="consulta_paciente_segundo_apellido" readonly value="{{currentPaciente.segundoApellido}}" class="form-control">
+            <input type="text" readonly value="{{currentConsulta.consulta_paciente_segundo_apellido}}" class="form-control">
           </div>
           <br>
           <div class="col-4">
+            <br>
             <label for="" class="form-label">Telefono: </label>
-            <input type="text" formControlName="consulta_pac_telefono" readonly value="{{currentConsulta.detPaciente.telefono}}" class="form-control">
+            <input type="text" readonly value="{{currentConsulta.consulta_pac_telefono}}" class="form-control">
           </div>
           <div class="col-4">
+            <br>
             <label for="" class="form-label">Celular: </label>
-            <input type="text" formControlName="consulta_pac_celular" readonly value="{{currentConsulta.detPaciente.celular}}" class="form-control">
+            <input type="text" readonly value="{{currentConsulta.consulta_pac_celular}}" class="form-control">
           </div>
           <div class="col-4">
+            <br>
             <label for="" class="form-label">Email: </label>
-            <input type="text" formControlName="consulta_pac_celular" readonly value="{{currentConsulta.detPaciente.email}}" class="form-control">
+            <input type="text" readonly value="{{currentConsulta.consulta_pac_email}}" class="form-control">
           </div>
           <div class="col-6">
+            <br>
             <label for="" class="form-label">Fecha de nacimiento: </label>
-            <input type="text" formControlName="consulta_pac_f_nacimiento" readonly value="{{currentPaciente.f_nac}}" class="form-control">
+            <input type="text" readonly value="{{currentConsulta.consulta_pac_f_nacimiento}}" class="form-control">
           </div>
         </div>
         <br>
       </span>
     </ul>
+
     <div class="card-body">
       <h3 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> Registro de consulta</h3>
     </div>
@@ -48,7 +63,7 @@
         <div class="row">
           <div class="col-4">
             <label for="" class="form-label">Fecha de la consulta</label>
-            <input type="text" value="{{fechaHoy}}" readonly id="" class="form-control">
+            <input type="text" value="{{currentConsulta.fecha_consulta}}" readonly id="" class="form-control">
           </div>
           <div class="col-4"></div>
           <div class="col-4"></div>
@@ -58,21 +73,21 @@
         <h5>Signos vitales</h5>
         <br>
         <div class="row">
-            <div class="col-3">
+            <div class="col-3" *ngIf="currentConsulta.consulta_presion_arterial">
               <label for="" class="form-label">Presión Arterial</label>
-              <input type="text" formControlName="consulta_presion_arterial" id="" class="form-control">
+              <input type="text" readonly value="{{currentConsulta.consulta_presion_arterial}}" id="" class="form-control">
             </div>
-            <div class="col-3">
+            <div class="col-3" *ngIf="currentConsulta.consulta_frec_cardiaca">
               <label for="" class="form-label">Frecuencia cardiaca</label>
-              <input type="text" formControlName="consulta_frec_cardiaca" id="" class="form-control">
+              <input type="text" readonly value="{{currentConsulta.consulta_frec_cardiaca}}" id="" class="form-control">
             </div>
-            <div class="col-3">
+            <div class="col-3" *ngIf="currentConsulta.consulta_frec_respiratoria">
               <label for="" class="form-label">Frecuencia respiratoria</label>
-              <input type="text" formControlName="consulta_frec_respiratoria" id="" class="form-control">
+              <input type="text" readonly value="{{currentConsulta.consulta_frec_respiratoria}}" id="" class="form-control">
             </div>
-            <div class="col-3">
+            <div class="col-3" *ngIf="currentConsulta.consulta_temp">
               <label for="" class="form-label">Temperatura (°C)</label>
-              <input type="text" formControlName="consulta_temp" id="" class="form-control">
+              <input type="text" readonly id="" value="{{currentConsulta.consulta_temp}}" class="form-control">
             </div>
         </div>
       </span>
@@ -83,7 +98,7 @@
     <ul class="list-group list-group-flush">
       <span class="cont">
         <div class="col-12">
-          <textarea class="form-control" formControlName="consulta_nota_medica" rows="5"></textarea>
+          <textarea class="form-control" readonly value="{{currentConsulta.consulta_nota_medica}}" rows="5"></textarea>
         </div>
       </span>
     </ul>
@@ -93,7 +108,7 @@
     <ul class="list-group list-group-flush">
       <span class="cont">
         <div class="col-12">
-          <textarea class="form-control" formControlName="consulta_diagnostico" rows="3"></textarea>
+          <textarea class="form-control" readonly value="{{currentConsulta.consulta_diagnostico}}" rows="3"></textarea>
         </div>
       </span>
     </ul>
@@ -103,14 +118,21 @@
     <ul class="list-group list-group-flush">
       <span class="cont">
         <div class="col-12">
-          <textarea class="form-control" formControlName="consulta_tratamiento" rows="3"></textarea>
+          <textarea class="form-control" readonly value="{{currentConsulta.consulta_tratamiento}}" rows="3"></textarea>
+        </div>
+      </span>
+      <span class="cont">
+        <div class="row">
+          <div class="col-4">
+            <label for="" class="form-label">Nombre de quien lo atendió: </label>
+            <input type="text" readonly value="{{currentConsulta.consulta_doc}}" class="form-control">
+          </div>
         </div>
       </span>
     </ul>
-  </form>
-  <div class="modal-footer">
-    <button class="btn btn-success" (click)="enviarConsulta()" [disabled]="!consultaForm.valid">Guardar</button>
-    <button class="btn btn-danger">Cancelar</button>
-  </div>
 </div>
-<p>{{currentPaciente | json}}</p>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
+</div>

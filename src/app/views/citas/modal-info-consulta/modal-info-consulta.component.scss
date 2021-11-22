@@ -1,0 +1,45 @@
+.card{
+  border-radius: 20px;
+}
+
+.card-body{
+  background-color: white;
+  padding: .8rem;
+  background-color:rgb(64, 71, 77)
+}
+
+.card-title{
+  margin-bottom: 0px;
+  color: white;
+  font-weight: 700;
+}
+
+.cont{
+  padding: 1rem;
+}
+
+.col-3{
+  text-align: center;
+}
+
+.line{
+  height: 10px; border-width:0;color:gray;background-color:gray
+  }
+
+.form-control{
+  border: solid 1px gray;
+}
+
+.cont2{
+  display: flex;
+  padding: 1rem;
+}
+
+.mensaje{
+  text-align: center;
+  padding: 1rem;
+  border: solid 1px gray;
+  border-radius: 20px;
+  margin: 1rem;
+}
+

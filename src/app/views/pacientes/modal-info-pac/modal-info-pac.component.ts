@@ -265,7 +265,7 @@ export class ModalInfoPacComponent implements OnInit {
         resolve();
       })
     })
-    
+
     console.log(this.dataCitasAll);
 
     this.onChanges();
@@ -385,6 +385,23 @@ export class ModalInfoPacComponent implements OnInit {
       this.GinecoObstricoForm.get("pac_partos").disable();
       this.GinecoObstricoForm.get("pac_abortos").disable();
       this.GinecoObstricoForm.get("pac_cesareas").disable();
+      this.GinecoObstricoForm.get("pac_cant_abortos").disable();
+      this.GinecoObstricoForm.get("pac_cant_cesareas").disable();
+      this.GinecoObstricoForm.get("pac_cant_gestaciones").disable();
+      this.GinecoObstricoForm.get("pac_cant_partos").disable();
+      this.GinecoObstricoForm.get("pac_papanicolau").disable();
+      this.GinecoObstricoForm.get("pac_papanicolau_fecha").disable();
+      this.GinecoObstricoForm.get("pac_papanicolau_observacion").disable();
+      this.GinecoObstricoForm.get("pac_tamis_fecha").disable();
+      this.GinecoObstricoForm.get("pac_tamis_mama").disable();
+      this.GinecoObstricoForm.get("pac_tamis_observacion").disable();
+      this.GinecoObstricoForm.get("pac_ultima_cesarea").disable();
+      this.GinecoObstricoForm.get("pac_ultima_cesarea_observacion").disable();
+      this.GinecoObstricoForm.get("pac_ultima_gestacion").disable();
+      this.GinecoObstricoForm.get("pac_ultima_gestacion_observacion").disable();
+      this.GinecoObstricoForm.get("pac_ultimo_aborto").disable();
+      this.GinecoObstricoForm.get("pac_ultimo_parto").disable();
+      this.GinecoObstricoForm.get("pac_ultimo_parto_observacion").disable();
     }
     else{
       this.GinecoObstricoForm.get("pac_menarquia").enable();

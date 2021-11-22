@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
 })
 export class ConsultaComponent implements OnInit {
   currentConsulta;
-  currentPaciente;
+  currentPaciente = null;
   currentUsuario;
   edad;
   currentFecha = new Date();
@@ -31,7 +31,6 @@ export class ConsultaComponent implements OnInit {
     private CitaService: CitaService,
   ) {
     this.fechaHoy = this.DatePipe.transform(this.currentFecha.toDateString(), 'yyyy-MM-dd' );
-    console.log('consulta ruta',this.router.getCurrentNavigation())
     if(this.router.getCurrentNavigation() != null){
       this.route.queryParams.subscribe(async params => {
         if(this.router.getCurrentNavigation().extras.state){
@@ -49,7 +48,6 @@ export class ConsultaComponent implements OnInit {
       this.currentConsulta = null;
       console.log('getcurrentnavigator vacio');
     }
-
   }
 
   ngOnInit(): void {
@@ -68,8 +66,6 @@ export class ConsultaComponent implements OnInit {
       consulta_nota_medica: ['', Validators.required],
       consulta_diagnostico: ['', Validators.required],
       consulta_tratamiento: ['', Validators.required],
-      consulta_incapacidad: ['', Validators.required],
-      consulta_post_accion: ['', Validators.required],
       consulta_doc: this.auth.userData.userName,
     })
   }
@@ -91,6 +87,7 @@ export class ConsultaComponent implements OnInit {
     console.log('Valor post', post)
     this.currentConsulta.estatus = 'terminada';
     let data = { motivo: 'Cita finalizada', idUser: this.auth.currentUserId, usuario: this.auth.userData.userName, accion: 'Terminada', f_termino: new Date()}
+    post['id_Doctor'] = this.auth.currentUserId;
     this.currentConsulta.historial.push(data)
     console.log('Consulta', this.currentConsulta)
     Swal.fire({

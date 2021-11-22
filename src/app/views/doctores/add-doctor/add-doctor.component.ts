@@ -15,11 +15,11 @@ export interface Fruit {
 export class AddDoctorComponent implements OnInit {
   //Variable para determinar cual de los 2 divs va a cargar
   done: boolean = true;
-
+  editDoctor: boolean = false;
   /*Variable de tipo form group que guardará todos los datos que mandaremos desde el
   componente html*/
   doctorForm: FormGroup;
-
+  municipio: any;
   //Variable que nos va a identificar sí se va a crear un nuevo doctor o solo se va a modificar
   currentUser:any = null
 
@@ -54,35 +54,27 @@ export class AddDoctorComponent implements OnInit {
     private DoctorService: DoctorService,
     private httpClient: HttpClient,
   ) {
-    /*Siempre que vaya a manipular un dato hay que incluir la variable */
     this.doctorForm = this.fb.group({
       doc_nombre: ['', [Validators.required]],
       doc_primer_apellido: ['', [Validators.required]],
       doc_segundo_apellido: ['', [Validators.required]],
-
       doc_cedula: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]],
       doc_curp: ['', [Validators.required, Validators.pattern(this.valueCURP)]],
-
       doc_especialidades: ['',],
       activo: [this.varActivo, [Validators.required]],
-
       doc_estado: [''],
       doc_municipio: [''],
       doc_dir_colonia: [''],
       doc_dir_calle: [''],
       doc_dir_numero: ['',],
       doc_dir_cp: [''],
-
       doc_email: ['',[Validators.required, Validators.email]],
       doc_celular_principal: ['',[Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       doc_horario_ini: [''],
       doc_horario_fin: [''],
       metodos_contacto: this.fb.array([]),
     })
-
-    console.log('valopr de ruta add docotr',this.router.getCurrentNavigation())
-
-
+    console.log('valor de ruta add doctor',this.router.getCurrentNavigation())
     if(this.router.getCurrentNavigation() != null){
       /*queryParams: parámetro muy útil para enviar objetos complejos utilizando la navegación de ruta.
                     ↓↓↓↓↓*/
@@ -111,6 +103,13 @@ export class AddDoctorComponent implements OnInit {
   loadUserData() {
     //↓↓↓↓Se encarga de rellenar el formulario con los datos que pueden ser modificados
     console.log('Municipio', this.currentUser.pac_municipio)
+    this.editDoctor = true;
+
+    try{
+      this.getMunicipios(this.currentUser.pac_estado)
+    }catch(e){
+      console.log('Error', e)
+    }
     this.doctorForm.patchValue({
       doc_nombre: this.currentUser.doc_nombre,
       doc_primer_apellido: this.currentUser.doc_primer_apellido,

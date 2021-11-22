@@ -63,8 +63,8 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Atendidas',
-        icon: 'fa fa-calendar',
-        url: '/calendario'
+        icon: 'fa fa-check-circle-o',
+        url: '/consultas'
       },
     ]
   },

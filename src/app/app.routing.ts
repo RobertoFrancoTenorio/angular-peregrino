@@ -24,6 +24,7 @@ import { CalendarioComponent } from './views/calendario/calendario.component';
 import { CalendarComponent } from './views/calendar/calendar.component';
 import { CitasComponent } from './views/citas/citas.component';
 import { ConsultaComponent } from './views/citas/consulta/consulta.component';
+import { ConsultasComponent } from './views/citas/consultas/consultas.component';
 
 
 export const routes: Routes = [
@@ -119,6 +120,15 @@ export const routes: Routes = [
       {
         path: 'calendario',
         component: CalendarioComponent,
+        data: {
+          cat: false,
+          categoria: 'Utilidades',
+          pagina: 'Calendario'
+        }
+      },
+      {
+        path: 'consultas',
+        component: ConsultasComponent,
         data: {
           cat: false,
           categoria: 'Utilidades',

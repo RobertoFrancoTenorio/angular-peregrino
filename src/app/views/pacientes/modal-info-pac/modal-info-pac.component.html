@@ -188,24 +188,17 @@
                       </button>
                     </div>
                   </div>
-
-
-
                 </tab>
-
                 <tab heading="Consultas">
                   Contenido de Consultas
                 </tab>
               </tabset>
-
             </div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
-
 
   <div class="container" *ngIf="antecedentesBand">
     <mat-horizontal-stepper [linear]="isLinear" #stepper>
@@ -858,7 +851,7 @@
           <br>
           <div id="btns">
             <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
-            <mat-checkbox formControlName="fourthCtrl" required [disabled]="!GinecoObstricoForm.valid">Finalizar
+            <mat-checkbox formControlName="fourthCtrl" required>Finalizar
               Gineco-obstétricos</mat-checkbox>
             <button class="btn btn-primary" matStepperNext>Siguiente</button>
           </div>

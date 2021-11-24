@@ -81,7 +81,7 @@ export class AddDoctorComponent implements OnInit {
       this.route.queryParams.subscribe(async params => {
         if(this.router.getCurrentNavigation().extras.state){
           this.currentUser = this.router.getCurrentNavigation().extras.state.userData;
-          this.loadMunicipios();
+          await this.loadMunicipios();
           this.loadUserData();
         } else{
           this.currentUser = null;
@@ -101,15 +101,9 @@ export class AddDoctorComponent implements OnInit {
   }
 
   loadUserData() {
-    //↓↓↓↓Se encarga de rellenar el formulario con los datos que pueden ser modificados
-    console.log('Municipio', this.currentUser.pac_municipio)
     this.editDoctor = true;
+    this.getMunicipios(this.currentUser.pac_estado);
 
-    try{
-      this.getMunicipios(this.currentUser.pac_estado)
-    }catch(e){
-      console.log('Error', e)
-    }
     this.doctorForm.patchValue({
       doc_nombre: this.currentUser.doc_nombre,
       doc_primer_apellido: this.currentUser.doc_primer_apellido,
@@ -129,9 +123,6 @@ export class AddDoctorComponent implements OnInit {
       doc_horario_ini: this.currentUser.doc_horario_ini,
       doc_horario_fin: this.currentUser.doc_horario_fin,
     })
-    /*CurrentUser carga la información, en este caso accede al campo metodos y lo carga como un map,
-    con la función flecha carga los datos en los campos necesarios con la variable data
-    */
     this.currentUser.metodos_contacto.map(data => {
       this.metodos.push(
         this.fb.group({
@@ -141,28 +132,19 @@ export class AddDoctorComponent implements OnInit {
         })
       )
     })
-
   }
 
-  /*Metodo para dar de alta doctores*/
   async addDoctor(){
     console.log(this.doctorForm.value);
-    /*
-    ↓↓↓Esta parte recibe el formulario y lo pasa como parametro
-    al servicio en su metodo crearDoctor↓↓↓*/
     let post = this.doctorForm.value;
     post['doc_nombre_completo'] = post['doc_nombre'] + ' ' + post['doc_primer_apellido'] + ' ' + post['doc_segundo_apellido']
     await this.DoctorService.crearDoctor(post, this.doc_id);
-    //console.log(this.doctorForm.value, this.doc_id);
-    /*Ejecución de Sweet Alert con los parametros necesarios*/
     Swal.fire({
       title: 'Usuario Registrado',
       text: 'El usuario ha sido registrado correctamente.',
       icon: 'success',
       confirmButtonText: 'OK'
     })
-    /*Una vez ejecutado el Sweet alert limpia el formulario
-    y redirige al componente de doctores*/
     .then(()=>{
       this.doctorForm.reset();
       this.router.navigate(['doctores']);
@@ -257,5 +239,4 @@ export class AddDoctorComponent implements OnInit {
       })
     })
   }
-
 }

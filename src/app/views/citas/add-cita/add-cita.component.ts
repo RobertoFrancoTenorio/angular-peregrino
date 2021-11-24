@@ -248,7 +248,7 @@ export class AddCitaComponent implements OnInit {
 
   onChanges(): void {
     this.citaForm.get('idDoctor').valueChanges.subscribe(val => {
-      console.log(val)
+      console.log('Val', val)
       if (val) {
         this.currentDoctor = this.doctorList.filter(d => d.id == val)[0];
         this.docService.getDoctorName(this.currentDoctor.id).subscribe(data => {
@@ -371,11 +371,11 @@ export class AddCitaComponent implements OnInit {
             icon: 'success',
             confirmButtonText: 'OK'
           })
-            .then(() => {
-              this.citaForm.reset();
-              this.citaSave.emit({ citaSave: true })
-              return false;
-            })
+          .then(() => {
+            this.citaForm.reset();
+            this.citaSave.emit({ citaSave: true })
+            return false;
+          })
         }
       }
     });
@@ -434,8 +434,6 @@ export class AddCitaComponent implements OnInit {
   }
 
   loadInfo(){
-    this.citaForm.patchValue({
-    })
   }
 
   close(){

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GridOptions } from 'ag-grid-community';
-import { take } from 'rxjs/operators';
 import { PacienteService } from '../../service/paciente/paciente.service';
 import { AccionesPacienteComponent } from './acciones-paciente/acciones-paciente.component';
 
@@ -45,7 +44,7 @@ export class PacientesComponent implements OnInit {
     {
       headerName: 'Tipo de Paciente',
       field: 'pac_tipo',
-      width: 180, 
+      width: 180,
       filter: "agTextColumnFilter",
       cellRenderer: (params) => {
         if(params.data.pac_tipo=='titular'){
@@ -57,7 +56,7 @@ export class PacientesComponent implements OnInit {
           div.innerHTML = params.data.pac_tipo;
           return div;
         }
-          
+
       }
     },
     {
@@ -66,7 +65,6 @@ export class PacientesComponent implements OnInit {
       width: 500,
       pinned: 'right'
     }
-    
   ]
 
   constructor(
@@ -84,13 +82,12 @@ export class PacientesComponent implements OnInit {
 
   async ngOnInit() {
     await new Promise<void>(resolve => {
-      this.pacienteService.getPacientes().pipe(take(1)).subscribe(pacientes =>{
+      this.pacienteService.getPacientes().subscribe(pacientes =>{
         console.log(pacientes.length)
         this.pacientesList = pacientes;
         if(this.tablaPacientes.api){
           this.tablaPacientes.api.setRowData(this.pacientesList);
         }
-          
       })
     })
   }

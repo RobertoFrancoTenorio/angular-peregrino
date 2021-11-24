@@ -1,3 +1,8 @@
+<div class="">
+  <div class="col-lg-12 " style=" z-index: 1000; ">
+    <h2 class="spancronometro" *ngIf="counter;"><span class="badge badge-success">Tiempo:{{cronometro}}</span></h2>
+  </div>
+</div>
 <div class="card">
   <div class="card-body">
     <h3 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> Consulta</h3>
@@ -113,4 +118,5 @@
     <button class="btn btn-danger">Cancelar</button>
   </div>
 </div>
-<p>{{currentPaciente | json}}</p>
+
+<p>{{currentConsulta | json}}</p>

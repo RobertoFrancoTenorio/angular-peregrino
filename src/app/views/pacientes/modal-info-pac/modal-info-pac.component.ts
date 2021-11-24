@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { PacienteService } from './../../../service/paciente/paciente.service';
@@ -21,6 +21,7 @@ export class ModalInfoPacComponent implements OnInit {
   @Input() antecedentesBand: boolean = false;
   @Input() citasBand: boolean = false;
   @Input() verHistoria: boolean = false;
+  id: any = null;
 
   heredoFamForm: FormGroup;
   PatologiasForm: FormGroup;
@@ -223,14 +224,18 @@ export class ModalInfoPacComponent implements OnInit {
 
       Actividades_Fisicas: this.fb.array([]),
     })
+
   }
 
   async ngOnInit(): Promise<void> {
     this.currentPaciente['edad'] = this.calcularEdad(this.currentPaciente.pac_f_nacimiento);
     this.bandSexo= this.currentPaciente.pac_sexo;
     console.log(this.bandSexo)
-    const nuevo = document.querySelector('.bs-stepper');
-    console.log('Nombre: ', nuevo);
+    console.log('Paciente', this.currentPaciente.id)
+    this.id =  this.currentPaciente.id;
+    console.log('id', this.id)
+    //const nuevo = document.querySelector('.bs-stepper');
+    //console.log('Nombre: ', nuevo);
     this.firstFormGroup = this.fb.group({
       firstCtrl: ['', Validators.required]
     });
@@ -240,36 +245,25 @@ export class ModalInfoPacComponent implements OnInit {
     this.thirdFormGroup = this.fb.group({
       thirdControl: ['', Validators.required]
     })
-
     this.fourthFormGroup = this.fb.group({
       fourthCtrl: ['', Validators.required]
     })
 
-    await new Promise<void>((resolve) => {
-      this.citaServ.getCitasPaciente(this.currentPaciente.id,'asignada').pipe(take(1)).subscribe(dataCitasAsig=>{
-        this.dataCitasAll=[...this.dataCitasAll,...dataCitasAsig]
-        resolve();
-      })
+    this.citaServ.getCitasPaciente(this.currentPaciente.id,'asignada').pipe(take(1)).subscribe(dataCitasAsig=>{
+      this.dataCitasAll=[...this.dataCitasAll,...dataCitasAsig]
     })
 
-    await new Promise<void>((resolve) => {
       this.citaServ.getCitasPaciente(this.currentPaciente.id,'aceptada').pipe(take(1)).subscribe(dataCitasAsig=>{
         this.dataCitasAll=[...this.dataCitasAll,...dataCitasAsig]
-        resolve();
       })
-    })
 
-    await new Promise<void>((resolve) => {
       this.citaServ.getCitasPaciente(this.currentPaciente.id,'rechazada').pipe(take(1)).subscribe(dataCitasAsig=>{
         this.dataCitasAll=[...this.dataCitasAll,...dataCitasAsig]
-        resolve();
       })
-    })
 
     console.log(this.dataCitasAll);
 
     this.onChanges();
-
   }
 
   onSubmit() {

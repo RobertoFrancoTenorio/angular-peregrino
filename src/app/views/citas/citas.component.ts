@@ -65,8 +65,9 @@ export class CitasComponent implements OnInit {
       }
     },
     { width: 240, headerName: 'Estatus', field: 'estatus' },
-    { width: 240, headerName: 'Acciones', field: 'name', cellRendererFramework: AccionesCitaComponent },
+
   ]
+  col_acciones = { width: 240, headerName: 'Acciones', field: 'name', cellRendererFramework: AccionesCitaComponent };
 
   constructor(
     public datepipe: DatePipe,
@@ -98,6 +99,7 @@ export class CitasComponent implements OnInit {
       },
       columnDefs: [
         ...this.columGral,
+        this.col_acciones,
       ],
       onGridReady: () => {
         const allColumnIds = [];
@@ -117,6 +119,7 @@ export class CitasComponent implements OnInit {
       },
       columnDefs: [
         ...this.columGral,
+        this.col_acciones,
       ],
       onGridReady: () => {
         const allColumnIds = [];
@@ -152,5 +155,4 @@ export class CitasComponent implements OnInit {
       this.tablaReagendar.api.setRowData(this.citasReagendarData);
     })
   }
-
 }

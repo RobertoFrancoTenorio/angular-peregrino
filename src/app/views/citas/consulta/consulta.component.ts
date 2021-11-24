@@ -19,6 +19,17 @@ export class ConsultaComponent implements OnInit {
   edad;
   currentFecha = new Date();
   fechaHoy;
+  hora_inicio: any;
+  hora_fin: any;
+
+  counter: number;
+  segundo: any;
+  minutos: any;
+  horas: any;
+  cronometro: any;
+  timerRef;
+  running: boolean = false;
+  startText = "Start";
 
   consultaForm : FormGroup
   constructor(
@@ -68,6 +79,9 @@ export class ConsultaComponent implements OnInit {
       consulta_tratamiento: ['', Validators.required],
       consulta_doc: this.auth.userData.userName,
     })
+    this.hora_inicio = new Date();
+    console.log('Inicio', this.hora_inicio)
+    this.startTimer();
   }
 
   calcularEdad(fecha: string) {
@@ -84,24 +98,54 @@ export class ConsultaComponent implements OnInit {
 
   enviarConsulta(){
     let post = this.consultaForm.value;
-    console.log('Valor post', post)
+    post['consulta_id_paciente'] = this.currentPaciente.id;
     this.currentConsulta.estatus = 'terminada';
     let data = { motivo: 'Cita finalizada', idUser: this.auth.currentUserId, usuario: this.auth.userData.userName, accion: 'Terminada', f_termino: new Date()}
     post['id_Doctor'] = this.auth.currentUserId;
     this.currentConsulta.historial.push(data)
-    console.log('Consulta', this.currentConsulta)
+    this.hora_fin = new Date();
+    var duracion = (this.hora_fin - this.hora_inicio)/1000;
+    duracion = duracion /60;
+    post['consulta_hora_inicio'] = this.DatePipe.transform(this.hora_inicio, 'hh:mm:ss')
+    post['consulta_hora_fin'] = this.DatePipe.transform(this.hora_fin, 'hh:mm:ss')
+    post['consulta_cita_idHorario'] = this.currentConsulta.idHorario
+    var dur = duracion.toString();
+    post['duracion'] = dur.substring(0, 4) + ' ' + 'minutos'
     Swal.fire({
       title: 'Consulta terminada',
-      text: "La consulta ha sido guardad",
+      text: "La consulta ha sido guardada",
       icon: 'success',
       showCancelButton: false,
-      confirmButtonColor: '#3085d6',
+      confirmButtonColor: '#01226',
       confirmButtonText: 'Continuar'
     }).then(() => {
+
       this.ConsultaService.crearCita(post);
       this.CitaService.updateCita(this.currentConsulta);
       this.router.navigate(['calendario']);
     })
   }
 
+  startTimer() {
+    this.running = !this.running;
+    if (this.running) {
+      this.startText = "Stop";
+      const startTime = Date.now() - (this.counter || 0);
+      this.timerRef = setInterval(() => {
+        this.counter = Date.now() - startTime;
+        // var ms = 298999;
+        this.minutos = this.counter / 1000 / 60;
+        this.horas = this.minutos % 1;
+        this.segundo = Math.floor(this.horas * 60);
+        if (this.segundo < 10) {
+          this.segundo = "0" + this.segundo;
+        }
+        this.minutos = Math.floor(this.minutos);
+        this.cronometro = this.minutos + ":" + this.segundo;
+      });
+    } else {
+      this.startText = "Resume";
+      clearInterval(this.timerRef);
+    }
+  }
 }

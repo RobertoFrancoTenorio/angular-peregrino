@@ -1,3 +1,24 @@
-<p>consultas works!</p>
+<div class='contenedor-principal'>
+  <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+          <a class="navbar-brand">Consultas</a>
+      </div>
+  </nav>
+</div>
+<br>
+<div class="row" style="padding-top: 5px;">
+  <div class="col-lg-4 col-md-6">
+      <input class="mb form-control" placeholder="Filtro" type="text" (keyup)="onQuickFilterChanged($event)" />
+  </div>
+  <div class="col-lg-4 col-md-6">
+  </div>
+  <div class="col-lg-4 col-md-6">
+    <span *ngIf="idPaciente == null" class="badge badge-pill badge-info">Consultas Atendidas: {{consultas}}</span>
+    <span *ngIf="idPaciente != null" class="badge badge-pill badge-info">Consultas Realizadas: {{consultas}}</span>
+  </div>
+</div>
+<br>
 <ag-grid-angular class="ag-theme-alpine" style=" height: 400px;" [gridOptions]="tablaConsultas"
     [pagination]="true"></ag-grid-angular>
+
+

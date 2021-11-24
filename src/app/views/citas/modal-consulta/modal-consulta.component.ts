@@ -90,6 +90,7 @@ export class ModalConsultaComponent implements OnInit {
     this.PacienteService.getPacienteData(this.currentCita.currentCita.detPaciente.id).subscribe(paciente => {
       console.log('Paciente', paciente['pac_nombres']);
       let pac ={
+        id: this.currentCita.currentCita.detPaciente.id,
         nombres: paciente['pac_nombres'],
         primerApellido: paciente['pac_primer_apellido'],
         segundoApellido: paciente['pac_segundo_apellido'],

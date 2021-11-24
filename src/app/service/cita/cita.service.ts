@@ -155,7 +155,7 @@ export class CitaService {
               }
             }
             if(data['estatus'] != 'rechazada'){
-              if(data['estatus'] != 'reagendada'){
+              if(data['estatus'] != 'reagendar'){
                 if(data['estatus'] != 'terminada'){
                   evento = {
                     title: data['detPaciente'].nombre,
@@ -164,6 +164,7 @@ export class CitaService {
                     //textColor: background,
                     color: color,
                     estatus: data['estatus'],
+                    f_cita: data['f_cita'],
                     extendedProps: {
                       tipoEvento: 'Cita',
                       currentCita: data,

@@ -39,7 +39,7 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Citas',
-        icon: 'fas fa-file-medical',
+        icon: 'fa fa-calendar-o',
         url: '/citas'
       },
     ]

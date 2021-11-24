@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/angular';
 import esLocale from '@fullcalendar/core/locales/es';
 import { AuthService } from '../../service/auth/auth.service'
@@ -8,7 +8,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import Swal from 'sweetalert2';
 import { ModalConsultaComponent } from '../citas/modal-consulta/modal-consulta.component'
 import { PacienteService } from '../../service/paciente/paciente.service';
-
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-calendario',
@@ -33,7 +33,8 @@ export class CalendarioComponent implements OnInit {
               private CitaService: CitaService,
               private UsuarioService: UsuarioService,
               private modalService: BsModalService,
-              private PacienteService: PacienteService,) {
+              private PacienteService: PacienteService,
+              public DatePipe: DatePipe) {
   }
 
   ngOnInit() {
@@ -139,6 +140,7 @@ export class CalendarioComponent implements OnInit {
       this.calendarOptions.dateClick = this.eventClick
     })
     this.CitaService.getCitasAsignadasDoctor(this.AuthService.currentUserId).subscribe(citas => {
+      console.log('Citas', citas);
       this.asignadas = citas.length
     })
     this.CitaService.getCitasAtendidas(this.AuthService.currentUserId).subscribe(citas => {

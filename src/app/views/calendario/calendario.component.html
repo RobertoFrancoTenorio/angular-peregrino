@@ -1,7 +1,11 @@
-
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+      <a class="navbar-brand">Citas</a>
+  </div>
+</nav>
 <div class="row">
   <div class="col-1">
-    <div class="card" style="">
+    <div class="card">
       <div class="card-body" id="asignadas">
         <h1 class="card-title" id="title_asignada"><i class="fa fa-clock-o" aria-hidden="true"></i></h1>
         <h1 class="card-text" id="title_asignada">{{asignadas}}</h1>
@@ -9,15 +13,7 @@
       </div>
     </div>
 
-    <div class="card" style="">
-      <div class="card-body" id="pendientes">
-        <h1 class="card-title" id="title_pendiente"><i class="fa fa-calendar-plus-o" aria-hidden="true"></i></h1>
-        <h1 class="card-text" id="title_pendiente">{{atendidas}}</h1>
-        <h5 class="sub_pendiente">Atendidas</h5>
-      </div>
-    </div>
-
-    <div class="card" style="">
+    <div class="card">
       <div class="card-body" id="terminadas">
         <h1 class="card-title" id="title_terminada"><i class="fa fa-check-square-o" aria-hidden="true"></i></h1>
         <h1 class="card-text" id="title_terminada">{{aceptadas}}</h1>
@@ -25,7 +21,6 @@
       </div>
     </div>
   </div>
-
 
   <div class="col-9">
     <div class="container container-lg">

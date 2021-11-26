@@ -5,7 +5,8 @@ import { AuthService } from '../../service/auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: 'login.component.html'
+  templateUrl: 'login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
 
@@ -45,7 +46,7 @@ export class LoginComponent implements OnInit {
     this.auth.SignIn(this.loginForm.controls['email'].value, this.loginForm.controls['password'].value)
       .then(res => {
         console.log(res);
-        
+
         this.router.navigate(['/dashboard']);
       }, err => {
         console.log(err);

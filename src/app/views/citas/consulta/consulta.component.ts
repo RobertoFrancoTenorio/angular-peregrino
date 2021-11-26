@@ -41,35 +41,37 @@ export class ConsultaComponent implements OnInit {
     private ConsultaService: ConsultaService,
     private CitaService: CitaService,
   ) {
+
     this.fechaHoy = this.DatePipe.transform(this.currentFecha.toDateString(), 'yyyy-MM-dd' );
+    console.log('Datos', this.router.getCurrentNavigation().extras.state.pacienteData)
     if(this.router.getCurrentNavigation() != null){
       this.route.queryParams.subscribe(async params => {
         if(this.router.getCurrentNavigation().extras.state){
           this.currentConsulta = this.router.getCurrentNavigation().extras.state.citaData;
           this.currentPaciente = this.router.getCurrentNavigation().extras.state.pacienteData;
-          console.log(this.currentPaciente)
-        }
-        else{
+        }else{
           this.currentConsulta = null;
-          console.log('Nada')
         }
       });
     }
     else{
       this.currentConsulta = null;
+      //this.currentPaciente = null;
       console.log('getcurrentnavigator vacio');
     }
   }
 
   ngOnInit(): void {
+    console.log('Info Paciente',this.currentPaciente[0].infoPaciente.pac_nombres)
     this.consultaForm = this.fb.group({
-      consulta_pac_nombre: this.currentPaciente.nombres,
-      consulta_paciente_primer_apellido: this.currentPaciente.primerApellido,
-      consulta_paciente_segundo_apellido: this.currentPaciente.segundoApellido,
-      consulta_pac_f_nacimiento: this.DatePipe.transform(this.currentPaciente.f_nac, 'yyyy-MM-dd' ),
-      consulta_pac_email: this.currentConsulta.detPaciente.email,
-      consulta_pac_telefono: this.currentConsulta.detPaciente.telefono,
-      consulta_pac_celular: this.currentConsulta.detPaciente.celular,
+
+      consulta_pac_nombre: this.currentPaciente[0].infoPaciente.pac_nombres,
+      consulta_paciente_primer_apellido: this.currentPaciente[0].infoPaciente.pac_primer_apellido,
+      consulta_paciente_segundo_apellido: this.currentPaciente[0].infoPaciente.pac_segundo_apellido,
+      consulta_pac_f_nacimiento: this.DatePipe.transform(this.currentPaciente[0].infoPaciente.pac_f_nacimiento, 'yyyy-MM-dd' ),
+      consulta_pac_email: this.currentPaciente[0].infoPaciente.pac_email,
+      consulta_pac_telefono: this.currentPaciente[0].infoPaciente.pac_telefono,
+      consulta_pac_celular: this.currentPaciente[0].infoPaciente.pac_celular,
       consulta_presion_arterial: [''],
       consulta_frec_cardiaca: [''],
       consulta_frec_respiratoria: [''],
@@ -77,7 +79,7 @@ export class ConsultaComponent implements OnInit {
       consulta_nota_medica: ['', Validators.required],
       consulta_diagnostico: ['', Validators.required],
       consulta_tratamiento: ['', Validators.required],
-      consulta_doc: this.auth.userData.userName,
+      consulta_doc: this.currentConsulta.detDoctor.id,
     })
     this.hora_inicio = new Date();
     console.log('Inicio', this.hora_inicio)
@@ -101,7 +103,7 @@ export class ConsultaComponent implements OnInit {
     post['consulta_id_paciente'] = this.currentPaciente.id;
     this.currentConsulta.estatus = 'terminada';
     let data = { motivo: 'Cita finalizada', idUser: this.auth.currentUserId, usuario: this.auth.userData.userName, accion: 'Terminada', f_termino: new Date()}
-    post['id_Doctor'] = this.auth.currentUserId;
+    post['id_Doctor'] = this.currentConsulta.detDoctor.id;
     this.currentConsulta.historial.push(data)
     this.hora_fin = new Date();
     var duracion = (this.hora_fin - this.hora_inicio)/1000;
@@ -119,7 +121,7 @@ export class ConsultaComponent implements OnInit {
       confirmButtonColor: '#01226',
       confirmButtonText: 'Continuar'
     }).then(() => {
-
+      this.consultaForm.reset()
       this.ConsultaService.crearCita(post);
       this.CitaService.updateCita(this.currentConsulta);
       this.router.navigate(['calendario']);

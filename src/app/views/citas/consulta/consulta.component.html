@@ -8,38 +8,38 @@
     <h3 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> Consulta</h3>
   </div>
   <form [formGroup]="consultaForm" (onSubmit)="enviarConsulta()">
-    <ul class="list-group list-group-flush">
+   <ul class="list-group list-group-flush">
       <span class="cont">
         <h4>Información del Paciente</h4>
         <div class="row">
           <div class="col-6">
             <label for="" class="form-label">Nombre(s) del Paciente</label>
-            <input type="text" formControlName="consulta_pac_nombre" readonly value="{{currentPaciente.nombres}}" class="form-control">
+            <input type="text" formControlName="consulta_pac_nombre" readonly class="form-control">
           </div>
           <div class="col-3">
             <label for="" class="form-label">Primer Apellido del Paciente: </label>
-            <input type="text" formControlName="consulta_paciente_primer_apellido" readonly value="{{currentPaciente.primerApellido}}" class="form-control">
+            <input type="text" formControlName="consulta_paciente_primer_apellido" readonly class="form-control">
           </div>
           <div class="col-3">
             <label for="" class="form-label">Segundo Apellido del Paciente: </label>
-            <input type="text" formControlName="consulta_paciente_segundo_apellido" readonly value="{{currentPaciente.segundoApellido}}" class="form-control">
+            <input type="text" formControlName="consulta_paciente_segundo_apellido" readonly class="form-control">
           </div>
           <br>
           <div class="col-4">
             <label for="" class="form-label">Telefono: </label>
-            <input type="text" formControlName="consulta_pac_telefono" readonly value="{{currentConsulta.detPaciente.telefono}}" class="form-control">
+            <input type="text" formControlName="consulta_pac_telefono" readonly class="form-control">
           </div>
           <div class="col-4">
             <label for="" class="form-label">Celular: </label>
-            <input type="text" formControlName="consulta_pac_celular" readonly value="{{currentConsulta.detPaciente.celular}}" class="form-control">
+            <input type="text" formControlName="consulta_pac_celular" readonly class="form-control">
           </div>
           <div class="col-4">
             <label for="" class="form-label">Email: </label>
-            <input type="text" formControlName="consulta_pac_celular" readonly value="{{currentConsulta.detPaciente.email}}" class="form-control">
+            <input type="text" formControlName="consulta_pac_celular" readonly class="form-control">
           </div>
           <div class="col-6">
             <label for="" class="form-label">Fecha de nacimiento: </label>
-            <input type="text" formControlName="consulta_pac_f_nacimiento" readonly value="{{currentPaciente.f_nac}}" class="form-control">
+            <input type="text" formControlName="consulta_pac_f_nacimiento" readonly  class="form-control">
           </div>
         </div>
         <br>
@@ -114,9 +114,8 @@
     </ul>
   </form>
   <div class="modal-footer">
-    <button class="btn btn-success" (click)="enviarConsulta()" [disabled]="!consultaForm.valid">Guardar</button>
+    <button class="btn btn-success" (click)="enviarConsulta()" [disabled]="">Guardar</button>
     <button class="btn btn-danger">Cancelar</button>
   </div>
 </div>
-
-<p>{{currentConsulta | json}}</p>
+<p>{{currentPaciente |json}}</p>

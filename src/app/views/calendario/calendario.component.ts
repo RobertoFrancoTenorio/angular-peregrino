@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { CalendarOptions } from '@fullcalendar/angular';
-import esLocale from '@fullcalendar/core/locales/es';
 import { AuthService } from '../../service/auth/auth.service'
 import { CitaService } from '../../service/cita/cita.service'
 import { UsuarioService } from '../../service/usuario/usuario.service'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import Swal from 'sweetalert2';
 import { ModalConsultaComponent } from '../citas/modal-consulta/modal-consulta.component'
 import { PacienteService } from '../../service/paciente/paciente.service';
 import { DatePipe } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CalendarOptions } from '@fullcalendar/angular';
+import esLocale from '@fullcalendar/core/locales/es';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-calendario',
@@ -34,7 +35,9 @@ export class CalendarioComponent implements OnInit {
               private UsuarioService: UsuarioService,
               private modalService: BsModalService,
               private PacienteService: PacienteService,
-              public DatePipe: DatePipe) {
+              public DatePipe: DatePipe,
+              private router: Router,
+              private route: ActivatedRoute,) {
   }
 
   ngOnInit() {
@@ -121,11 +124,15 @@ export class CalendarioComponent implements OnInit {
         if (result.isConfirmed) {
           //Swal.fire('La cita ha concluido!', '', 'success')
           this.launchModal();
+          this.pasaInfo();
           //this.displayEvent.extendedProps.currentCita.estatus = 'aceptada'
           //this.CitaService.updateCita(this.displayEvent.extendedProps.currentCita)
         }
       })
     }
+  }
+  pasaInfo() {
+
   }
 
   getConsultas() {
@@ -140,7 +147,7 @@ export class CalendarioComponent implements OnInit {
       this.calendarOptions.dateClick = this.eventClick
     })
     this.CitaService.getCitasAsignadasDoctor(this.AuthService.currentUserId).subscribe(citas => {
-      console.log('Citas', citas);
+      //console.log('Citas', citas);
       this.asignadas = citas.length
     })
     this.CitaService.getCitasAtendidas(this.AuthService.currentUserId).subscribe(citas => {
@@ -152,7 +159,6 @@ export class CalendarioComponent implements OnInit {
   }
 
   launchModal(){
-
     const initialState = {
       currentCita: this.displayEvent.extendedProps,
       keyboard: false,

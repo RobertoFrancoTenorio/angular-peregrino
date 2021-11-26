@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 export class ModalConsultaComponent implements OnInit {
   @Input() currentCita: any = null;
   fechaConsulta : any;
+  currentPaciente: any
 
   constructor(
     public modalRef: BsModalRef,
@@ -33,6 +34,9 @@ export class ModalConsultaComponent implements OnInit {
     console.log(this.currentCita.currentCita)
     this.fechaConsulta = this.DatePipe.transform(this.currentCita.currentCita.f_cita.toDate(), 'yyyy-MM-dd');
     console.log(this.fechaConsulta)
+    this.PacienteService.getPacienteInfo(this.currentCita.currentCita.detPaciente.id).subscribe(data =>{
+      this.currentPaciente = data;
+    })
   }
 
   cerrarModal() {
@@ -86,27 +90,14 @@ export class ModalConsultaComponent implements OnInit {
   }
 
   realizarConsulta(){
-
-    this.PacienteService.getPacienteData(this.currentCita.currentCita.detPaciente.id).subscribe(paciente => {
-      console.log('Paciente', paciente['pac_nombres']);
-      let pac ={
-        id: this.currentCita.currentCita.detPaciente.id,
-        nombres: paciente['pac_nombres'],
-        primerApellido: paciente['pac_primer_apellido'],
-        segundoApellido: paciente['pac_segundo_apellido'],
-        f_nac: new Date(paciente['pac_f_nacimiento'])
+    const navigationExtras: NavigationExtras = {
+      state: {
+        citaData: this.currentCita.currentCita,
+        pacienteData: this.currentPaciente,
       }
-      console.log('pac', pac)
-      const navigationExtras: NavigationExtras = {
-        state: {
-          citaData: this.currentCita.currentCita,
-          pacienteData: pac,
-        }
-      };
-      console.log('Lo que se envía', navigationExtras)
-      this.router.navigate(['consulta'], navigationExtras);
-      this.modalRef.hide();
-    })
+    };
+    this.modalRef.hide();
+    this.router.navigate(['consulta'], navigationExtras);
   }
 
 }

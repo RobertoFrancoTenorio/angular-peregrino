@@ -41,7 +41,8 @@ export class AddDoctorComponent implements OnInit {
 
   estadosymunicipios : any;
   municipios : any;
-
+  bandMunicipio = false;
+  municipio1 = '';
   valueNombre: string = '^([A-ZÀ-ÿ]{2,20})*( [A-ZÀ-ÿ]{2,20}){0,3}$';
   valueCURP: string = '[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}';
 
@@ -76,13 +77,16 @@ export class AddDoctorComponent implements OnInit {
     })
     console.log('valor de ruta add doctor',this.router.getCurrentNavigation())
     if(this.router.getCurrentNavigation() != null){
-      /*queryParams: parámetro muy útil para enviar objetos complejos utilizando la navegación de ruta.
-                    ↓↓↓↓↓*/
       this.route.queryParams.subscribe(async params => {
         if(this.router.getCurrentNavigation().extras.state){
-          this.currentUser = this.router.getCurrentNavigation().extras.state.userData;
-          await this.loadMunicipios();
-          this.loadUserData();
+          this.DoctorService.getDoctorData(this.router.getCurrentNavigation().extras.state.userData.id).subscribe(data =>{
+            console.log('DATA', data['doc_municipio'])
+            this.bandMunicipio = true;
+            this.municipio1 = data['doc_municipio']
+            this.currentUser = data;
+            this.loadMunicipios();
+            this.loadUserData();
+          })
         } else{
           this.currentUser = null;
         }

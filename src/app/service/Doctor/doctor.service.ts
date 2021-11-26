@@ -82,5 +82,9 @@ export class DoctorService {
         .where('id', '==', post)
     ).valueChanges();
   }
+  getDoctorData(id:string) {
+    //return this.afs.doc('/SegMedico/peregrino/Pacientes/'+id).valueChanges();
+    return this.afs.doc('/SegMedico/peregrino/Doctores/'+id).valueChanges()
+  }
 
 }

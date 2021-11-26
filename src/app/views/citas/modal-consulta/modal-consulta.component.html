@@ -10,11 +10,6 @@
       <input type="text" disabled value="{{currentCita.currentCita.detPaciente.nombre}}" class="form-control">
     </div>
     <div class="col-6">
-      <label for="" class="form-label">Comentarios:</label>
-      <input type="text" disabled value="{{currentCita.currentCita.comentarios}}" class="form-control">
-    </div>
-    <div class="col-6">
-      <br>
       <label for="" class="form-label">Fecha de consulta:</label>
       <input type="text" disabled value="{{fechaConsulta}}" class="form-control">
     </div>
@@ -46,6 +41,12 @@
       <label for="" class="form-label">Email:</label>
       <input type="text" disabled value="{{currentCita.currentCita.detPaciente.email}}" class="form-control">
     </div>
+  </div>
+  <hr>
+  <div class="contacto">
+    <h3 class="LabelContacto">Comentarios de contacto:</h3>
+    <!-- <label for="" id="LabelContacto" class="form-label form-control-lg">Comentarios de contacto:</label> -->
+    <input type="text" id="inputContacto" disabled value="{{currentCita.currentCita.comentarios}}" class="form-control form-control-lg">
   </div>
   <hr>
   <span class="action">

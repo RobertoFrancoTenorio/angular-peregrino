@@ -122,13 +122,23 @@
                 <option value="Zacatecas">Zacatecas</option>
             </select>
         </div>
-          <div class="col-4">
+          <div *ngIf="bandMunicipio == false" class="col-4">
               <label class="col-form-label col-form-label-lg" for="municipio">Municipio</label>
               <select id="municipio" formControlName="doc_municipio" class="form-control">
                   <option value="" disabled="true">Selecciona una opcion</option>
                   <option *ngFor="let x of municipios" value="{{x}}">{{x}}</option>
               </select>
           </div>
+
+          <div *ngIf="bandMunicipio == true" class="col-4">
+            <label class="col-form-label col-form-label-lg" for="municipio">Municipio</label>
+            <select id="municipio" formControlName="doc_municipio" class="form-control">
+                <option value="{{municipio1}}" disabled="true">Estado actual: {{municipio1}}</option>
+                <p>{{municipio1}}</p>
+                <option *ngFor="let x of municipios" value="{{x}}">{{x}}</option>
+            </select>
+          </div>
+
         </div>
 
         <div class="row" id="direccion" >

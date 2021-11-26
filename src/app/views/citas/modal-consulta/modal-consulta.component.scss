@@ -24,3 +24,26 @@
 .respuesta{
   margin-bottom: 10px;
 }
+
+.contacto{
+  width: 100%;
+  border: solid 5px rgb(16, 138, 0);
+  border-radius: 10px;
+  background-color: rgba(16, 138, 0, 0.411);
+  padding: 20px;
+  text-align: center;
+}
+
+#LabelContacto{
+  width: 100%;
+  font-size: 5em;
+  font-weight: 500;
+  justify-content: center;
+}
+
+#inputContacto{
+  border: solid 1px rgb(16, 138, 0);
+  background-color: rgba(16, 138, 0, 0.411);
+  color: black;
+  font-weight: 500;
+}

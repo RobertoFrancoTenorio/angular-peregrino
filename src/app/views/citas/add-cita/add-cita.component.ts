@@ -306,14 +306,15 @@ export class AddCitaComponent implements OnInit {
 
   async crearCita(horario) {
     Swal.fire({
-      title: 'Ingresar comentarios de la cita',
+      title: 'Ingresar el método de comunicarse con el paciente',
+      text: 'Puede ser teléfono de casa, celular, whatsapp, etc...',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Guardar',
       input: "text",
       inputValidator: comentario => {
         if (!comentario) {
-          return "Por favor escribe los comentarios generale de la cita.";
+          return "Por favor escribe los comentarios generales de la cita.";
         } else {
           return undefined;
         }

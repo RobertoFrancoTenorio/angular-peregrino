@@ -16,6 +16,7 @@ export class ConsultaComponent implements OnInit {
   currentConsulta;
   currentPaciente = null;
   currentUsuario;
+  currentCita;
   edad;
   currentFecha = new Date();
   fechaHoy;
@@ -41,7 +42,6 @@ export class ConsultaComponent implements OnInit {
     private ConsultaService: ConsultaService,
     private CitaService: CitaService,
   ) {
-
     this.fechaHoy = this.DatePipe.transform(this.currentFecha.toDateString(), 'yyyy-MM-dd' );
     console.log('Datos', this.router.getCurrentNavigation().extras.state.pacienteData)
     if(this.router.getCurrentNavigation() != null){
@@ -49,6 +49,7 @@ export class ConsultaComponent implements OnInit {
         if(this.router.getCurrentNavigation().extras.state){
           this.currentConsulta = this.router.getCurrentNavigation().extras.state.citaData;
           this.currentPaciente = this.router.getCurrentNavigation().extras.state.pacienteData;
+          this.currentCita = this.router.getCurrentNavigation().extras.state.currentCita;
         }else{
           this.currentConsulta = null;
         }
@@ -79,7 +80,7 @@ export class ConsultaComponent implements OnInit {
       consulta_nota_medica: ['', Validators.required],
       consulta_diagnostico: ['', Validators.required],
       consulta_tratamiento: ['', Validators.required],
-      consulta_doc: this.currentConsulta.detDoctor.id,
+      consulta_doc: this.currentConsulta.detDoctor.nombre,
     })
     this.hora_inicio = new Date();
     console.log('Inicio', this.hora_inicio)
@@ -100,7 +101,8 @@ export class ConsultaComponent implements OnInit {
 
   enviarConsulta(){
     let post = this.consultaForm.value;
-    post['consulta_id_paciente'] = this.currentPaciente.id;
+    console.log('idPaciente', this.currentPaciente[0].infoPaciente.id)
+    post['consulta_id_paciente'] = this.currentPaciente[0].infoPaciente.id;
     this.currentConsulta.estatus = 'terminada';
     let data = { motivo: 'Cita finalizada', idUser: this.auth.currentUserId, usuario: this.auth.userData.userName, accion: 'Terminada', f_termino: new Date()}
     post['id_Doctor'] = this.currentConsulta.detDoctor.id;
@@ -149,5 +151,9 @@ export class ConsultaComponent implements OnInit {
       this.startText = "Resume";
       clearInterval(this.timerRef);
     }
+  }
+
+  cancelar(){
+    this.router.navigate(['calendario']);
   }
 }

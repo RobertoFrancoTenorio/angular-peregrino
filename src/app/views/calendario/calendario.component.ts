@@ -98,12 +98,10 @@ export class CalendarioComponent implements OnInit {
               if (result.value) {
                 let motivo = result.value;
                 console.log("Hola, " + motivo);
-                this.UsuarioService.getUserData(this.AuthService.currentUserId).subscribe(user => {
-                let data = { motivo: motivo, idUser: this.AuthService.currentUserId, usuario: user[0]['currentUser'], accion: 'Rechazo', f_rechazo: new Date()}
+                let data = { motivo: motivo, idUser: this.AuthService.currentUserId, usuario: this.AuthService.userData.userName, accion: 'Rechazo', f_rechazo: new Date()}
                 this.displayEvent.extendedProps.currentCita.estatus = 'rechazada';
                 this.displayEvent.extendedProps.currentCita.historial.push(data);
                 this.CitaService.updateCita(this.displayEvent.extendedProps.currentCita)
-                })
               }
               Swal.fire('Ok, esta cita ha sido cancelada!', '', 'success')
             } else if (result.isDenied) {

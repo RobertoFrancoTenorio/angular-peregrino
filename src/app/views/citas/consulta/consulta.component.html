@@ -115,7 +115,6 @@
   </form>
   <div class="modal-footer">
     <button class="btn btn-success" (click)="enviarConsulta()" [disabled]="">Guardar</button>
-    <button class="btn btn-danger">Cancelar</button>
+    <button class="btn btn-danger" (click)="cancelar()">Cancelar</button>
   </div>
 </div>
-<p>{{currentPaciente |json}}</p>

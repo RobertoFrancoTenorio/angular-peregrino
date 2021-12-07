@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { DatePipe } from '@angular/common';
 import { CitaService } from '../../../service/cita/cita.service'
-import { UsuarioService } from '../../../service/usuario/usuario.service'
 import { AuthService } from '../../../service/auth/auth.service'
 import { PacienteService } from '../../../service/paciente/paciente.service';
 import { NavigationExtras, Router } from '@angular/router';
@@ -22,7 +21,6 @@ export class ModalConsultaComponent implements OnInit {
     public modalRef: BsModalRef,
     public DatePipe: DatePipe,
     private AuthService: AuthService,
-    private UsuarioService: UsuarioService,
     private CitaService: CitaService,
     private router: Router,
     private PacienteService: PacienteService,

@@ -185,6 +185,10 @@ export class ModalInfoPacComponent implements OnInit {
       pac_metodo_anticonceptivo_hormonal: ['', Validators.required],
       pac_metodo_anticonceptivo_hormonal_diu: ['', Validators.required],
 
+      pac_exam_prostata: ['', Validators.required],
+      pac_exam_prostata_fecha: ['', Validators.required],
+      pac_exam_prostata_obs: ['', Validators.required],
+
       pac_gestaciones: ['', Validators.required],
       pac_cant_gestaciones: ['', Validators.required],
       pac_ultima_gestacion: ['', Validators.required],
@@ -234,8 +238,6 @@ export class ModalInfoPacComponent implements OnInit {
     console.log('Paciente', this.currentPaciente.id)
     this.id =  this.currentPaciente.id;
     console.log('id', this.id)
-    //const nuevo = document.querySelector('.bs-stepper');
-    //console.log('Nombre: ', nuevo);
     this.firstFormGroup = this.fb.group({
       firstCtrl: ['', Validators.required]
     });
@@ -396,6 +398,7 @@ export class ModalInfoPacComponent implements OnInit {
       this.GinecoObstricoForm.get("pac_ultimo_aborto").disable();
       this.GinecoObstricoForm.get("pac_ultimo_parto").disable();
       this.GinecoObstricoForm.get("pac_ultimo_parto_observacion").disable();
+      this.GinecoObstricoForm.get("pac_ultimo_aborto_observacion").disable();
     }
     else{
       this.GinecoObstricoForm.get("pac_menarquia").enable();
@@ -409,7 +412,20 @@ export class ModalInfoPacComponent implements OnInit {
       this.GinecoObstricoForm.get("pac_partos").enable();
       this.GinecoObstricoForm.get("pac_abortos").enable();
       this.GinecoObstricoForm.get("pac_cesareas").enable();
+      this.GinecoObstricoForm.get("pac_exam_prostata").disable();
+      this.GinecoObstricoForm.get("pac_exam_prostata_fecha").disable();
+      this.GinecoObstricoForm.get("pac_exam_prostata_obs").disable();
+
     }
+    this.GinecoObstricoForm.get('pac_exam_prostata').valueChanges.subscribe(data =>{
+      if(data == 'Si'){
+        this.GinecoObstricoForm.get("pac_exam_prostata_fecha").enable();
+        this.GinecoObstricoForm.get("pac_exam_prostata_obs").enable();
+      }else{
+        this.GinecoObstricoForm.get("pac_exam_prostata_fecha").disable();
+        this.GinecoObstricoForm.get("pac_exam_prostata_obs").disable();
+      }
+    })
     this.GinecoObstricoForm.get('pac_metodo_anticonceptivo').valueChanges.subscribe(data =>{
       if(data == 'Hormonal'){
         this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal').enable();

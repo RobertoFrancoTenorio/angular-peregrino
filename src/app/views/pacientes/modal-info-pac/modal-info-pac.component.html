@@ -13,8 +13,6 @@
 </div>
 
 <div class="modal-body">
-
-
   <div class="container" *ngIf="detallesBand">
     <div class="main-body">
       <div class="row gutters-sm">
@@ -478,7 +476,7 @@
                   <span *ngIf="PsicoactivasForm.get('alcoholismo').value == 'Si'">
                     <label for="exampleInputtext1" class="form-label">Frecuencia de consumo:</label>
                     <select class="form-control" formControlName="alcoholismo_frecuencia">
-                      <option value="Muy poco">Nunca</option>
+                      <option value="Nunca">Nunca</option>
                       <option value="Muy poco">Muy poco</option>
                       <option value="Algunas Veces">Algunas Veces</option>
                       <option value="Frecuentemente">Frecuentemente</option>
@@ -496,7 +494,7 @@
                   <span *ngIf="PsicoactivasForm.get('tabaquismo').value == 'Si'">
                     <label for="exampleInputtext1" class="form-label">Frecuencia de consumo:</label>
                     <select class="form-control" formControlName="tabaquismo_frecuencia">
-                      <option value="Muy poco">Nunca</option>
+                      <option value="Nunca">Nunca</option>
                       <option value="Muy poco">Muy poco</option>
                       <option value="Algunas Veces">Algunas Veces</option>
                       <option value="Frecuentemente">Frecuentemente</option>
@@ -521,7 +519,7 @@
                       aria-describedby="textHelp">
                     <label for="exampleInputtext1" class="form-label">Frecuencia de consumo:</label>
                     <select class="form-control" formControlName="otras_frecuencia">
-                      <option value="Muy poco">Nunca</option>
+                      <option value="Nunca">Nunca</option>
                       <option value="Muy poco">Muy poco</option>
                       <option value="Algunas Veces">Algunas Veces</option>
                       <option value="Frecuentemente">Frecuentemente</option>
@@ -584,16 +582,29 @@
       <!--Paso 4-->
       <mat-step [stepControl]="fourthFormGroup" label="Gineco-obstétricos / Androgenicos">
         <form [formGroup]="fourthFormGroup">
-          <mat-label>Gineco-obstétricos</mat-label>
           <form [formGroup]="GinecoObstricoForm">
             <label for="" *ngIf="currentPaciente.pac_sexo == 'F'">Menarquía</label>
             <input type="text" id="" formControlName="pac_menarquia" *ngIf="currentPaciente.pac_sexo == 'F'">
             <div class="row">
+              <div class="col-6" *ngIf="currentPaciente.pac_sexo == 'M'">
+                <h5>Examen de Prostata</h5>
+                <label class="form-label">Último examen de Prostata</label>
+                <select class="form-control" id="options" formControlName="pac_exam_prostata">
+                  <option value="Si">Si</option>
+                  <option value="No">No</option>
+                </select>
+                <span *ngIf="this.GinecoObstricoForm.get('pac_exam_prostata').value == 'Si'">
+                  <label for="" class="form-label">Fecha Aproximada del último examen de prostata</label>
+                  <input type="date" class="form-control" formControlName="pac_exam_prostata_fecha">
+                  <label for="floatingTextarea2">Observaciones realizadas en este examen</label>
+                  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                    style="height: 100px" formControlName="pac_exam_prostata_obs"></textarea>
+                </span>
+              </div>
               <div class="col-6" *ngIf="currentPaciente.pac_sexo == 'F'">
                 <h5>Características de la menstruación</h5>
                 <label class="form-label">Última Menstruación</label>
                 <input type="date" class="form-control" formControlName="pac_carac_mens">
-
                 <br>
                 <div class="row">
                   <div class="col-3">
@@ -1033,6 +1044,7 @@
     <span (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" class="NoPatologicos"><i
         class="fa fa-eye"></i>>Ver/Ocultar No Patologicos</span>
     <div id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
+      <br>
       <h5>Información No Patologicos</h5>
       <div class="row">
         <div class="col-6">
@@ -1225,7 +1237,7 @@
           </span>
           <span class="containerME"
             *ngIf="currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.traumaticos == 'Si'">
-            <span class="infoME">El paciente padeció algúntraumatismo: <span class="resp">Si <i
+            <span class="infoME">El paciente padeció algún traumatismo: <span class="resp">Si <i
                   class="fa fa-check-square" id="si"> </i></span></span>
             <span class="infoME">Fecha Aproximada: <span
                 class="resp">{{currentPaciente.pac_antecedentes_data.Patologicos.traumaticos.fecha_traumaticos}}</span>
@@ -1394,11 +1406,11 @@
     </div>
     <hr class="line">
 
-    <h3>Gineco-obstétricos</h3>
+    <h3><span *ngIf="currentPaciente.pac_sexo == 'F'">Gineco-obstétricos / </span>Androgenicos</h3>
     <span (click)="ginecoObstetrico = !ginecoObstetrico" [attr.aria-expanded]="!ginecoObstetrico"
-      class="NoPatologicos"><i class="fa fa-eye"></i>Ver/Ocultar Gineco-Obstetricos</span>
+      class="NoPatologicos"><i class="fa fa-eye"></i>Ver/Ocultar <span *ngIf="currentPaciente.pac_sexo == 'F'">Gineco-obstétricos / </span>Androgenicos</span>
     <div id="collapseBasic" [collapse]="ginecoObstetrico" [isAnimated]="true">
-      <h5>Información</h5>
+      <br>
       <h4>Actividad Sexual</h4>
       <div class="row">
         <div class="col-12">
@@ -1408,11 +1420,19 @@
             <span class="infoGO">Inicio de la vida sexual del paciente: <span
                 class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_inicio_vida_sexual}}</span></span>
           </span>
+
           <span class="containerRespGO" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_metodo_anticonceptivo_hormonal == 'DIU'">
             <span class="infoGO">Metodo anticonceptivo que usa el paciente: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_metodo_anticonceptivo}} ({{
               currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_metodo_anticonceptivo_hormonal_diu}})</span></span>
             <span class="infoGO">Tipo de relaciones sexuales: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_tipo_relaciones}}</span></span>
           </span>
+
+          <span class="containerRespGO" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_metodo_anticonceptivo_hormonal == 'Implante'">
+            <span class="infoGO">Metodo anticonceptivo que usa el paciente: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_metodo_anticonceptivo}} ({{
+              currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_metodo_anticonceptivo_hormonal}})</span></span>
+            <span class="infoGO">Tipo de relaciones sexuales: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_tipo_relaciones}}</span></span>
+          </span>
+
           <span class="containerRespGO">
             <span class="infoME1">Número de compañeros sexuales: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_no_comp_sexuales }}</span></span>
             <span class="infoME1">Enfermedades de transmisión sexual: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ets}}</span></span>
@@ -1424,6 +1444,30 @@
         </div>
       </div>
       <hr class="line">
+
+      <h4 *ngIf="currentPaciente.pac_sexo == 'M'">Examen de Próstata</h4>
+      <span *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_exam_prostata == 'Si'">
+        <div class="row">
+          <div class="col-12">
+            <span class="infoME">El paciente se ha realizado el examen de prostata: <span
+              class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_exam_prostata}}</span></span>
+              <br>
+            <span class="infoME">Fecha aproximada del examen: <span
+              class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_exam_prostata_fecha}}</span></span>
+              <br>
+            <span class="infoME">Observaciones del examen: <span
+              class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_exam_prostata_obs}}</span></span>
+          </div>
+        </div>
+      </span>
+      <span *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_exam_prostata == 'No'">
+        <div class="row">
+          <div class="col-12">
+            <span class="infoME">El paciente se ha realizado el examen de prostata: <span
+              class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_exam_prostata}}</span></span>
+          </div>
+        </div>
+      </span>
 
       <span *ngIf="currentPaciente.pac_sexo == 'F'">
         <h4>Características de la menstruación</h4>
@@ -1475,7 +1519,7 @@
               <span class="infoME">La paciente cuenta con gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones}}</span></span>
               <span class="infoME">Número de gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_gestaciones}}</span></span>
             </span>
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos == 'Si'">
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones == 'Si'">
               <span class="infoME">Fecha Aproximada de la última gestación: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_gestacion}}</span></span>
               <span class="infoME">Observaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_gestacion_observacion}}</span></span>
             </span>
@@ -1489,17 +1533,21 @@
             <h4>Información de abortos</h4>
             <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos == 'Si'">
               <span class="infoME">La paciente cuenta con gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos}}</span></span>
-              <span class="infoME">Número de gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_abortos}}</span></span>
+              <span class="infoME">Número de abortos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_abortos}}</span></span>
             </span>
             <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos == 'Si'">
               <span class="infoME">Fecha Aproximada del último aborto: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultimo_aborto}}</span></span>
               <span class="infoME">Observaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultimo_aborto_observacion}}</span></span>
             </span>
-            <hr class="line">
 
             <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos == 'No'">
+              <span class="infoME">La paciente cuenta con abortos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos}}</span></span>
+            </span>
+            <hr class="line">
+
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos == 'Si'">
               <span class="infoME">La paciente cuenta con gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos}}</span></span>
-              <hr class="line">
+              <span class="infoME">Número de gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_abortos}}</span></span>
             </span>
 
             <h4>Información de cesareas</h4>
@@ -1507,18 +1555,21 @@
               <span class="infoME">La paciente cuenta con cesaresa: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas}}</span></span>
               <span class="infoME">Número de cesareas: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_cesareas}}</span></span>
             </span>
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos == 'Si'">
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas == 'Si'">
               <span class="infoME">Fecha Aproximada de la última cesarea: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_cesarea}}</span></span>
               <span class="infoME">Observaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_cesarea_observacion}}</span></span>
             </span>
-            <hr class="line">
 
             <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas == 'No'">
               <span class="infoME">La paciente cuenta con cesaresa: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas}}</span></span>
-              <hr class="line">
             </span>
+            <hr class="line">
 
             <h4>Información de papanicolau</h4>
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau == 'No'">
+              <span class="infoME">La paciente se ha realizado papanicolau: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas}}</span></span>
+            </span>
+
             <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau == 'Si'">
               <span class="infoME">La paciente se ha realizado papanicolau: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas}}</span></span>
               <span class="infoME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau == 'Si'">Fecha Aproximada: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau_fecha}}</span></span>
@@ -1526,39 +1577,32 @@
             <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau == 'Si'">
               <span class="infoME" >Observaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau_observacion}}</span></span>
             </span>
-
-            <hr class="line">
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau == 'No'">
+            <!-- <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau == 'No'">
               <span class="infoME">La paciente se ha realizado papanicolau: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas}}</span></span>
-              <hr class="line">
-
+              <span class="infoME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau == 'Si'">Fecha Aproximada: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau_fecha}}</span></span>
             </span>
-
+            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau == 'Si'">
+              <span class="infoME" >Observaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_papanicolau_observacion}}</span></span>
+            </span> -->
+            <hr class="line">
           </div>
-
         </div>
       </span>
-
       <span>
       </span>
     </div>
   </div>
-
 </div>
-
 <div class="modal-footer">
-
   <div class="form-row justify-content-center">
     <div class="col-md-12">
       <!-- <button type="button" *ngIf="editBand" class='btn btn-success' [disabled]="rForm.invalid"
                 (click)="programarProspecto(rForm.value)">
                 <span class='fa fa-save'> </span> Guardar
             </button>-->
-
       <button type="button" class='btn btn-danger' *ngIf="citasBand || antecedentesBand" (click)="activarDetalles()">
         <span class='fa fa-times-circle'> </span> Cancelar
       </button>
     </div>
   </div>
-
 </div>

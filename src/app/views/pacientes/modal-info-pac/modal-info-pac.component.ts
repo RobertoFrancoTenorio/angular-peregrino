@@ -274,7 +274,7 @@ export class ModalInfoPacComponent implements OnInit {
 
   onChanges(): void {
     this.NoPatologicosForm.get("mascota").valueChanges.subscribe(data => {
-      if (data == 'Si'){
+      if (data == "Si"){
         this.NoPatologicosForm.get("pac_mascota_tipo").enable();
       }
       else {
@@ -282,7 +282,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.AlergiasForm.get("alergias").valueChanges.subscribe(data =>{
-      if(data == 'Si'){
+      if(data == "Si"){
         this.AlergiasForm.get("alergia_tipo").enable()
       }
       else{
@@ -290,7 +290,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.HospitalizacionesForm.get("hospitalizaciones").valueChanges.subscribe(data =>{
-      if (data == 'Si'){
+      if (data == "Si"){
         this.HospitalizacionesForm.get("hospitalizacion_fecha").enable();
         this.HospitalizacionesForm.get("hospitalizacion_causa").enable();
         this.HospitalizacionesForm.get("hospitalizacion_secuela").enable();
@@ -302,7 +302,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.QuirurgicasForm.get("quirurgicas").valueChanges.subscribe(data =>{
-      if (data == 'Si'){
+      if (data == "Si"){
         this.QuirurgicasForm.get("quirurgica_fecha").enable();
         this.QuirurgicasForm.get("quirurgica_causa").enable();
         this.QuirurgicasForm.get("quirurgica_secuela").enable();
@@ -314,7 +314,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.TraumaticosForm.get('traumaticos').valueChanges.subscribe(data =>{
-      if(data == 'Si'){
+      if(data == "Si"){
         this.TraumaticosForm.get("fecha_traumaticos").enable();
         this.TraumaticosForm.get("tipos_traumaticos").enable();
         this.TraumaticosForm.get("causas_traumaticos").enable();
@@ -328,7 +328,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.TransfusionesForm.get("transfusiones").valueChanges.subscribe(data =>{
-      if(data == 'Si'){
+      if(data == "Si"){
         this.TransfusionesForm.get('transfusiones_fecha').enable();
         this.TransfusionesForm.get('transfusiones_causas').enable();
       }
@@ -338,7 +338,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.PsicoactivasForm.get('alcoholismo').valueChanges.subscribe(data =>{
-      if (data == 'Si'){
+      if (data == "Si"){
         this.PsicoactivasForm.get("alcoholismo_frecuencia").enable();
         this.PsicoactivasForm.get("alcoholismo_cantidad").enable();
       }
@@ -348,7 +348,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.PsicoactivasForm.get('tabaquismo').valueChanges.subscribe(data =>{
-      if (data == 'Si'){
+      if (data == "Si"){
         this.PsicoactivasForm.get("tabaquismo_frecuencia").enable();
         this.PsicoactivasForm.get("tabaquismo_cantidad").enable();
       }
@@ -358,7 +358,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.PsicoactivasForm.get('otras').valueChanges.subscribe(data =>{
-      if (data == 'Si'){
+      if (data == "Si"){
         this.PsicoactivasForm.get("otras_tipo").enable();
         this.PsicoactivasForm.get("otras_ultimo_consumo").enable();
         this.PsicoactivasForm.get("otras_frecuencia").enable();
@@ -418,7 +418,7 @@ export class ModalInfoPacComponent implements OnInit {
 
     }
     this.GinecoObstricoForm.get('pac_exam_prostata').valueChanges.subscribe(data =>{
-      if(data == 'Si'){
+      if(data == "Si"){
         this.GinecoObstricoForm.get("pac_exam_prostata_fecha").enable();
         this.GinecoObstricoForm.get("pac_exam_prostata_obs").enable();
       }else{
@@ -443,7 +443,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.GinecoObstricoForm.get('pac_gestaciones').valueChanges.subscribe(data =>{
-      if(data == 'Si'){
+      if(data == "Si"){
         this.GinecoObstricoForm.get('pac_cant_gestaciones').enable();
         this.GinecoObstricoForm.get('pac_ultima_gestacion').enable();
         this.GinecoObstricoForm.get('pac_ultima_gestacion_observacion').enable();
@@ -455,7 +455,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.GinecoObstricoForm.get('pac_partos').valueChanges.subscribe(data =>{
-      if(data == 'Si'){
+      if(data == "Si"){
         this.GinecoObstricoForm.get('pac_cant_partos').enable();
         this.GinecoObstricoForm.get('pac_ultimo_parto').enable();
         this.GinecoObstricoForm.get('pac_ultimo_parto_observacion').enable();
@@ -467,7 +467,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.GinecoObstricoForm.get('pac_abortos').valueChanges.subscribe(data =>{
-      if(data == 'Si'){
+      if(data == "Si"){
         this.GinecoObstricoForm.get('pac_cant_abortos').enable();
         this.GinecoObstricoForm.get('pac_ultimo_aborto').enable();
         this.GinecoObstricoForm.get('pac_ultimo_aborto_observacion').enable();
@@ -479,7 +479,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.GinecoObstricoForm.get('pac_cesareas').valueChanges.subscribe(data =>{
-      if(data == 'Si'){
+      if(data == "Si"){
         this.GinecoObstricoForm.get('pac_cant_cesareas').enable();
         this.GinecoObstricoForm.get('pac_ultima_cesarea').enable();
         this.GinecoObstricoForm.get('pac_ultima_cesarea_observacion').enable();
@@ -491,7 +491,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.GinecoObstricoForm.get('pac_papanicolau').valueChanges.subscribe(data =>{
-      if(data == 'Si'){
+      if(data == "Si"){
         this.GinecoObstricoForm.get('pac_papanicolau_fecha').enable();
         this.GinecoObstricoForm.get('pac_papanicolau_observacion').enable();
       }
@@ -501,7 +501,7 @@ export class ModalInfoPacComponent implements OnInit {
       }
     })
     this.GinecoObstricoForm.get('pac_tamis_mama').valueChanges.subscribe(data =>{
-      if(data == 'Si'){
+      if(data == "Si"){
         this.GinecoObstricoForm.get('pac_tamis_fecha').enable();
         this.GinecoObstricoForm.get('pac_tamis_observacion').enable();
       }

@@ -265,7 +265,7 @@
             <div class="col-6">
               <mat-radio-group formControlName="mascota">
                 <mat-radio-button value="Si">Si</mat-radio-button>
-                <mat-radio-button value="No">No</mat-radio-button>
+                <mat-radio-button class="no" value="No">No</mat-radio-button>
               </mat-radio-group>
               <br>
               <span *ngIf="NoPatologicosForm.get('mascota').value == 'Si'">
@@ -283,7 +283,7 @@
                 <br>
                 <mat-radio-group formControlName="pac_consumo_pan">
                   <mat-radio-button value="Si">Si</mat-radio-button>
-                  <mat-radio-button value="No">No</mat-radio-button>
+                  <mat-radio-button class="no" value="No">No</mat-radio-button>
                 </mat-radio-group>
               </div>
               <div class="col-4">
@@ -291,7 +291,7 @@
                 <br>
                 <mat-radio-group formControlName="pac_consumo_refresco">
                   <mat-radio-button value="Si">Si</mat-radio-button>
-                  <mat-radio-button value="No">No</mat-radio-button>
+                  <mat-radio-button class="no" value="No">No</mat-radio-button>
                 </mat-radio-group>
               </div>
               <div class="col-4">
@@ -299,7 +299,7 @@
                 <br>
                 <mat-radio-group formControlName="pac_consumo_sal">
                   <mat-radio-button value="Si">Si</mat-radio-button>
-                  <mat-radio-button value="No">No</mat-radio-button>
+                  <mat-radio-button class="no" value="No">No</mat-radio-button>
                 </mat-radio-group>
               </div>
               <br>
@@ -356,7 +356,7 @@
           <br>
           <div id="btns">
             <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
-            <mat-checkbox formControlName="secondCtrl" required [disabled]="!NoPatologicosForm.valid">Finalizar No
+            <mat-checkbox formControlName="secondCtrl" required>Finalizar No
               Patologicos</mat-checkbox>
             <button class="btn btn-primary" matStepperNext>Siguiente</button>
           </div>
@@ -372,7 +372,7 @@
                 <form [formGroup]="AlergiasForm">
                   <mat-radio-group formControlName="alergias"> Alergías
                     <mat-radio-button value="Si">Si</mat-radio-button>
-                    <mat-radio-button value="No">No</mat-radio-button>
+                    <mat-radio-button class="no" value="No">No</mat-radio-button>
                   </mat-radio-group>
                   <br>
                   <span *ngIf="AlergiasForm.get('alergias').value == 'Si'">
@@ -386,7 +386,7 @@
                 <form [formGroup]="HospitalizacionesForm">
                   <mat-radio-group formControlName="hospitalizaciones"> Hospitalizaciones
                     <mat-radio-button value="Si">Si</mat-radio-button>
-                    <mat-radio-button value="No">No</mat-radio-button>
+                    <mat-radio-button class="no" value="No">No</mat-radio-button>
                   </mat-radio-group>
                   <br>
                   <span *ngIf="HospitalizacionesForm.get('hospitalizaciones').value == 'Si'">
@@ -406,7 +406,7 @@
                 <form [formGroup]="QuirurgicasForm">
                   <mat-radio-group formControlName="quirurgicas"> Operaciones Quirurgícas
                     <mat-radio-button value="Si">Si</mat-radio-button>
-                    <mat-radio-button value="No">No</mat-radio-button>
+                    <mat-radio-button class="no" value="No">No</mat-radio-button>
                   </mat-radio-group>
                   <br>
                   <span *ngIf="QuirurgicasForm.get('quirurgicas').value == 'Si'">
@@ -426,7 +426,7 @@
                 <form [formGroup]="TraumaticosForm">
                   <mat-radio-group formControlName="traumaticos"> Traumatismos
                     <mat-radio-button value="Si">Si</mat-radio-button>
-                    <mat-radio-button value="No">No</mat-radio-button>
+                    <mat-radio-button class="no" value="No">No</mat-radio-button>
                   </mat-radio-group>
                   <br>
                   <span *ngIf="TraumaticosForm.get('traumaticos').value == 'Si'">
@@ -449,7 +449,7 @@
                 <form [formGroup]="TransfusionesForm">
                   <mat-radio-group formControlName="transfusiones"> Transfusiones
                     <mat-radio-button value="Si">Si</mat-radio-button>
-                    <mat-radio-button value="No">No</mat-radio-button>
+                    <mat-radio-button class="no" value="No">No</mat-radio-button>
                   </mat-radio-group>
                   <br>
                   <span *ngIf="TransfusionesForm.get('transfusiones').value == 'Si'">
@@ -470,7 +470,7 @@
                 <form [formGroup]="PsicoactivasForm">
                   <mat-radio-group formControlName="alcoholismo"> Alcohol
                     <mat-radio-button value="Si">Si</mat-radio-button>
-                    <mat-radio-button value="No">No</mat-radio-button>
+                    <mat-radio-button class="no" value="No">No</mat-radio-button>
                   </mat-radio-group>
                   <br>
                   <span *ngIf="PsicoactivasForm.get('alcoholismo').value == 'Si'">
@@ -488,7 +488,7 @@
 
                   <mat-radio-group formControlName="tabaquismo"> Tabaco
                     <mat-radio-button value="Si">Si</mat-radio-button>
-                    <mat-radio-button value="No">No</mat-radio-button>
+                    <mat-radio-button class="no" value="No">No</mat-radio-button>
                   </mat-radio-group>
                   <br>
                   <span *ngIf="PsicoactivasForm.get('tabaquismo').value == 'Si'">
@@ -507,7 +507,7 @@
 
                   <mat-radio-group formControlName="otras"> Otra(s)
                     <mat-radio-button value="Si">Si</mat-radio-button>
-                    <mat-radio-button value="No">No</mat-radio-button>
+                    <mat-radio-button class="no" value="No">No</mat-radio-button>
                   </mat-radio-group>
                   <br>
                   <span *ngIf="PsicoactivasForm.get('otras').value == 'Si'">
@@ -572,8 +572,7 @@
           <hr class="line">
           <div id="btns">
             <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
-            <mat-checkbox formControlName="thirdControl" required
-              [disabled]="!AlergiasForm.valid && !HospitalizacionesForm.valid && !QuirurgicasForm.valid && !TraumaticosForm.valid && !TransfusionesForm.valid && !PsicoactivasForm.valid">
+            <mat-checkbox formControlName="thirdControl" required>
               Finalizar Patologias</mat-checkbox>
             <button class="btn btn-primary" matStepperNext>Siguiente</button>
           </div>
@@ -709,6 +708,7 @@
                           <option value="Inyección">Inyección</option>
                           <option value="DIU">DIU</option>
                           <option value="Implante">Implante</option>
+                          <option value="Oral">Oral</option>
                         </select>
                         <span *ngIf="this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal').value == 'DIU'">
                           <br>
@@ -753,11 +753,11 @@
                       <label for="" class="form-label">No. de Gestaciones</label>
                       <input type="number" min="0" max="15" formControlName="pac_cant_gestaciones" id=""
                         class="form-control">
-                      <label for="" class="form-label">Fecha Aproximada de la última gestación</label>
+                      <!-- <label for="" class="form-label">Fecha Aproximada de la última gestación</label>
                       <input type="date" class="form-control" formControlName="pac_ultima_gestacion" id="">
                       <label for="" class="form-label">Observaciones</label>
                       <textarea class="form-control" formControlName="pac_ultima_gestacion_observacion"
-                        placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                        placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea> -->
                     </span>
                   </div>
                 </div>
@@ -774,11 +774,11 @@
                       <label for="" class="form-label">No. de partos</label>
                       <input type="number" min="0" max="15" formControlName="pac_cant_partos" id=""
                         class="form-control">
-                      <label for="" class="form-label">Fecha Aproximada del último parto</label>
+                      <!-- <label for="" class="form-label">Fecha Aproximada del último parto</label>
                       <input type="date" class="form-control" formControlName="pac_ultimo_parto" id="">
                       <label for="" class="form-label">Observaciones</label>
                       <textarea class="form-control" formControlName="pac_ultimo_parto_observacion"
-                        placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                        placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea> -->
                     </span>
                   </div>
                 </div>
@@ -1504,10 +1504,10 @@
               <span class="infoME">La paciente cuenta con embarazos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos}}</span></span>
               <span class="infoME">Número de embarazos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_partos}}</span></span>
             </span>
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos == 'Si'">
+            <!-- <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos == 'Si'">
               <span class="infoME">Fecha Aproximada del último parto: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultimo_parto}}</span></span>
               <span class="infoME">Observaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultimo_parto_observacion}}</span></span>
-            </span>
+            </span> -->
 
             <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos == 'No'">
               <span class="infoME">La paciente cuenta con embarazos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos}}</span></span>
@@ -1518,11 +1518,11 @@
             <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones == 'Si'">
               <span class="infoME">La paciente cuenta con gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones}}</span></span>
               <span class="infoME">Número de gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_gestaciones}}</span></span>
-            </span>
+            </span><!--
             <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones == 'Si'">
               <span class="infoME">Fecha Aproximada de la última gestación: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_gestacion}}</span></span>
               <span class="infoME">Observaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_ultima_gestacion_observacion}}</span></span>
-            </span>
+            </span> -->
             <hr class="line">
 
             <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_gestaciones == 'No'">
@@ -1532,7 +1532,7 @@
 
             <h4>Información de abortos</h4>
             <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos == 'Si'">
-              <span class="infoME">La paciente cuenta con gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos}}</span></span>
+              <span class="infoME">La paciente cuenta con abortos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos}}</span></span>
               <span class="infoME">Número de abortos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_abortos}}</span></span>
             </span>
             <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_partos == 'Si'">
@@ -1544,11 +1544,6 @@
               <span class="infoME">La paciente cuenta con abortos: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos}}</span></span>
             </span>
             <hr class="line">
-
-            <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos == 'Si'">
-              <span class="infoME">La paciente cuenta con gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_abortos}}</span></span>
-              <span class="infoME">Número de gestaciones: <span class="resp">{{currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cant_abortos}}</span></span>
-            </span>
 
             <h4>Información de cesareas</h4>
             <span class="containerME" *ngIf="currentPaciente.pac_antecedentes_data.GinecoObstrico.pac_cesareas == 'Si'">

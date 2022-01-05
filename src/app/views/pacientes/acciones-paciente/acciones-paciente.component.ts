@@ -58,6 +58,7 @@ export class AccionesPacienteComponent implements ICellRendererAngularComp {
   }
 
   verInfoShow(){
+    console.log('Params', this.params)
     const initialState = {
       currentPaciente: this.params,
       keyboard: false,

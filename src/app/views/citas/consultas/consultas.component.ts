@@ -22,6 +22,7 @@ export class ConsultasComponent implements OnInit {
     headerName: 'Fecha Consulta',
     field: 'f_consulta',
     cellRenderer: (data) => {
+      console.log('Fecha', this.datepipe.transform(data.value.seconds * 1000, 'dd/MM/yyyy HH:mm'))
       return this.datepipe.transform(data.value.seconds * 1000, 'dd/MM/yyyy HH:mm')
     },
     filter: "agDateColumnFilter",
@@ -141,6 +142,7 @@ export class ConsultasComponent implements OnInit {
   tablaPaciente(){
     return new Promise<void>(resolve => {
       this.ConsultaService.getConsultasPac(this.idPaciente).subscribe(consultas =>{
+        console.log('Tabla paciente', consultas)
         this.consultasList = consultas;
         this.consultas = consultas.length
         if(this.tablaConsultas.api)

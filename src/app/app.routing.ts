@@ -25,6 +25,7 @@ import { CalendarComponent } from './views/calendar/calendar.component';
 import { CitasComponent } from './views/citas/citas.component';
 import { ConsultaComponent } from './views/citas/consulta/consulta.component';
 import { ConsultasComponent } from './views/citas/consultas/consultas.component';
+import { TablaPacientesComponent } from './views/pacientes/tabla-pacientes/tabla-pacientes.component';
 
 
 export const routes: Routes = [
@@ -106,6 +107,11 @@ export const routes: Routes = [
           categoria: 'Catalogos',
           pagina: 'Usuarios'
         }
+      },
+
+      {
+        path: 'Table',
+        component: TablaPacientesComponent,
       },
 
       {

@@ -1,0 +1,28 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nombre Completo</th>
+      <th scope="col">Tipo Paciente</th>
+      <th scope="col">Parentesco</th>
+      <th scope="col">Telefono</th>
+      <th scope="col">Direccion</th>
+      <th scope="col">Estado Civil</th>
+      <th scope="col">Escolaridad</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let paciente of listPacientes; let i = index">
+      <th scope="row">{{i}}</th>
+      <td>{{paciente.pac_nombre_completo}}</td>
+      <td>{{paciente.pac_tipo}}</td>
+      <td>{{paciente.pac_parentesco}}</td>
+      <td>{{paciente.pac_telefono}}</td>
+      <td>{{paciente.pac_dir_colonia + ' '+ pac_dir_calle}}</td>
+      <td>{{paciente.pac_estado_civil}}</td>
+      <td>{{paciente.pac_escolaridad}}</td>
+    </tr>
+    <button type="button" (click)="getXLSX()" class="btn btn-primary">Primary</button>
+  </tbody>
+</table>

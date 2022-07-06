@@ -1,26 +1,22 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap';
-import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { PacienteService } from './../../../service/paciente/paciente.service';
-import Stepper from 'bs-stepper';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
+import { PacienteService } from './../../../service/paciente/paciente.service';
 import { CitaService } from '../../../service/cita/cita.service';
-import { take } from 'rxjs/operators';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-modal-info-pac',
-  templateUrl: './modal-info-pac.component.html',
-  styleUrls: ['./modal-info-pac.component.scss']
+  selector: 'app-historia-clinica',
+  templateUrl: './historia-clinica.component.html',
+  styleUrls: ['./historia-clinica.component.scss']
 })
-export class ModalInfoPacComponent implements OnInit {
-  private stepper: Stepper;
+export class HistoriaClinicaComponent implements OnInit {
+  @Input() pac_sexo;
+  @Input() editar: boolean = false;
+  @Input() idPaciente;
+  @Output() cerrarModal = new EventEmitter<any>();
+
   isLinear = true;
-  @Input() currentPaciente: any = null;
-  @Input() detallesBand: boolean = true;
-  @Input() antecedentesBand: boolean = false;
-  @Input() citasBand: boolean = false;
-  @Input() verHistoria: boolean = false;
   id: any = null;
 
   heredoFamForm: FormGroup;
@@ -96,19 +92,38 @@ export class ModalInfoPacComponent implements OnInit {
     { id: 'Enf. del sistema tegumentario', value: 'Enfermedades del sistema tegumentario'},
     { id: 'Otra enfermedad cronico degenerativa', value: 'Otra enfermedad cronico degenerativa'}
   ];
-  bandEditar: boolean;
-  pac_sexo: any;
 
   constructor(
-    public modalRef: BsModalRef,
     private fb: FormBuilder,
     private PacienteService: PacienteService,
     private router: Router,
     private citaServ: CitaService
     ) {
     // Va agregando un array para cada campo, todos estan inicializados en false
-    this.constructorForms()
+  }
 
+  async ngOnInit(): Promise<void> {
+    if(this.editar){
+      this.constructorForms()
+      this.loadData()
+    }
+    else{
+      this.constructorForms()
+    }
+    this.firstFormGroup = this.fb.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this.fb.group({
+      secondCtrl: ['', Validators.required]
+    });
+    this.thirdFormGroup = this.fb.group({
+      thirdControl: ['', Validators.required]
+    })
+    this.fourthFormGroup = this.fb.group({
+      fourthCtrl: ['', Validators.required]
+    })
+
+    this.onChanges();
   }
 
   constructorForms(){
@@ -119,11 +134,13 @@ export class ModalInfoPacComponent implements OnInit {
       abuelosMaternos: new FormArray(this.enfermedades.map(control => new FormControl(false))),
       hermanos: new FormArray(this.enfermedades.map(control => new FormControl(false))),
       otros: new FormArray(this.enfermedades.map(control => new FormControl(false))),
+      observaciones: ('')
     });
 
     this.PatologiasForm = this.fb.group({
       patologias: new FormArray(this.patologicas.map(control => new FormControl((false)))),
       Medicamento: this.fb.array([]),
+      observaciones: ([''])
     })
 
     this.AlergiasForm = this.fb.group({
@@ -192,7 +209,7 @@ export class ModalInfoPacComponent implements OnInit {
       pac_metodo_anticonceptivo_hormonal: ['', Validators.required],
       pac_metodo_anticonceptivo_hormonal_diu: ['', Validators.required],
 
-      pac_exam_prostata: ['', Validators.required],
+      pac_exam_prostata: [''],
       pac_exam_prostata_fecha: ['', Validators.required],
       pac_exam_prostata_obs: ['', Validators.required],
 
@@ -232,46 +249,178 @@ export class ModalInfoPacComponent implements OnInit {
       pac_consumo_sal: ['', Validators.required],
       pac_gpos_alimenticios: ['', Validators.required],
       pac_alimentos_capeados: ['', Validators.required],
-
+      observaciones: [''],
       Actividades_Fisicas: this.fb.array([]),
     })
   }
 
-  async ngOnInit(): Promise<void> {
-    this.currentPaciente['edad'] = this.calcularEdad(this.currentPaciente.pac_f_nacimiento);
-    this.bandSexo= this.currentPaciente.pac_sexo;
-    console.log(this.bandSexo)
-    console.log('Paciente', this.currentPaciente.pac_sexo)
-    this.pac_sexo = this.currentPaciente.pac_sexo
-    this.id =  this.currentPaciente.id;
-    this.firstFormGroup = this.fb.group({
-      firstCtrl: ['', Validators.required]
-    });
-    this.secondFormGroup = this.fb.group({
-      secondCtrl: ['', Validators.required]
-    });
-    this.thirdFormGroup = this.fb.group({
-      thirdControl: ['', Validators.required]
-    })
-    this.fourthFormGroup = this.fb.group({
-      fourthCtrl: ['', Validators.required]
-    })
+  loadData(){
+    this.PacienteService.getPacienteData(this.idPaciente).subscribe(data => {
+      console.log('Data', data)
+      //#region LoadArrays
+      let varPadre = this.heredoFamForm.get('padre') as FormArray;
+      for(let i=0; i < varPadre.length; i++){
+        if(data['pac_antecedentes_data'].heredo_familiares.padre.includes(this.enfermedades[i].id)){
+          varPadre.at(i).setValue(true)
+        }
+      }
 
-    this.citaServ.getCitasPaciente(this.currentPaciente.id,'asignada').pipe(take(1)).subscribe(dataCitasAsig=>{
-      this.dataCitasAll=[...this.dataCitasAll,...dataCitasAsig]
-    })
+      let varMadre = this.heredoFamForm.get('madre') as FormArray;
+      for(let i=0; i < varMadre.length; i++){
+        if(data['pac_antecedentes_data'].heredo_familiares.madre.includes(this.enfermedades[i].id)){
+          varMadre.at(i).setValue(true)
+        }
+      }
 
-      this.citaServ.getCitasPaciente(this.currentPaciente.id,'aceptada').pipe(take(1)).subscribe(dataCitasAsig=>{
-        this.dataCitasAll=[...this.dataCitasAll,...dataCitasAsig]
+      let varAbPat = this.heredoFamForm.get('abuelosPaternos') as FormArray;
+      for(let i=0; i < varAbPat.length; i++){
+        if(data['pac_antecedentes_data'].heredo_familiares.abuelosPaternos.includes(this.enfermedades[i].id)){
+          varAbPat.at(i).setValue(true)
+        }
+      }
+
+      let varAbMat = this.heredoFamForm.get('abuelosMaternos') as FormArray;
+      for(let i=0; i < varAbMat.length; i++){
+        if(data['pac_antecedentes_data'].heredo_familiares.abuelosMaternos.includes(this.enfermedades[i].id)){
+          varAbMat.at(i).setValue(true)
+        }
+      }
+
+      let varHmnos = this.heredoFamForm.get('hermanos') as FormArray;
+      for(let i=0; i < varHmnos.length; i++){
+        if(data['pac_antecedentes_data'].heredo_familiares.hermanos.includes(this.enfermedades[i].id)){
+          varHmnos.at(i).setValue(true)
+        }
+      }
+
+      let varOtros = this.heredoFamForm.get('otros') as FormArray;
+      for(let i=0; i < varOtros.length; i++){
+        if(data['pac_antecedentes_data'].heredo_familiares.otros.includes(this.enfermedades[i].id)){
+          varOtros.at(i).setValue(true)
+        }
+      }
+
+      let varPatologias = this.PatologiasForm.get('patologias') as FormArray;
+      for(let i=0; i < varPatologias.length; i++){
+        if(data['pac_antecedentes_data'].Patologicos.cronico_degenerativas.includes(this.patologicas[i].id)){
+          varPatologias.at(i).setValue(true)
+        }
+      }
+      //#endregion
+
+      //#region Patologias
+      this.heredoFamForm.patchValue({
+        observaciones: data['pac_antecedentes_data'].Observaciones.observaciones_heredoFam
       })
 
-      this.citaServ.getCitasPaciente(this.currentPaciente.id,'rechazada').pipe(take(1)).subscribe(dataCitasAsig=>{
-        this.dataCitasAll=[...this.dataCitasAll,...dataCitasAsig]
+      this.PatologiasForm.patchValue({
+        observaciones: data['pac_antecedentes_data'].Observaciones.observaciones_Patologias
       })
 
-    console.log(this.dataCitasAll);
+      this.AlergiasForm.patchValue({
+        alergias: data['pac_antecedentes_data'].Patologicos.alergias.alergias,
+        alergia_tipo: data['pac_antecedentes_data'].Patologicos.alergias.alergia_tipo,
+      })
 
-    this.onChanges();
+      this.NoPatologicosForm.patchValue({
+        pac_habitaciones: data['pac_antecedentes_data'].No_Patolgicos.pac_habitaciones,
+        pac_habitantes:         data['pac_antecedentes_data'].No_Patolgicos.pac_habitantes,
+        mascota:                data['pac_antecedentes_data'].No_Patolgicos.mascota,
+        pac_mascota_tipo:       data['pac_antecedentes_data'].No_Patolgicos.pac_mascota_tipo,
+        pac_comidas_al_dia:     data['pac_antecedentes_data'].No_Patolgicos.pac_comidas_al_dia,
+        pac_consumo_pan:        data['pac_antecedentes_data'].No_Patolgicos.pac_consumo_pan,
+        pac_consumo_refresco:   data['pac_antecedentes_data'].No_Patolgicos.pac_consumo_refresco,
+        pac_consumo_sal:        data['pac_antecedentes_data'].No_Patolgicos.pac_consumo_sal,
+        pac_gpos_alimenticios:  data['pac_antecedentes_data'].No_Patolgicos.pac_gpos_alimenticios,
+        pac_alimentos_capeados: data['pac_antecedentes_data'].No_Patolgicos.pac_alimentos_capeados,
+        observaciones: data['pac_antecedentes_data'].Observaciones.observaciones_NoPatologicos
+      })
+
+      this.HospitalizacionesForm.patchValue({
+        hospitalizaciones:       data['pac_antecedentes_data'].Patologicos.Hospitalizaciones.hospitalizaciones,
+        hospitalizacion_fecha:   data['pac_antecedentes_data'].Patologicos.Hospitalizaciones.hospitalizacion_fecha,
+        hospitalizacion_causa:   data['pac_antecedentes_data'].Patologicos.Hospitalizaciones.hospitalizacion_causa,
+        hospitalizacion_secuela: data['pac_antecedentes_data'].Patologicos.Hospitalizaciones.hospitalizacion_secuela,
+      })
+
+      this.QuirurgicasForm.patchValue({
+        quirurgicas:        data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgicas,
+        quirurgica_fecha:   data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgica_fecha,
+        quirurgica_causa:   data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgica_causa,
+        quirurgica_secuela: data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgica_secuela,
+      })
+
+      this.TraumaticosForm.patchValue({
+        traumaticos:          data['pac_antecedentes_data'].Patologicos.traumaticos.traumaticos,
+        fecha_traumaticos:    data['pac_antecedentes_data'].Patologicos.traumaticos.fecha_traumaticos,
+        tipos_traumaticos:    data['pac_antecedentes_data'].Patologicos.traumaticos.tipos_traumaticos,
+        causas_traumaticos:   data['pac_antecedentes_data'].Patologicos.traumaticos.causas_traumaticos,
+        secuelas_traumaticos: data['pac_antecedentes_data'].Patologicos.traumaticos.secuelas_traumaticos,
+      })
+
+      this.TransfusionesForm.patchValue({
+        transfusiones:        data['pac_antecedentes_data'].Patologicos.transfusiones.transfusiones,
+        transfusiones_fecha:  data['pac_antecedentes_data'].Patologicos.transfusiones.transfusiones_fecha,
+        transfusiones_causas: data['pac_antecedentes_data'].Patologicos.transfusiones.transfusiones_causas,
+      })
+
+      this.PsicoactivasForm.patchValue({
+        alcoholismo:            data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.alcoholismo,
+        alcoholismo_frecuencia: data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.alcoholismo_frecuencia,
+        alcoholismo_cantidad:   data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.alcoholismo_cantidad,
+        tabaquismo:             data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.tabaquismo,
+        tabaquismo_frecuencia:  data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.tabaquismo_frecuencia,
+        tabaquismo_cantidad:    data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.tabaquismo_cantidad,
+        otras:                  data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.otras,
+        otras_tipo:             data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.otras_tipo,
+        otras_ultimo_consumo:   data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.otras_ultimo_consumo,
+        otras_frecuencia:       data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.otras_frecuencia,
+      })
+      //#endregion
+
+      this.GinecoObstricoForm = this.fb.group({
+        pac_menarquia:                          data['pac_antecedentes_data'].GinecoObstrico.pac_menarquia,
+        pac_carac_mens:                         data['pac_antecedentes_data'].GinecoObstrico.pac_carac_mens,
+        pac_dias_mens:                          data['pac_antecedentes_data'].GinecoObstrico.pac_dias_mens,
+        pac_cant_mens:                          data['pac_antecedentes_data'].GinecoObstrico.pac_cant_mens,
+        pac_frec_mens:                          data['pac_antecedentes_data'].GinecoObstrico.pac_frec_mens,
+        pac_precencia_dolor_mens:               data['pac_antecedentes_data'].GinecoObstrico.pac_precencia_dolor_mens,
+        pac_otras_sec_mens:                     data['pac_antecedentes_data'].GinecoObstrico.pac_otras_sec_mens,
+        pac_vida_sexual_activa:                 data['pac_antecedentes_data'].GinecoObstrico.pac_vida_sexual_activa,
+        pac_inicio_vida_sexual:                 data['pac_antecedentes_data'].GinecoObstrico.pac_inicio_vida_sexual,
+        pac_no_comp_sexuales:                   data['pac_antecedentes_data'].GinecoObstrico.pac_no_comp_sexuales,
+        pac_metodo_anticonceptivo:              data['pac_antecedentes_data'].GinecoObstrico.pac_metodo_anticonceptivo,
+        pac_tipo_relaciones:                    data['pac_antecedentes_data'].GinecoObstrico.pac_tipo_relaciones,
+        pac_ets:                                data['pac_antecedentes_data'].GinecoObstrico.pac_ets,
+        pac_metodo_anticonceptivo_hormonal:     data['pac_antecedentes_data'].GinecoObstrico.pac_metodo_anticonceptivo_hormonal,
+        pac_metodo_anticonceptivo_hormonal_diu: data['pac_antecedentes_data'].GinecoObstrico.pac_metodo_anticonceptivo_hormonal_diu,
+        pac_exam_prostata:                      data['pac_antecedentes_data'].GinecoObstrico.pac_exam_prostata,
+        pac_exam_prostata_fecha:                data['pac_antecedentes_data'].GinecoObstrico.pac_exam_prostata_fecha,
+        pac_exam_prostata_obs:                  data['pac_antecedentes_data'].GinecoObstrico.pac_exam_prostata_obs,
+        pac_gestaciones:                        data['pac_antecedentes_data'].GinecoObstrico.pac_gestaciones,
+        pac_cant_gestaciones:                   data['pac_antecedentes_data'].GinecoObstrico.pac_cant_gestaciones,
+        pac_ultima_gestacion:                   data['pac_antecedentes_data'].GinecoObstrico.pac_ultima_gestacion,
+        pac_ultima_gestacion_observacion:       data['pac_antecedentes_data'].GinecoObstrico.pac_ultima_gestacion_observacion,
+        pac_partos:                             data['pac_antecedentes_data'].GinecoObstrico.pac_partos,
+        pac_cant_partos:                        data['pac_antecedentes_data'].GinecoObstrico.pac_cant_partos,
+        pac_ultimo_parto:                       data['pac_antecedentes_data'].GinecoObstrico.pac_ultimo_parto,
+        pac_ultimo_parto_observacion:           data['pac_antecedentes_data'].GinecoObstrico.pac_ultimo_parto_observacion,
+        pac_abortos:                            data['pac_antecedentes_data'].GinecoObstrico.pac_abortos,
+        pac_cant_abortos:                       data['pac_antecedentes_data'].GinecoObstrico.pac_cant_abortos,
+        pac_ultimo_aborto:                      data['pac_antecedentes_data'].GinecoObstrico.pac_ultimo_aborto,
+        pac_ultimo_aborto_observacion:          data['pac_antecedentes_data'].GinecoObstrico.pac_ultimo_aborto_observacion,
+        pac_cesareas:                           data['pac_antecedentes_data'].GinecoObstrico.pac_cesareas,
+        pac_cant_cesareas:                      data['pac_antecedentes_data'].GinecoObstrico.pac_cant_cesareas,
+        pac_ultima_cesarea:                     data['pac_antecedentes_data'].GinecoObstrico.pac_ultima_cesarea,
+        pac_ultima_cesarea_observacion:         data['pac_antecedentes_data'].GinecoObstrico.pac_ultima_cesarea_observacion,
+        pac_papanicolau:                        data['pac_antecedentes_data'].GinecoObstrico.pac_papanicolau,
+        pac_papanicolau_fecha:                  data['pac_antecedentes_data'].GinecoObstrico.pac_papanicolau_fecha,
+        pac_papanicolau_observacion:            data['pac_antecedentes_data'].GinecoObstrico.pac_papanicolau_observacion,
+        pac_tamis_mama:                         data['pac_antecedentes_data'].GinecoObstrico.pac_tamis_mama,
+        pac_tamis_fecha:                        data['pac_antecedentes_data'].GinecoObstrico.pac_tamis_fecha,
+        pac_tamis_observacion:                  data['pac_antecedentes_data'].GinecoObstrico.pac_tamis_observacion,
+      })
+    })
   }
 
   onSubmit() {
@@ -418,9 +567,9 @@ export class ModalInfoPacComponent implements OnInit {
       this.GinecoObstricoForm.get("pac_partos").enable();
       this.GinecoObstricoForm.get("pac_abortos").enable();
       this.GinecoObstricoForm.get("pac_cesareas").enable();
-      this.GinecoObstricoForm.get("pac_exam_prostata").disable();
-      this.GinecoObstricoForm.get("pac_exam_prostata_fecha").disable();
-      this.GinecoObstricoForm.get("pac_exam_prostata_obs").disable();
+      this.GinecoObstricoForm.get("pac_exam_prostata").enable();
+      this.GinecoObstricoForm.get("pac_exam_prostata_fecha").enable();
+      this.GinecoObstricoForm.get("pac_exam_prostata_obs").enable();
 
     }
     this.GinecoObstricoForm.get('pac_exam_prostata').valueChanges.subscribe(data =>{
@@ -519,7 +668,6 @@ export class ModalInfoPacComponent implements OnInit {
   }
 
   submit() {
-    // Filter out the unselected ids
     this.guardaPatolgiasFam();
   }
 
@@ -546,22 +694,33 @@ export class ModalInfoPacComponent implements OnInit {
           Medicamentos: this.PatologiasForm.value.Medicamento,
         },
         GinecoObstrico: this.GinecoObstricoForm.value,
+        Observaciones: {
+          observaciones_heredoFam: this.heredoFamForm.value.observaciones,
+          observaciones_NoPatologicos: this.NoPatologicosForm.value.observaciones,
+          observaciones_Patologias: this.PatologiasForm.value.observaciones,
+        }
       }
     }
-    console.log(model);
     let post = model;
-    post['id']= this.currentPaciente.id;
+    post['id']= this.idPaciente;
     post['pac_historia_clinica'] = true;
     this.PacienteService.updatePaciente(post);
+    if(this.editar){
+      this.alertEditado()
+    }
+    else{
+      this.alertGuardado()
+    }
+    this.cerrarModal.emit(true)
+  }
+
+  alertGuardado(){
     Swal.fire({
       title: 'Historia Clínica Completa',
       text: 'Se ha completado correctamente los antecedentes.',
       icon: 'success',
       confirmButtonText: 'OK'
-    })
-    /*Una vez ejecutado el Sweet alert limpia el formulario
-    y redirige al componente de doctores*/
-    .then(()=>{
+    }).then(()=>{
       this.heredoFamForm.reset();
       this.AlergiasForm.reset();
       this.GinecoObstricoForm.reset();
@@ -571,7 +730,27 @@ export class ModalInfoPacComponent implements OnInit {
       this.NoPatologicosForm.reset();
       this.TraumaticosForm.reset();
       this.TransfusionesForm.reset();
-      this.modalRef.hide()
+      this.router.navigate(['pacientes']);
+      return false;
+    })
+  }
+
+  alertEditado(){
+    Swal.fire({
+      title: 'Historia Clínica Completa',
+      text: 'Se ha editado correctamente los antecedentes.',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    }).then(()=>{
+      this.heredoFamForm.reset();
+      this.AlergiasForm.reset();
+      this.GinecoObstricoForm.reset();
+      this.PatologiasForm.reset();
+      this.QuirurgicasForm.reset();
+      this.HospitalizacionesForm.reset();
+      this.NoPatologicosForm.reset();
+      this.TraumaticosForm.reset();
+      this.TransfusionesForm.reset();
       this.router.navigate(['pacientes']);
       return false;
     })
@@ -610,71 +789,4 @@ export class ModalInfoPacComponent implements OnInit {
     return this.list_medicamentos.removeAt(medicamentoId);
   }
 
-  calcularEdad(fecha: string) {
-    var hoy = new Date();
-    var cumpleanos = new Date(fecha);
-    var edad = hoy.getFullYear() - cumpleanos.getFullYear();
-    var m = hoy.getMonth() - cumpleanos.getMonth();
-
-    if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
-      edad--;
-    }
-    return edad;
-  }
-
-  activarAntecedentes() {
-    this.citasBand = false;
-    this.detallesBand = false;
-    this.antecedentesBand = true;
-  }
-
-  activarDetalles() {
-    this.citasBand = false;
-    this.detallesBand = true;
-    this.antecedentesBand = false;
-  }
-
-  activarCita() {
-    this.citasBand = true;
-    this.detallesBand = false;
-    this.antecedentesBand = false;
-  }
-
-  activarVerHistoria(){
-    this.citasBand = false;
-    this.detallesBand = false;
-    this.verHistoria = true;
-  }
-
-  cerrarModal(){
-    this.modalRef.hide()
-  }
-
-  closeModal(event){
-    console.log('Event', event)
-    if(event){
-      this.modalRef.hide()
-    }
-  }
-
-  next() {
-    this.stepper.next();
-  }
-
-  activarEditar(){
-    this.citasBand = false;
-    this.detallesBand = false;
-    this.verHistoria = false;
-    this.bandEditar = true;
-  }
-
-  citaSave(event: any){
-    if (event.citaSave) {
-      console.log('Cita almacenada')
-      this.activarDetalles();
-    }else{
-      console.log('Cancel Cita')
-      this.activarDetalles();
-    }
-  }
 }

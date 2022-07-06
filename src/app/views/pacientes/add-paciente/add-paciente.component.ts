@@ -87,14 +87,10 @@ export class AddPacienteComponent implements OnInit {
           if (this.router.getCurrentNavigation().extras.state.caso) {
             switch (this.router.getCurrentNavigation().extras.state.caso) {
               case 'editar titular':
-                //this.currentPaciente = this.router.getCurrentNavigation().extras.state.userData;
-                  this.PacienteService.getPacienteData(this.router.getCurrentNavigation().extras.state.userData.id).subscribe((data) => {
-                    console.log(data);
-                    this.currentPaciente = data;
-                    this.bandEditTitular = true;
-                    this.loadMunicipios();
-                    this.loadTitularData();
-                  })
+                this.currentPaciente = this.router.getCurrentNavigation().extras.state.userData;
+                this.bandEditTitular = true;
+                await this.loadMunicipios();
+                this.loadTitularData();
                 break;
 
               case 'editar adicional':
@@ -162,8 +158,8 @@ export class AddPacienteComponent implements OnInit {
     }
   }
 
-  loadMunicipios() {
-    return new Promise((resolve) => {
+  async loadMunicipios() {
+    return await new Promise((resolve) => {
       this.httpClient.get<any>("assets/docs/estadosymunicipios.json").subscribe((data) => {
         this.estadosymunicipios = data;
         resolve('success');
@@ -172,6 +168,7 @@ export class AddPacienteComponent implements OnInit {
   }
 
   getMunicipios(value: any) {
+    console.log('Estados', value)
     this.municipios = [];
     this.municipios = this.estadosymunicipios[value]
   }
@@ -190,13 +187,26 @@ export class AddPacienteComponent implements OnInit {
 
   async addPacTitular() {
     let post = this.pacienteForm.value;
-
-    post['pac_nombre_completo'] = post['pac_nombres'] + ' ' + post['pac_primer_apellido'] + ' ' + post['pac_segundo_apellido'];
+    post['pac_nombres'] = post['pac_nombres'].toUpperCase();
+    post['pac_primer_apellido'] = post['pac_primer_apellido'].toUpperCase();
+    post['pac_segundo_apellido'] = post['pac_segundo_apellido'].toUpperCase();
+    post['pac_nombre_completo'] = post['pac_nombres'].toUpperCase() + ' ' + post['pac_primer_apellido'].toUpperCase() + ' ' + post['pac_segundo_apellido'].toUpperCase();
     post['pac_tipo'] = 'titular';
     post['pac_adicionales'] = [];
     post['pac_cant_adicionales'] = 0;
-
+    Swal.fire({
+      title: 'Registrando Paciente',
+      text: 'Los datos de el paciente estan siendo almacenados',
+      icon: 'info',
+      showConfirmButton: false,
+      showCancelButton: false,
+      showCloseButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    })
+    console.log('POST', post)
     await this.PacienteService.creaPaciente(post);
+    Swal.close();
     Swal.fire({
       title: 'Paciente Registrado',
       text: 'El paciente ha sido registrado correctamente',
@@ -212,7 +222,7 @@ export class AddPacienteComponent implements OnInit {
   async addPacAdicional() {
     let post = this.pacienteForm.value;
 
-    post['pac_nombre_completo'] = post['pac_nombres'] + ' ' + post['pac_primer_apellido'] + ' ' + post['pac_segundo_apellido'];
+    post['pac_nombre_completo'] = post['pac_nombres'].toLowerCase(); + ' ' + post['pac_primer_apellido'].toLowerCase(); + ' ' + post['pac_segundo_apellido'].toLowerCase();
     post['pac_tipo'] = 'adicional';
     post['pac_titular_id'] = this.currentTitular.id;
     post['pac_parentesco'] = this.parentesco;
@@ -247,8 +257,8 @@ export class AddPacienteComponent implements OnInit {
     })
   }
 
-  loadUserData() {
-    this.getMunicipios(this.currentPaciente.pac_estado);
+  async loadUserData() {
+    await this.getMunicipios(this.currentPaciente.pac_estado);
     this.pacienteForm.patchValue({
       pac_nombres: this.currentPaciente.pac_nombres,
       pac_primer_apellido: this.currentPaciente.pac_primer_apellido,
@@ -281,6 +291,12 @@ export class AddPacienteComponent implements OnInit {
 
   loadTitularData() {
     console.log(this.currentPaciente);
+    /* if((this.currentPaciente.pac_estado != '')){
+      this.getMunicipios(this.currentPaciente.pac_estado);
+    }
+    if(typeof this.currentPaciente.pac_estado == undefined){
+      console.log('Tipo de dato indefinido')
+    } */
     this.getMunicipios(this.currentPaciente.pac_estado);
     this.pacienteForm.patchValue({
       pac_nombres: this.currentPaciente.pac_nombres,

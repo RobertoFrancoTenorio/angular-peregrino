@@ -3,23 +3,60 @@
 </div>
 
 <div class='contenedor-principal' *ngIf="done">
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand">Pacientes</a>
-            <form class="d-flex">
-                <button class="btn btn-primary" type="button" (click)="goToAddPaciente()">Agregar Titular</button>
-            </form>
-        </div>
-    </nav>
-
-    <div class="row" style="padding-top: 5px;">
-        <div class="col-lg-4 col-md-6">
-            <input class="mb form-control" placeholder="Filtro" type="text" (keyup)="onQuickFilterChanged($event)" />
-        </div>
+  <nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand">Pacientes</a>
+      <form class="d-flex">
+        <button class="btn btn-primary" type="button" (click)="goToAddPaciente()">Agregar Titular</button>
+      </form>
     </div>
-    <br>
+  </nav>
+  <br>
 
-    <ag-grid-angular class="ag-theme-alpine" style="width: 80vw; height: 400px;" [gridOptions]="tablaPacientes"
-        [pagination]="true"></ag-grid-angular>
+  <h5>Buscar Paciente</h5>
+  <hr>
+  <div class="row" style="padding-top: 5px;">
+    <div class="col-4">
+      <div class="form-group">
+        <select class="form-control" [(ngModel)]="opcion" id="select" placeholder="Seleccione el campo de busqueda">
+          <option selected value="default">Seleccione el metodo por el cual desea buscar al paciente</option>
+          <option value="Nombre">Nombre</option>
+          <option value="Primer Apellido">Primer Apellido</option>
+          <option value="Segundo Apellido">Segundo Apellido</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-4" *ngIf="opcion != 'default'">
+      <input class="mb form-control" id="filtro" style="text-transform: uppercase;" placeholder="Filtro" type="text"/>
+<!--     <input class="mb form-control" id="filtro" (keypress)="buscarPaciente($event)" placeholder="Filtro" type="text"/>
+ --></div>
+    <div class="col-2">
+      <button [disabled]="opcion=='default'" class="btn btn-primary" (click)="buscarPaciente($event)">Buscar</button>
+      <button *ngIf="buscadorActivo == true" class="btn btn-primary" (click)="borrarFiltro()">Borrar Filtro</button>
+    </div>
+    <div class="col-2">
+      <input class="mb form-control" readOnly value="Pacientes Totales: {{total}}" type="text" (keyup)="onQuickFilterChanged($event)" />
+    </div>
+  </div>
+  <span *ngIf="opcion != 'default'">
+    <h5 class="Resultados" *ngIf="resultado == true">Se obtuvieron <strong>{{cant}} </strong>resultados con la palabra <strong>{{pac.toUpperCase()}}</strong></h5>
+  </span>
+  <button class="btn btn-success" (click)="revisaRepetidos()">Prueba</button>
+  <br>
+  <ag-grid-angular class="ag-theme-alpine" style="width: 86vw; height: 600px;" [gridOptions]="tablaPacientes"
+      [pagination]="true" [paginationPageSize]="paginationPageSize"></ag-grid-angular>
+  <nav class="navbar navbar-light bg-light" style="width: 100%;" *ngIf="buscadorActivo == false">
+    <div class="navigation">
+      <span class="legend"><strong>{{inicio}} </strong> a <strong>{{fin - 1}}</strong> de <strong>{{total}}</strong></span>
+      <span class="legend"><span class="goToFirst" (click)="goToFirst()">l<i class="fa fa-angle-left" aria-hidden="true"></i></span> <span class="previous" (click)="navegacion(2)"><i class="fa fa-angle-left" aria-hidden="true"></i></span><span class="pages">Pagina {{currentPage}} de 15</span><span class="next" (click)="navegacion(1)"><i class="fa fa-angle-right" aria-hidden="true"></i></span><span class="goToLast" (click)="goToLast()"><i class="fa fa-angle-right" aria-hidden="true"></i>l</span></span>
+    </div>
+  </nav>
+
+  <nav class="navbar navbar-light bg-light" style="width: 100%;" *ngIf="buscadorActivo == true">
+    <div class="navigation">
+      <span class="legend"><strong>{{desde}} </strong> a <strong>{{hasta}}</strong> de <strong>{{cant}}</strong></span>
+      <span class="legend"><span class="goToFirst" (click)="goToFirst()">l<i class="fa fa-angle-left" aria-hidden="true"></i></span> <span class="previous" (click)="buscadorAnteriores()"><i class="fa fa-angle-left" aria-hidden="true"></i></span><span class="pages">Pagina {{contadorPaginasBusqueda}} de {{totalPaginasBusqueda}}</span><span class="next"  (click)="buscadorSiguientes()"><i class="fa fa-angle-right" aria-hidden="true"></i></span><span class="goToLast" (click)="goToLast()"><i class="fa fa-angle-right" aria-hidden="true"></i>l</span></span>
+    </div>
+  </nav>
 
 </div>

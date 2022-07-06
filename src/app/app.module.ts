@@ -115,6 +115,8 @@ import { ConsultasComponent } from './views/citas/consultas/consultas.component'
 import { AccionesConsultaComponent } from './views/citas/acciones-consulta/acciones-consulta.component';
 import { ModalInfoConsultaComponent } from './views/citas/modal-info-consulta/modal-info-consulta.component';
 import { AccionesCitaComponent } from './views/citas/acciones-cita/acciones-cita.component';
+import { TablaPacientesComponent } from './views/pacientes/tabla-pacientes/tabla-pacientes.component';
+import { HistoriaClinicaComponent } from './views/pacientes/historia-clinica/historia-clinica.component';
 
 @NgModule({
   imports: [
@@ -187,6 +189,8 @@ import { AccionesCitaComponent } from './views/citas/acciones-cita/acciones-cita
     AccionesConsultaComponent,
     ModalInfoConsultaComponent,
     AccionesCitaComponent,
+    TablaPacientesComponent,
+    HistoriaClinicaComponent,
   ],
   providers: [
     {

@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import {DoctorService } from '../../service/doctor/doctor.service';
 //Componente que contiene los 2 botones para la acciones a realizar con los doctores como modificar o leer
 import { AccionesDoctoresComponent } from './acciones-doctores/acciones-doctores.component';
-
+import { DoctorAPIService } from '../../service/APIServices/DoctorAPI/doctor-api.service';
 
 @Component({
   selector: 'app-doctores',
@@ -27,7 +27,7 @@ export class DoctoresComponent implements OnInit {
 
   columnDefsFilter = [{
     headerName: 'No.',
-    field: 'idNumerico',
+    field: 'id',
     width: 70,
     sort: 'asc',
     filter: "agNumberColumnFilter"
@@ -92,6 +92,7 @@ export class DoctoresComponent implements OnInit {
   constructor(
     private router: Router,
     private DoctorService: DoctorService,
+    private DoctorAPIService: DoctorAPIService
   ) {
     this.tablaDoctores = <GridOptions>{
       columnDefs: this.columnDefsFilter,
@@ -105,20 +106,16 @@ export class DoctoresComponent implements OnInit {
   /*Siempre que usamos una función asincrona debemos colocar el async
   y se complementa con un await*/
   async ngOnInit(): Promise<void> {
-    await new Promise<void>(resolve => {
-      this.DoctorService.getDoctorsList().subscribe(doctores =>{
-        console.log(doctores);
-
-        this.doctoresList = doctores;
+    this.DoctorAPIService.getDoctoresList().subscribe(doctores =>{
+      this.doctoresList = doctores;
         if(this.tablaDoctores.api)
         {
           console.log('onInit')
           this.tablaDoctores.api.setRowData(this.doctoresList);
         }
-        resolve();
-      })
     })
     this.done = true;
+    //this.respaldaDoctores()
   }
 
   /*Metodo para filtrar a los doctores*/
@@ -129,5 +126,37 @@ export class DoctoresComponent implements OnInit {
   /*Metodo para el alta de doctores*/
   goToAddDoc(){
     this.router.navigate(['add-doctor']);
+  }
+
+  respaldaDoctores(){
+    this.DoctorService.getDoctorsList().subscribe(doctor =>{
+      let doctores = doctor;
+      console.log('doctores', doctores)
+      for(let i = 0; i < doctores.length; i++){
+        let docSQL = {};
+        docSQL['activo'] = true;
+        docSQL['doc_cedula'] = doctores[i]['doc_cedula'];
+        docSQL['doc_celular_principal'] = doctores[i]['doc_celular_principal'];
+        docSQL['doc_dir_calle'] = doctores[i]['doc_dir_calle'];
+        docSQL['doc_dir_colonia'] = doctores[i]['doc_dir_colonia'];
+        docSQL['doc_dir_cp'] = doctores[i]['doc_dir_cp'];
+        docSQL['doc_email'] = doctores[i]['doc_email'];
+        docSQL['doc_estado'] = doctores[i]['doc_estado'].toString();
+        docSQL['doc_horario_fin'] = doctores[i]['doc_horario_fin'];
+        docSQL['doc_horario_ini'] = doctores[i]['doc_horario_ini'];
+        docSQL['doc_municipio'] = doctores[i]['doc_municipio'];
+        docSQL['doc_nombre'] = doctores[i]['doc_nombre'];
+        docSQL['doc_nombre_completo'] = doctores[i]['doc_nombre_completo'];
+        docSQL['doc_primer_apellido'] = doctores[i]['doc_primer_apellido'];
+        docSQL['doc_segundo_apellido'] = doctores[i]['doc_segundo_apellido'];
+        docSQL['user_reg'] = doctores[i]['user_reg'];
+        console.log('post', docSQL)
+        this.enviaMySQL(docSQL)
+      }
+    })
+  }
+
+  enviaMySQL(POST){
+    this.DoctorAPIService.postDoctor(POST).subscribe(data=>{})
   }
 }

@@ -66,7 +66,6 @@ export class AuthService {
   }
 
   async getUserAccount() {
-    console.log('Dato recibido', this.currentUserId)
     return new Promise(resolve => {
       this.afs.collection('SegMedico').doc('peregrino').collection('usuarios').doc(this.currentUserId).valueChanges().pipe(take(1)).subscribe(
         x => {

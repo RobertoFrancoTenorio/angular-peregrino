@@ -17,6 +17,7 @@ export class AccionesDoctoresComponent implements ICellRendererAngularComp {
   ) { }
 
   async agInit(params: any): Promise<void> {
+    console.log('params', params)
     this.params = params;
     this.activo = params.data.activo;
   }
@@ -30,6 +31,7 @@ export class AccionesDoctoresComponent implements ICellRendererAngularComp {
   }
 
   editarUserShow(){
+    console.log(this.params.data)
     const navigationExtras: NavigationExtras = {
       state: {
         userData: this.params.data,

@@ -1,11 +1,11 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { CellClickedEvent, GridOptions } from 'ag-grid-community';
-import Swal from 'sweetalert2';
+import { GridOptions } from 'ag-grid-community';
 import { PacienteService } from '../../service/paciente/paciente.service';
+import { PacienteAPIService } from '../../service/APIServices/PacienteAPI/paciente-api.service';
 import { AccionesPacienteComponent } from './acciones-paciente/acciones-paciente.component';
 import { AngularFirestore } from '@angular/fire/firestore';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-pacientes',
@@ -23,14 +23,14 @@ export class PacientesComponent implements OnInit, OnChanges {
   columnDefsFilter = [
     {
       headerName: 'No.',
-      field: 'idNumerico',
+      field: 'idPaciente',
       width: 70,
       sort: 'asc',
       filter: "agNumberColumnFilter"
     },
     {
       headerName: 'Nombres',
-      field: 'pac_nombre_completo',
+      field: 'pac_Nombre_Completo',
       width: 300,
       filter: "agTextColumnFilter"
     },
@@ -42,7 +42,7 @@ export class PacientesComponent implements OnInit, OnChanges {
     },
     {
       headerName: 'Celular',
-      field: 'pac_celular',
+      field: 'pac_Celular',
       width: 180,
       filter: "agTextColumnFilter"
     },
@@ -72,83 +72,29 @@ export class PacientesComponent implements OnInit, OnChanges {
     }
   ]
 
-  prueba = {}
-  total: number;
-  paciente: unknown;
-  opcion: string;
-  pac: string;
-  resultado: boolean;
-  cant: number;
-  pacList = {}
-  buscadorActivo: boolean;
-  currentPage: number = 1;
-
-  desde: number = 1;
-  hasta: number = 5;
-  totalPaginasBusqueda: number;
-  contadorPaginasBusqueda: number = 1;
-  pacientesPorActualizar;
+  pacienteETLAdicional = [];
+  paciente: Object;
 
   constructor(
     private router: Router,
-    private pacienteService: PacienteService,
-    private afs: AngularFirestore,
+    private PacienteService: PacienteService,
+    private PacienteAPI: PacienteAPIService,
   ) {
     this.tablaPacientes = <GridOptions>{
       columnDefs: this.columnDefsFilter,
       rowData: null,
       onGridReady: () =>{
         this.tablaPacientes.api.setRowData(this.pacientesList)
-        /* this.tablaPacientes.paginationPageSize = 100; */
-        this.tablaPacientes.paginationPageSize = 5;
+        this.tablaPacientes.paginationPageSize = 100;
       }
     }
-    this.prueba = false;
-    this.pacienteService.getPacienteData('counter').subscribe(data => {
-      console.log(data['counter'])
-      this.total = data['counter'];
-    })
-    this.opcion = 'default';
-    this.paginaActual = 0;
-    this.buscadorActivo = false
-    this.tablaPacientes.suppressPaginationPanel = true;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
   }
 
-  async ngOnInit() {
-    /* this.inicio = 0;
-    this.fin = 100; */
-    this.inicio = 1;
-    this.fin = 6;
-    this.setPacientes(this.inicio, this.fin)
-  }
-
-  goToAddPaciente(){
-    this.router.navigate(['add-paciente']);
-  }
-
-  actualizaPacientes(){
-    console.log('Actualización')
-    let post;
-    this.pacienteService.getPacientesPaginados2(31, 50).subscribe(pacientes =>{
-      console.log('pacientes', pacientes)
-      for(let i = 0; i < pacientes.length; i++){
-        let post = pacientes[i]
-        post['pac_nombres'] = post['pac_nombres'].toUpperCase();
-        post['pac_primer_apellido'] = post['pac_primer_apellido'].toUpperCase();
-        post['pac_segundo_apellido'] = post['pac_segundo_apellido'].toUpperCase();
-        post['pac_nombre_completo'] = post['pac_nombre_completo'].toUpperCase();
-        post['idNumerico'] = i + 1;
-        console.log('Post',post)
-        new Promise((resolve) =>{
-          this.afs.collection('SegMedico').doc('peregrino').collection('Pacientes_Backup').doc(pacientes[i]['id']).set(pacientes[i])
-        })
-
-        this.pacienteService.updatePaciente(post);
-      }
-    })
+  ngOnInit() {
+    this.setPacientes()
   }
 
   /*Metodo para filtrar a los doctores*/
@@ -156,165 +102,101 @@ export class PacientesComponent implements OnInit, OnChanges {
     this.tablaPacientes.api.setQuickFilter($event.target.value);
   }
 
-  async setPacientes(ini, end){
-    console.log('Inicio: ', ini, ',Fin: ', end)
-    await new Promise<void>(resolve => {
-      this.pacienteService.getPacientesPaginados(ini, end).subscribe(pacientes =>{
-        this.pacientesList = pacientes;
-        console.log('Pacientes', this.pacientesList)
-          this.tablaPacientes.api.setRowData(this.pacientesList);
-      })
+  setPacientes(){
+    this.PacienteAPI.getPacientesList().subscribe(data => {
+      this.pacientesList = data
+      this.tablaPacientes.api.setRowData(this.pacientesList);
     })
   }
 
-  async navegacion(band){
-    if(band == 1){
-      this.currentPage ++
-      this.inicio = this.fin
-      this.fin = this.fin + 5;
-      await new Promise<void>((resolve =>{
-        this.pacienteService.getPacientesPaginados(0, this.fin).subscribe(pacientes =>{
-          this.pacientesList = pacientes;
-          this.tablaPacientes.api.setRowData(this.pacientesList);
-          console.log('Pacientes siguientes', pacientes)
-        })
-        this.tablaPacientes.api.paginationGoToNextPage()
-      }))
-    }
-    else if(band == 2){
-      if(this.currentPage > 1){
-        this.currentPage --
-        this.inicio -= 5
-        this.fin -= 5
-        this.tablaPacientes.api.paginationGoToPreviousPage()
-      }
-    }
+  goToAddPaciente(){
+    this.router.navigate(['add-paciente']);
   }
 
-  goToFirst(){
-    this.currentPage = 1;
-    this.inicio = 1;
-    this.fin = 5;
-    this.pacienteService.getPacientesPaginados(1, 6).subscribe(pacientes =>{
-      this.pacientesList = pacientes;
-      console.log('Type', typeof this.pacientesList)
-        this.tablaPacientes.api.setRowData(this.pacientesList);
-    })
-  }
+  guardaPacientes(){
+    this.PacienteService.getPacientesPaginados(1,3).subscribe(titulares =>{
+      let adicionales = [];
+      for(let i = 0; i < titulares.length; i++){
 
-  goToLast(){
-    this.currentPage = 1;
-    this.inicio = 1;
-    this.fin = 5;
-    this.pacienteService.getPacientesPaginados(1468, 1472).subscribe(pacientes =>{
-      this.pacientesList = pacientes;
-      console.log('Type', this.pacientesList)
-        this.tablaPacientes.api.setRowData(this.pacientesList);
-    })
-  }
-
-  async buscarPaciente(event:any){
-    this.buscadorActivo = true;
-    this.tablaPacientes.suppressPaginationPanel = false;
-    this.pac = (document.getElementById("filtro") as HTMLInputElement).value
-    this.opcion = (document.getElementById("select") as HTMLSelectElement).value
-    if(this.pac == ''){
-      Swal.fire(
-        'Busqueda no permitida!',
-        'Ingrese un dato correcto!',
-        'error'
-      )
-      this.buscadorActivo = false;
-      this.opcion = 'default'
-    }
-    else{
-      console.log('Select value', this.opcion)
-      switch (this.opcion) {
-        case 'Nombre':
-          this.buscador(this.pac.toUpperCase(), 'pac_nombre_completo');
-          break;
-        case 'Primer Apellido':
-          this.buscador(this.pac.toUpperCase(), 'pac_primer_apellido');
-          break;
-        case 'Segundo Apellido':
-          this.buscador(this.pac.toUpperCase(), 'pac_segundo_apellido');
-          break;
-        default:
-          await this.setPacientes(this.inicio, this.fin);
-      }
-    }
-
-  }
-
-  buscador(paciente, parametro){
-    this.buscadorActivo = true;
-    (document.getElementById("select") as HTMLSelectElement).value = 'default';
-    (document.getElementById("filtro") as HTMLInputElement).value = '';
-    this.pacienteService.buscador(paciente, parametro).subscribe(data =>{
-      console.log('data', data)
-      if(data.length > 0){
-        this.resultado = true;
-        this.pacientesList = data;
-        this.cant = data.length
-        this.tablaPacientes.paginationPageSize = 5;
-        let paginas = Math.ceil(data.length / 5)
-        this.totalPaginasBusqueda = paginas
-        console.log('Paginas', paginas)
-
-        this.tablaPacientes.api.setRowData(this.pacientesList);
-      }
-      else{
-        Swal.fire(
-          'No hay pacientes con ese dato!',
-          'Intente nuevamente!',
-          'error'
-        )
-        this.buscadorActivo = false;
-        this.opcion = 'default'
+        if(titulares[i]['pac_tipo'] == 'titular'){
+          console.log(titulares[i]['id'])
+          let pacienteETL = {};
+          pacienteETL['pac_Nombres'] = titulares[i]['pac_nombres'];
+          pacienteETL['pac_Primer_Apellido'] = titulares[i]['pac_primer_apellido'];
+          pacienteETL['pac_Segundo_Apellido'] = titulares[i]['pac_segundo_apellido'];
+          pacienteETL['pac_Nombre_Completo'] = titulares[i]['pac_nombre_completo'];
+          pacienteETL['pac_CURP'] = titulares[i]['pac_curp'];
+          pacienteETL['pac_f_nacimiento'] = titulares[i]['pac_f_nacimiento'];
+          pacienteETL['pac_tipo'] = titulares[i]['pac_tipo'];
+          pacienteETL['pac_Email'] = titulares[i]['pac_email'];
+          pacienteETL['pac_Telefono'] = titulares[i]['pac_telefono'];
+          pacienteETL['pac_Celular'] = titulares[i]['pac_celular'];
+          pacienteETL['pac_Estado_Civil'] = titulares[i]['pac_estado_civil'];
+          pacienteETL['pac_Escolaridad'] = titulares[i]['pac_Escolaridad'];
+          pacienteETL['pac_Pais'] = titulares[i]['pac_pais'];
+          pacienteETL['pac_Sexo'] = titulares[i]['pac_sais'];
+          pacienteETL['pac_Estado'] = titulares[i]['pac_estado'];
+          pacienteETL['pac_Municipio'] = titulares[i]['pac_municipio'];
+          pacienteETL['pac_Localidad'] = titulares[i]['pac_localidad'];
+          pacienteETL['pac_dir_CP'] = titulares[i]['pac_dir_cp'];
+          pacienteETL['pac_dir_calle'] = titulares[i]['pac_dir_calle'];
+          pacienteETL['pac_dir_colonia'] = titulares[i]['pac_dir_colonia'];
+          pacienteETL['pac_dir_comentarios'] = titulares[i]['pac_dir_comentarios'];
+          pacienteETL['pac_cant_adicionales'] = titulares[i]['pac_cant_adicionales'];
+          pacienteETL['id_titular'] = '';
+          pacienteETL['Parentezco'] = '';
+          pacienteETL['user_reg'] = titulares[i]['user_reg'];
+          pacienteETL['activo'] = titulares[i]['activo'];
+          pacienteETL['empresa'] = titulares[i]['empresa'];
+          pacienteETL['created_at'] = '';
+          this.PacienteAPI.postPaciente(pacienteETL).subscribe(data => {
+            this.paciente = data;
+            for(let j = 0; j < titulares[i]['pac_adicionales'].length; j++) {
+              this.PacienteService.getPacienteData(titulares[i]['pac_adicionales'][j].id).subscribe(data => {
+                let pacienteETLAdicional = {};
+                pacienteETLAdicional['pac_Nombres'] = data['pac_nombres'];
+                pacienteETLAdicional['pac_Primer_Apellido'] = data['pac_primer_apellido'];
+                pacienteETLAdicional['pac_Segundo_Apellido'] = data['pac_segundo_apellido'];
+                pacienteETLAdicional['pac_Nombre_Completo'] = data['pac_nombre_completo'];
+                pacienteETLAdicional['pac_CURP'] = data['pac_curp'];
+                pacienteETLAdicional['pac_f_nacimiento'] = data['pac_f_nacimiento'];
+                pacienteETLAdicional['pac_tipo'] = data['pac_tipo'];
+                pacienteETLAdicional['pac_Email'] = data['pac_email'];
+                pacienteETLAdicional['pac_Telefono'] = data['pac_telefono'];
+                pacienteETLAdicional['pac_Celular'] = data['pac_celular'];
+                pacienteETLAdicional['pac_Estado_Civil'] = data['pac_estado_civil'];
+                pacienteETLAdicional['pac_Escolaridad'] = data['pac_Escolaridad'];
+                pacienteETLAdicional['pac_Pais'] = data['pac_pais'];
+                pacienteETLAdicional['pac_Sexo'] = data['pac_sais'];
+                pacienteETLAdicional['pac_Estado'] = data['pac_estado'];
+                pacienteETLAdicional['pac_Municipio'] = data['pac_municipio'];
+                pacienteETLAdicional['pac_Localidad'] = data['pac_localidad'];
+                pacienteETLAdicional['pac_dir_CP'] = data['pac_dir_cp'];
+                pacienteETLAdicional['pac_dir_calle'] = data['pac_dir_calle'];
+                pacienteETLAdicional['pac_dir_colonia'] = data['pac_dir_colonia'];
+                pacienteETLAdicional['pac_dir_comentarios'] = data['pac_dir_comentarios'];
+                pacienteETLAdicional['pac_cant_adicionales'] = data['pac_cant_adicionales'];
+                pacienteETLAdicional['Parentezco'] = data['pac_cant_adicionales'];
+                pacienteETLAdicional['user_reg'] = data['user_reg'];
+                pacienteETLAdicional['activo'] = data['activo'];
+                pacienteETLAdicional['empresa'] = data['empresa'];
+                pacienteETLAdicional['created_at'] = '';
+                this.guardaAdicionales(this.paciente['idPaciente'], pacienteETLAdicional)
+              })
+            }
+          })
+        }
       }
     })
   }
 
-  //#region Funciones navegador para el buscadorActivo
-  buscadorSiguientes(){
-    if(this.contadorPaginasBusqueda < this.totalPaginasBusqueda){
-      this.tablaPacientes.api.paginationGoToNextPage()
-      this.desde +=5;
-      this.hasta +=5;
-      this.contadorPaginasBusqueda ++;
-    }
-  }
+  guardaAdicionales(idTitular, adicional){
+    adicional['id_titular'] = idTitular;
 
-  buscadorAnteriores(){
-    if(this.contadorPaginasBusqueda <= 0){
-      this.tablaPacientes.api.paginationGoToPreviousPage()
-      this.desde -=5;
-      this.hasta -=5;
-      this.contadorPaginasBusqueda --;
-    }
+    console.log('POST', adicional)
+    this.PacienteAPI.postPaciente(adicional).subscribe(data =>{
 
-  }
-  //#endregion
-
-  async borrarFiltro(){
-    this.opcion = 'default'
-    this.buscadorActivo = false;
-    this.inicio = 1;
-    this.fin = 5;
-    this.currentPage = 1
-    this.setPacientes(1, 6)
-  }
-
-  revisaRepetidos(){
-    this.pacienteService.getPacientesPaginados(1, 1472).subscribe(pacientes =>{
-      for(let i = 0; i < pacientes.length; i++){
-      console.log('nombre completo:', pacientes[i]['pac_nombre_completo'])
-        this.pacienteService.getIguales(pacientes[i]['pac_nombre_completo']).subscribe(iguales => {
-          for(let i = 0; i < iguales.length; i++){
-            console.log('nombre:', iguales[i]['pac_nombre_completo'], ' , id:', iguales[i]['id'])
-          }
-        })
-      }
     })
   }
+
 }

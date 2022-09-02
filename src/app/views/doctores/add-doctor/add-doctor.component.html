@@ -133,7 +133,7 @@
           <div *ngIf="bandMunicipio == true" class="col-4">
             <label class="col-form-label col-form-label-lg" for="municipio">Municipio</label>
             <select id="municipio" formControlName="doc_municipio" class="form-control">
-                <option value="{{municipio1}}" disabled="true">Estado actual: {{municipio1}}</option>
+                <option value="{{municipio1}}" disabled="true">{{municipio1}}</option>
                 <p>{{municipio1}}</p>
                 <option *ngFor="let x of municipios" value="{{x}}">{{x}}</option>
             </select>
@@ -229,10 +229,10 @@
           </ng-container>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button *ngIf="!currentUser" class="btn btn-success me-md-2" type="submit" [disabled]="!doctorForm.valid" >Guardar</button>
-            <button *ngIf="currentUser" class="btn btn-success me-md-2" (click)="updateDoctor()" type="button" [disabled]="!doctorForm.valid" >Actualizar</button>
-            <button class="btn btn-danger" type="button" (click)="goToDoctors()">Cancelar</button>
-          </div>
+          <button *ngIf="!currentUser" class="btn btn-success me-md-2" type="submit" [disabled]="!doctorForm.valid" >Guardar</button>
+          <button *ngIf="currentUser" class="btn btn-success me-md-2" (click)="updateDoctor()" type="button" [disabled]="!doctorForm.valid" >Actualizar</button>
+          <button class="btn btn-danger" type="button" (click)="goToDoctors()">Cancelar</button>
+        </div>
     </form>
     </div>
   </div>

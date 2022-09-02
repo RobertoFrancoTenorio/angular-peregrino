@@ -31,14 +31,12 @@ export class DefaultLayoutComponent implements OnInit {
   ngOnInit(){
     this.auth.getUserAccount().then(data => {
       this.CitaService.getCitasAsignadasDoctor(this.auth.currentUserId).subscribe(citas =>{
-        console.log('Citas', citas.length);
         this.notificacion = citas.length
         if(this.auth.userData.is_Doctor == 'Si'){
           this.doctor = true;
         }
         else{
           this.doctor = false;
-          console.log('false')
         }
       })
       let categorias = Object.keys(data['permisos']);

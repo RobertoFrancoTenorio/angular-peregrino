@@ -27,12 +27,12 @@
     <div class="form-row" *ngIf="bandAddAdicional">
       <div class="col-3">
         <label class="col-form-label col-form-label-lg" for="pac_nombres">Nombre del Titular</label>
-        <input id="parentesco" value="{{currentTitular.pac_nombre_completo}}" disabled placeholder="Nombre (s)" type="text"
+        <input id="parentesco" value="{{currentTitular.pac_Nombre_Completo}}" disabled placeholder="Nombre (s)" type="text"
           class="form-control form-control-lg">
       </div>
       <div class="col-3">
         <label class="col-form-label col-form-label-lg" for="pac_nombres">Teléfono del Titular</label>
-        <input id="datosPac" value="{{currentTitular.pac_celular}}" disabled placeholder="Nombre (s)" type="text"
+        <input id="datosPac" value="{{currentTitular.pac_Celular}}" disabled placeholder="Nombre (s)" type="text"
           class="form-control form-control-lg">
       </div>
       <div class="col-6">
@@ -80,30 +80,30 @@
       <span>{{parentesco}}</span>
       <div class="form-row">
         <div class="col-6">
-          <label class="col-form-label col-form-label-lg" for="pac_nombres" >Nombre (S) <span class="asterisco">**</span></label>
-          <input id="pac_nombres" style="text-transform: uppercase;" formControlName="pac_nombres" placeholder="Nombre (s)" type="text"
+          <label class="col-form-label col-form-label-lg" for="pac_Nombres" >Nombre (S) <span class="asterisco">**</span></label>
+          <input id="pac_nombres" style="text-transform: uppercase;" formControlName="pac_Nombres" placeholder="Nombre (s)" type="text"
             class="form-control form-control-lg">
         </div>
 
         <div class="col-3">
-          <label class="col-form-label col-form-label-lg" for="pac_primer_apellido">Primer apellido <span class="asterisco">**</span></label>
-          <input id="pac_primer_apellido" style="text-transform: uppercase;" formControlName="pac_primer_apellido" placeholder="Primer apellido"
+          <label class="col-form-label col-form-label-lg" for="pac_Primer_Apellido">Primer apellido <span class="asterisco">**</span></label>
+          <input id="pac_primer_apellido" style="text-transform: uppercase;" formControlName="pac_Primer_Apellido" placeholder="Primer apellido"
             type="text" class="form-control form-control-lg">
         </div>
         <div class="col-3">
-          <label class="col-form-label col-form-label-lg" for="pac_segundo_apellido">Segundo apellido <span class="asterisco">**</span> </label>
-          <input id="pac_segundo_apellido" style="text-transform: uppercase;" formControlName="pac_segundo_apellido" placeholder="Segundo apellido"
+          <label class="col-form-label col-form-label-lg" for="pac_Segundo_Apellido">Segundo apellido <span class="asterisco">**</span> </label>
+          <input id="pac_segundo_apellido" style="text-transform: uppercase;" formControlName="pac_Segundo_Apellido" placeholder="Segundo apellido"
             type="text" class="form-control form-control-lg">
         </div>
       </div>
 
       <div class="form-row">
         <div class="col-6">
-          <label class="col-form-label col-form-label-lg" for="pac_curp">CURP <span class="asterisco">**</span></label>
-          <input id="pac_curp" formControlName="pac_curp" placeholder="C U R P" type="text"
-            class="form-control form-control-lg" [ngClass]="{ 'is-invalid': f.pac_curp.errors }">
-            <div class="invalid-feedback" *ngIf="f.pac_curp.errors">
-              <div *ngIf="f.pac_curp.errors.pattern">Formato de CURP invalido</div>
+          <label class="col-form-label col-form-label-lg" for="pac_CURP">CURP <span class="asterisco">**</span></label>
+          <input id="pac_curp" formControlName="pac_CURP" placeholder="C U R P" type="text"
+            class="form-control form-control-lg" [ngClass]="{ 'is-invalid': f.pac_CURP.errors }">
+            <div class="invalid-feedback" *ngIf="f.pac_CURP.errors">
+              <div *ngIf="f.pac_CURP.errors.pattern">Formato de CURP invalido</div>
             </div>
         </div>
 
@@ -117,38 +117,38 @@
 
       <div class="form-row">
         <div class="col-4">
-          <label class="col-form-label col-form-label-lg" for="pac_email">Correo electrónico</label>
+          <label class="col-form-label col-form-label-lg" for="pac_Email">Correo electrónico</label>
           <div class="input-group">
             <div class="input-group-prepend">
               <div class="input-group-text">@</div>
             </div>
-            <input id="pac_email" formControlName="pac_email" placeholder="ejemplo@dominio.com" type="text"
+            <input id="pac_email" formControlName="pac_Email" placeholder="ejemplo@dominio.com" type="text"
               class="form-control form-control-lg">
           </div>
         </div>
 
         <div class="col-4">
-          <label class="col-form-label col-form-label-lg" for="pac_telefono">Teléfono fijo</label>
+          <label class="col-form-label col-form-label-lg" for="pac_Telefono">Teléfono fijo</label>
           <div class="input-group">
             <div class="input-group-prepend">
               <div class="input-group-text">
                 <i class="fa fa-phone"></i>
               </div>
             </div>
-            <input id="pac_telefono" formControlName="pac_telefono" placeholder="(000)-000-000" type="text"
+            <input id="pac_telefono" formControlName="pac_Telefono" placeholder="(000)-000-000" type="text"
               class="form-control form-control-lg">
           </div>
         </div>
 
         <div class="col-4">
-          <label class="col-form-label col-form-label-lg" for="pac_celular">Teléfono celular <span class="asterisco">**</span></label>
+          <label class="col-form-label col-form-label-lg" for="pac_Celular">Teléfono celular <span class="asterisco">**</span></label>
           <div class="input-group">
             <div class="input-group-prepend">
               <div class="input-group-text">
                 <i class="fa fa-mobile-phone"></i>
               </div>
             </div>
-            <input id="pac_celular" formControlName="pac_celular" placeholder="(000)-000-000" type="text"
+            <input id="pac_celular" formControlName="pac_Celular" placeholder="(000)-000-000" type="text"
               class="form-control form-control-lg">
           </div>
           <small *ngIf="bandAddAdicional" class="adicional">Si el paciente adicional no cuenta con un teléfono agregar el de su titular.</small>
@@ -157,8 +157,8 @@
 
       <div class="form-row">
         <div class="col-4">
-          <label class="col-form-label col-form-label-lg" for="pac_estado_civil">Estado Civil</label>
-          <select id="pac_estado_civil" formControlName="pac_estado_civil" class="form-control form-control-lg">
+          <label class="col-form-label col-form-label-lg" for="pac_Estado_Civil">Estado Civil</label>
+          <select id="pac_Estado_Civil" formControlName="pac_Estado_Civil" class="form-control form-control-lg">
             <option value="" selected>Elige una opción...</option>
             <option value="Soltero">Soltero(a)</option>
             <option value="Casado">Casado(a)</option>
@@ -171,7 +171,7 @@
 
         <div class="col-4">
           <label class="col-form-label col-form-label-lg" for="pac_escolaridad">Escolaridad</label>
-          <select id="pac_escolaridad" formControlName="pac_escolaridad" class="form-control col-form-label-lg">
+          <select id="pac_escolaridad" formControlName="pac_Escolaridad" class="form-control col-form-label-lg">
             <option selected value="">Elige una opción</option>
             <option value="Primaria">Primaria</option>
             <option value="Secundaria">Secundaria</option>
@@ -188,11 +188,11 @@
           </div>
           <div class="form-row text-center">
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="radioMale" formControlName="pac_sexo" value="M">
+              <input type="radio" class="custom-control-input" id="radioMale" formControlName="pac_Sexo" value="M">
               <label class="custom-control-label" for="radioMale"><span class="fa fa-male"></span></label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="radiofemale" formControlName="pac_sexo" value="F">
+              <input type="radio" class="custom-control-input" id="radiofemale" formControlName="pac_Sexo" value="F">
               <label class="custom-control-label" for="radiofemale"><span class="fa fa-female"></span></label>
             </div>
           </div>
@@ -204,11 +204,11 @@
           </div>
           <div class="form-row text-center">
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="radioMaleAd" formControlName="pac_sexo" value="M">
+              <input type="radio" class="custom-control-input" id="radioMaleAd" formControlName="pac_Sexo" value="M">
               <label class="custom-control-label" for="radioMaleAd"><span class="fa fa-male"></span></label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="radiofemaleAd" formControlName="pac_sexo" value="F">
+              <input type="radio" class="custom-control-input" id="radiofemaleAd" formControlName="pac_Sexo" value="F">
               <label class="custom-control-label" for="radiofemaleAd"><span class="fa fa-female"></span></label>
             </div>
           </div>
@@ -218,13 +218,13 @@
 
       <div class="form-row">
         <div class="col-4">
-          <label class="col-form-label col-form-label-lg" for="pac_pais">País</label>
-          <input id="pac_pais" formControlName="pac_pais" readonly placeholder="Nombre (s)" type="text"
+          <label class="col-form-label col-form-label-lg" for="pac_Pais">País</label>
+          <input id="pac_Pais" formControlName="pac_Pais" readonly placeholder="Nombre (s)" type="text"
             class="form-control form-control-lg">
         </div>
         <div class="col-4">
           <label class="col-form-label col-form-label-lg" for="pac_estado">Estado</label>
-          <select id="pac_estado" #estados formControlName="pac_estado" (change)="getMunicipios(estados.value)"
+          <select id="pac_estado" #estados formControlName="pac_Estado" (change)="getMunicipios(estados.value)"
             class="form-control col-form-label-lg">
             <option value="" disabled="true">Selecciona una opcion</option>
             <option value="Aguascalientes">Aguascalientes</option>
@@ -263,7 +263,7 @@
         </div>
         <div class="col-4">
           <label class="col-form-label col-form-label-lg" for="pac_municipio">Municipio</label>
-          <select id="pac_municipio" formControlName="pac_municipio" class="form-control col-form-label-lg">
+          <select id="pac_municipio" formControlName="pac_Municipio" class="form-control col-form-label-lg">
             <option value="" disabled="true">Selecciona una opcion</option>
             <option *ngFor="let x of municipios" value="{{x}}">{{x}}</option>
           </select>
@@ -272,13 +272,13 @@
 
       <div class="form-row">
         <div class="col-4">
-          <label class="col-form-label col-form-label-lg" for="pac_localidad">Localdad</label>
-          <input id="pac_localidad" formControlName="pac_localidad" placeholder="Localidad" type="text"
+          <label class="col-form-label col-form-label-lg" for="pac_Localidad">Localidad</label>
+          <input id="pac_Localidad" formControlName="pac_Localidad" placeholder="Localidad" type="text"
             class="form-control form-control-lg">
         </div>
         <div class="col-4">
           <label class="col-form-label col-form-label-lg" for="pac_dir_cp">Código postal</label>
-          <input id="pac_dir_cp" formControlName="pac_dir_cp" placeholder="Código postal" type="text"
+          <input id="pac_dir_cp" formControlName="pac_dir_CP" placeholder="Código postal" type="text"
             class="form-control form-control-lg">
         </div>
         <div class="col-4">
@@ -314,9 +314,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let ad of prueba">
-              <td>{{ad.nombre_completo}}</td>
-              <td>{{ad.parentesco}}</td>
-              <td><button class="btn btn-success" (click)="editModalShow(ad.id)">Editar</button></td>
+              <td>{{ad.pac_Nombre_Completo}}</td>
+              <td>{{ad.Parentezco}}</td>
+              <td><button class="btn btn-success" (click)="editModalShow(ad.idPaciente)">Editar</button></td>
             </tr>
           </tbody>
         </table>
@@ -326,11 +326,11 @@
   <div class="card-footer">
     <div class="d-flex justify-content-center">
       <button class="btn btn-success me-md-2" type="button"
-        (click)="addPacTitular()" [disabled]="!pacienteForm.valid" *ngIf="bandAddTitular">Guardar Titular</button>
+        (click)="addPacTitular()" *ngIf="bandAddTitular">Guardar Titular</button>
       <button class="btn btn-success me-md-2" type="button"
         (click)="addPacAdicional()" *ngIf="bandAddAdicional" [disabled]="parentesco == '' || !pacienteForm.valid">Guardar Adicional</button>
-      <button class="btn btn-success me-md-2" (click)="updatePaciente()" type="button"
-        [disabled]="!pacienteForm.valid" *ngIf="bandEditTitular || bandEditAdicional">Actualizar</button>
+      <button class="btn btn-success me-md-2" (click)="updatePaciente()" type="button" *ngIf="bandEditTitular">Actualizar</button>
+      <button class="btn btn-success me-md-2" (click)="updatePacienteAdicional()" type="button" *ngIf="bandEditAdicional">Actualizar Adicional</button>
         <div *ngIf="idAdicional==null">
           <button class="btn btn-danger" type="button" (click)="goToPacientes()">Cancelar</button>
         </div>

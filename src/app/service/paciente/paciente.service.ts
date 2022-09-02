@@ -57,13 +57,13 @@ export class PacienteService {
   getPacientesTipo(tipo) {
     return this.afs.collection('/SegMedico/peregrino/Pacientes', ref =>
       ref
-        .orderBy('idNumerico', 'asc').where('pac_tipo', '==', tipo)
+        .orderBy('idNumerico', 'asc').where('pac_tipo', '==', tipo).limit(10)
         ).valueChanges();
   }
 
   getPacienteData(id:string) {
     //return this.afs.doc('/SegMedico/peregrino/Pacientes/'+id).valueChanges();
-    return this.afs.doc('/SegMedico/peregrino/Pacientes/'+id).valueChanges()
+    return this.afs.doc('/SegMedico/peregrino/Pacientes/'+id).valueChanges().pipe(take(1))
   }
 
   async creaPaciente(post: any) {

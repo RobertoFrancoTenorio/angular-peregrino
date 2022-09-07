@@ -134,7 +134,7 @@ export class PacientesComponent implements OnInit, OnChanges {
           pacienteETL['pac_Estado_Civil'] = titulares[i]['pac_estado_civil'];
           pacienteETL['pac_Escolaridad'] = titulares[i]['pac_Escolaridad'];
           pacienteETL['pac_Pais'] = titulares[i]['pac_pais'];
-          pacienteETL['pac_Sexo'] = titulares[i]['pac_sais'];
+          pacienteETL['pac_Sexo'] = titulares[i]['pac_sexo'];
           pacienteETL['pac_Estado'] = titulares[i]['pac_estado'];
           pacienteETL['pac_Municipio'] = titulares[i]['pac_municipio'];
           pacienteETL['pac_Localidad'] = titulares[i]['pac_localidad'];
@@ -142,7 +142,6 @@ export class PacientesComponent implements OnInit, OnChanges {
           pacienteETL['pac_dir_calle'] = titulares[i]['pac_dir_calle'];
           pacienteETL['pac_dir_colonia'] = titulares[i]['pac_dir_colonia'];
           pacienteETL['pac_dir_comentarios'] = titulares[i]['pac_dir_comentarios'];
-          pacienteETL['pac_cant_adicionales'] = titulares[i]['pac_cant_adicionales'];
           pacienteETL['id_titular'] = '';
           pacienteETL['Parentezco'] = '';
           pacienteETL['user_reg'] = titulares[i]['user_reg'];
@@ -165,9 +164,9 @@ export class PacientesComponent implements OnInit, OnChanges {
                 pacienteETLAdicional['pac_Telefono'] = data['pac_telefono'];
                 pacienteETLAdicional['pac_Celular'] = data['pac_celular'];
                 pacienteETLAdicional['pac_Estado_Civil'] = data['pac_estado_civil'];
-                pacienteETLAdicional['pac_Escolaridad'] = data['pac_Escolaridad'];
+                pacienteETLAdicional['pac_Escolaridad'] = data['pac_escolaridad'];
                 pacienteETLAdicional['pac_Pais'] = data['pac_pais'];
-                pacienteETLAdicional['pac_Sexo'] = data['pac_sais'];
+                pacienteETLAdicional['pac_Sexo'] = data['pac_sexo'];
                 pacienteETLAdicional['pac_Estado'] = data['pac_estado'];
                 pacienteETLAdicional['pac_Municipio'] = data['pac_municipio'];
                 pacienteETLAdicional['pac_Localidad'] = data['pac_localidad'];
@@ -175,8 +174,7 @@ export class PacientesComponent implements OnInit, OnChanges {
                 pacienteETLAdicional['pac_dir_calle'] = data['pac_dir_calle'];
                 pacienteETLAdicional['pac_dir_colonia'] = data['pac_dir_colonia'];
                 pacienteETLAdicional['pac_dir_comentarios'] = data['pac_dir_comentarios'];
-                pacienteETLAdicional['pac_cant_adicionales'] = data['pac_cant_adicionales'];
-                pacienteETLAdicional['Parentezco'] = data['pac_cant_adicionales'];
+                pacienteETLAdicional['Parentezco'] = data['pac_parentesco'];
                 pacienteETLAdicional['user_reg'] = data['user_reg'];
                 pacienteETLAdicional['activo'] = data['activo'];
                 pacienteETLAdicional['empresa'] = data['empresa'];

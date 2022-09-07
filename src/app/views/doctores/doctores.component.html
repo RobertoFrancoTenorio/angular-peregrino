@@ -1,7 +1,7 @@
 <div *ngIf="!done">
     cargando...
   </div>
-  
+
   <div class='contenedor-principal' *ngIf="done">
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
@@ -11,7 +11,7 @@
             </form>
         </div>
     </nav>
-  
+
     <div class="row" style="padding-top: 5px;">
         <div class="col-lg-4 col-md-6">
             <input class="mb form-control" placeholder="Filtro" type="text" (keyup)="onQuickFilterChanged($event)" />
@@ -21,3 +21,5 @@
     <ag-grid-angular class="ag-theme-alpine" style=" height: 400px;" [gridOptions]="tablaDoctores"
     [pagination]="true"></ag-grid-angular>
   </div>
+
+  <button class="btn btn-primary" (click)="respaldaDoctores()">Guarda Doctores</button>

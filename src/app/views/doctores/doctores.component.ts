@@ -8,7 +8,7 @@ import {DoctorService } from '../../service/doctor/doctor.service';
 //Componente que contiene los 2 botones para la acciones a realizar con los doctores como modificar o leer
 import { AccionesDoctoresComponent } from './acciones-doctores/acciones-doctores.component';
 import { DoctorAPIService } from '../../service/APIServices/DoctorAPI/doctor-api.service';
-
+import { MetodoDeContactoAPIService } from '../../service/APIServices/MetodoDeContactoAPI/metodo-de-contacto-api.service';
 @Component({
   selector: 'app-doctores',
   templateUrl: './doctores.component.html',
@@ -92,7 +92,8 @@ export class DoctoresComponent implements OnInit {
   constructor(
     private router: Router,
     private DoctorService: DoctorService,
-    private DoctorAPIService: DoctorAPIService
+    private DoctorAPIService: DoctorAPIService,
+    private MetodoDeContactoAPIService: MetodoDeContactoAPIService,
   ) {
     this.tablaDoctores = <GridOptions>{
       columnDefs: this.columnDefsFilter,
@@ -149,14 +150,28 @@ export class DoctoresComponent implements OnInit {
         docSQL['doc_nombre_completo'] = doctores[i]['doc_nombre_completo'];
         docSQL['doc_primer_apellido'] = doctores[i]['doc_primer_apellido'];
         docSQL['doc_segundo_apellido'] = doctores[i]['doc_segundo_apellido'];
+        docSQL['doc_curp'] = doctores[i]['doc_curp'];
         docSQL['user_reg'] = doctores[i]['user_reg'];
-        console.log('post', docSQL)
-        this.enviaMySQL(docSQL)
+        this.DoctorAPIService.postDoctor(docSQL).subscribe(data=>{
+          console.log('data', data)
+          if(doctores[i]['metodos_contacto'].length > 0){
+            for(let j = 0; j < doctores[i]['metodos_contacto'].length; j++){
+              this.guardaMetodosDeContacto(data.id, doctores[i]['metodos_contacto'][j])
+            }
+          }
+          else{
+            console.log('No tiene metodos de contacto')
+          }
+        })
       }
     })
   }
 
-  enviaMySQL(POST){
-    this.DoctorAPIService.postDoctor(POST).subscribe(data=>{})
+  guardaMetodosDeContacto(id, POST){
+    POST['idDoctor'] = id;
+    POST['estatus_metodo_de_contacto'] = 'activo';
+    this.MetodoDeContactoAPIService.postMetodo(POST).subscribe(data =>{})
+    console.log('id', id),
+    console.log('post', POST)
   }
 }

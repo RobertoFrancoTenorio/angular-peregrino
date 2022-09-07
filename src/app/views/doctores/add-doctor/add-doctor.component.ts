@@ -103,12 +103,17 @@ export class AddDoctorComponent implements OnInit {
   }
 
   loadUserData() {
+    if(this.currentUser.pac_estado != null){
+      this.getMunicipios(this.currentUser.pac_estado);
+    }
+    let especialidades = this.currentUser.doc_especialidades.split(',');
+    this.especialidades = especialidades
     this.editDoctor = true;
     this.doctorForm.patchValue({
       doc_nombre: this.currentUser.doc_nombre,
       doc_primer_apellido: this.currentUser.doc_primer_apellido,
       doc_segundo_apellido: this.currentUser.doc_segundo_apellido,
-      doc_especialidades: this.currentUser.doc_especialidades,
+      doc_especialidades: especialidades,
       doc_email: this.currentUser.doc_email,
       activo: this.currentUser.activo,
       doc_cedula: this.currentUser.doc_cedula,
@@ -122,10 +127,7 @@ export class AddDoctorComponent implements OnInit {
       doc_celular_principal: this.currentUser.doc_celular_principal,
       doc_horario_ini: this.currentUser.doc_horario_ini,
       doc_horario_fin: this.currentUser.doc_horario_fin,
-      doc_especialidad: this.currentUser.doc_especialidades.split(',')
     })
-    let especialidades = this.currentUser.doc_especialidades.split(',');
-    this.doctorForm.value.doc_especialidad = especialidades
 
     this.MetodoDeContactoAPIService.getMetodos(this.currentUser.id).subscribe(data =>{
       this.metodosDeContacto = data;
@@ -193,6 +195,8 @@ export class AddDoctorComponent implements OnInit {
   }
 
   updateDoctor(){
+    let especialidades = this.doctorForm.value.doc_especialidades;
+    especialidades = especialidades.toString()
     this.doctor = {
       id: this.currentUser.id,
       doc_nombre: this.doctorForm.value.doc_nombre,
@@ -212,8 +216,9 @@ export class AddDoctorComponent implements OnInit {
       doc_celular_principal: this.doctorForm.value.doc_celular_principal,
       doc_horario_ini: this.doctorForm.value.doc_horario_ini,
       doc_horario_fin: this.doctorForm.value.doc_horario_fin,
+      doc_especialidades: especialidades
     }
-    this.doctor.doc_especialidades = this.doctorForm.value.doc_especialidades.toString();
+
     this.DoctorAPIService.updateDoctor(this.doctor.id, this.doctor).subscribe(doc=>{})
 
     let metodos = this.doctorForm.value.metodos_contacto;

@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { PacienteService } from './../../../service/paciente/paciente.service';
 import { CitaService } from '../../../service/cita/cita.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { HistoriaClinicaAPIService } from '../../../service/APIServices/HistoriaClinica/historia-clinica-api.service';
+import { AuthService } from '../../../service/auth/auth.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -41,9 +43,9 @@ export class HistoriaClinicaComponent implements OnInit {
   })
 
   MedicamentosForm = this.fb.group({
-    pac_medicamento: ['', Validators.required],
-    pac_frecuencia_consumo: ['',Validators.required],
-    pac_inicio_consumo: ['', Validators.required],
+    medicamento_nombre: ['', Validators.required],
+    medicamento_frecuencia_consumo: ['',Validators.required],
+    medicamento_inicio_de_consumo: ['', Validators.required],
   })
 
   dataCitasAll=[];
@@ -94,15 +96,17 @@ export class HistoriaClinicaComponent implements OnInit {
   ];
 
   constructor(
-    private fb: FormBuilder,
-    private PacienteService: PacienteService,
     private router: Router,
-    private citaServ: CitaService
+    private fb: FormBuilder,
+    private AuthService: AuthService,
+    private PacienteService: PacienteService,
+    private HistoriaClinicaAPIService: HistoriaClinicaAPIService,
     ) {
     // Va agregando un array para cada campo, todos estan inicializados en false
   }
 
   async ngOnInit(): Promise<void> {
+    console.log('sexo', this.pac_sexo)
     if(this.editar){
       this.constructorForms()
       this.loadData()
@@ -123,7 +127,7 @@ export class HistoriaClinicaComponent implements OnInit {
       fourthCtrl: ['', Validators.required]
     })
 
-    this.onChanges();
+    //this.onChanges();
   }
 
   constructorForms(){
@@ -157,38 +161,39 @@ export class HistoriaClinicaComponent implements OnInit {
 
     this.QuirurgicasForm = this.fb.group({
       quirurgicas: ['', Validators.required],
-      quirurgica_fecha:  ['', Validators.required],
-      quirurgica_causa:  ['', Validators.required],
-      quirurgica_secuela: ['', Validators.required],
+      quirurgico_fecha:  ['', Validators.required],
+      quirurgico_causa:  ['', Validators.required],
+      quirurgico_secuela: ['', Validators.required],
     })
 
     this.TraumaticosForm = this.fb.group({
       traumaticos: ['', Validators.required],
-      fecha_traumaticos: ['', Validators.required],
-      tipos_traumaticos: ['', Validators.required],
-      causas_traumaticos: ['', Validators.required],
-      secuelas_traumaticos: ['', Validators.required],
+      traumatismo_fecha: ['', Validators.required],
+      traumatismo_tipo: ['', Validators.required],
+      traumatismo_causa: ['', Validators.required],
+      traumatismo_secuela: ['', Validators.required],
     })
 
     this.TransfusionesForm = this.fb.group({
       transfusiones: ['', Validators.required],
-      transfusiones_fecha: ['', Validators.required],
-      transfusiones_causas: ['', Validators.required],
+      transfusion_fecha: ['', Validators.required],
+      transfusion_causa: ['', Validators.required],
     })
 
     this.PsicoactivasForm = this.fb.group({
-      alcoholismo: ['', Validators.required],
-      alcoholismo_frecuencia: ['', Validators.required],
-      alcoholismo_cantidad: ['', Validators.required],
+      consumo_alguna_sustancia: ['', Validators.required],
+      sustancia_psicoactiva_alcohol: ['', Validators.required],
+      sustancia_psicoactiva_alcohol_frecuencia: ['', Validators.required],
+      sustancia_psicoactiva_alcohol_cantidad: ['', Validators.required],
 
-      tabaquismo: ['', Validators.required],
-      tabaquismo_frecuencia: ['', Validators.required],
-      tabaquismo_cantidad: ['', Validators.required],
+      sustancia_psicoactiva_tabaco: ['', Validators.required],
+      sustancia_psicoactiva_tabaco_frecuencia: ['', Validators.required],
+      sustancia_psicoactiva_tabaco_cantidad: ['', Validators.required],
 
-      otras: ['', Validators.required],
-      otras_tipo: ['', Validators.required],
-      otras_ultimo_consumo: ['', Validators.required],
-      otras_frecuencia: ['', Validators.required],
+      sustancia_psicoactiva_otra: ['', Validators.required],
+      sustancia_psicoactiva_otra_tipo: ['', Validators.required],
+      sustancia_psicoactiva_otra_ultimo_consumo: ['', Validators.required],
+      sustancia_psicoactiva_otra_frecuencia: ['', Validators.required],
     })
 
     this.GinecoObstricoForm = this.fb.group({
@@ -200,18 +205,18 @@ export class HistoriaClinicaComponent implements OnInit {
       pac_precencia_dolor_mens: ['', Validators.required],
       pac_otras_sec_mens: ['', Validators.required],
 
-      pac_vida_sexual_activa: ['', Validators.required],
-      pac_inicio_vida_sexual: ['', Validators.required],
-      pac_no_comp_sexuales: ['', Validators.required],
-      pac_metodo_anticonceptivo: ['', Validators.required],
-      pac_tipo_relaciones: ['', Validators.required],
-      pac_ets: ['', Validators.required],
-      pac_metodo_anticonceptivo_hormonal: ['', Validators.required],
-      pac_metodo_anticonceptivo_hormonal_diu: ['', Validators.required],
+      androgenico_vida_sexual_activa: ['', Validators.required],
+      androgenico_inicio_vida_sexual: ['', Validators.required],
+      androgenico_no_comp_sexuales: ['', Validators.required],
+      androgenico_metodo_anticonceptivo: ['', Validators.required],
+      androgenico_tipo_relaciones: ['', Validators.required],
+      androgenico_ets: ['', Validators.required],
+      androgenico_metodo_anticonceptivo_hormonal: ['', Validators.required],
+      androgenico_androgenico_pac_metodo_anticonceptivo_hormonal_diu: ['', Validators.required],
 
-      pac_exam_prostata: [''],
-      pac_exam_prostata_fecha: ['', Validators.required],
-      pac_exam_prostata_obs: ['', Validators.required],
+      ExamenProstata: [''],
+      fecha_ultimo_Examen_Prostatico: ['', Validators.required],
+      observaciones_ultimo_examen_prostatico: ['', Validators.required],
 
       pac_gestaciones: ['', Validators.required],
       pac_cant_gestaciones: ['', Validators.required],
@@ -239,16 +244,16 @@ export class HistoriaClinicaComponent implements OnInit {
     })
 
     this.NoPatologicosForm = this.fb.group({
-      pac_habitaciones: ['', Validators.required],
-      pac_habitantes: ['', Validators.required],
-      mascota: ['', Validators.required],
+      pac_mascota: ['', Validators.required],
       pac_mascota_tipo: ['', Validators.required],
-      pac_comidas_al_dia: ['', Validators.required],
-      pac_consumo_pan: ['', Validators.required],
-      pac_consumo_refresco: ['', Validators.required],
-      pac_consumo_sal: ['', Validators.required],
-      pac_gpos_alimenticios: ['', Validators.required],
-      pac_alimentos_capeados: ['', Validators.required],
+      pac_NumeroHabitaciones: ['', Validators.required],
+      pac_NumeroHabitantes: ['', Validators.required],
+      pac_ConsumoDeAlimentosCapeados: ['', Validators.required],
+      pac_GruposAlimenticios: ['', Validators.required],
+      pac_CantidadDeComidasAlDia: ['', Validators.required],
+      pac_ConsumoDePan: ['', Validators.required],
+      pac_ConsumoDeSal: ['', Validators.required],
+      pac_ConsumoDeRefresco: ['', Validators.required],
       observaciones: [''],
       Actividades_Fisicas: this.fb.array([]),
     })
@@ -345,36 +350,36 @@ export class HistoriaClinicaComponent implements OnInit {
 
       this.QuirurgicasForm.patchValue({
         quirurgicas:        data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgicas,
-        quirurgica_fecha:   data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgica_fecha,
-        quirurgica_causa:   data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgica_causa,
-        quirurgica_secuela: data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgica_secuela,
+        quirurgico_fecha:   data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgico_fecha,
+        quirurgico_causa:   data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgico_causa,
+        quirurgico_secuela: data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgico_secuela,
       })
 
       this.TraumaticosForm.patchValue({
         traumaticos:          data['pac_antecedentes_data'].Patologicos.traumaticos.traumaticos,
-        fecha_traumaticos:    data['pac_antecedentes_data'].Patologicos.traumaticos.fecha_traumaticos,
-        tipos_traumaticos:    data['pac_antecedentes_data'].Patologicos.traumaticos.tipos_traumaticos,
-        causas_traumaticos:   data['pac_antecedentes_data'].Patologicos.traumaticos.causas_traumaticos,
-        secuelas_traumaticos: data['pac_antecedentes_data'].Patologicos.traumaticos.secuelas_traumaticos,
+        traumatismo_fecha:    data['pac_antecedentes_data'].Patologicos.traumaticos.traumatismo_fecha,
+        traumatismo_tipo:    data['pac_antecedentes_data'].Patologicos.traumaticos.traumatismo_tipo,
+        traumatismo_causa:   data['pac_antecedentes_data'].Patologicos.traumaticos.traumatismo_causa,
+        traumatismo_secuela: data['pac_antecedentes_data'].Patologicos.traumaticos.traumatismo_secuela,
       })
 
       this.TransfusionesForm.patchValue({
         transfusiones:        data['pac_antecedentes_data'].Patologicos.transfusiones.transfusiones,
-        transfusiones_fecha:  data['pac_antecedentes_data'].Patologicos.transfusiones.transfusiones_fecha,
-        transfusiones_causas: data['pac_antecedentes_data'].Patologicos.transfusiones.transfusiones_causas,
+        transfusion_fecha:  data['pac_antecedentes_data'].Patologicos.transfusiones.transfusion_fecha,
+        transfusion_causa: data['pac_antecedentes_data'].Patologicos.transfusiones.transfusion_causa,
       })
 
       this.PsicoactivasForm.patchValue({
-        alcoholismo:            data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.alcoholismo,
-        alcoholismo_frecuencia: data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.alcoholismo_frecuencia,
-        alcoholismo_cantidad:   data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.alcoholismo_cantidad,
-        tabaquismo:             data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.tabaquismo,
-        tabaquismo_frecuencia:  data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.tabaquismo_frecuencia,
-        tabaquismo_cantidad:    data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.tabaquismo_cantidad,
-        otras:                  data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.otras,
-        otras_tipo:             data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.otras_tipo,
-        otras_ultimo_consumo:   data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.otras_ultimo_consumo,
-        otras_frecuencia:       data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.otras_frecuencia,
+        sustancia_psicoactiva_alcohol:            data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_alcohol,
+        sustancia_psicoactiva_alcohol_frecuencia: data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_alcohol_frecuencia,
+        sustancia_psicoactiva_alcohol_cantidad:   data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_alcohol_cantidad,
+        sustancia_psicoactiva_tabaco:             data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_tabaco,
+        sustancia_psicoactiva_tabaco_frecuencia:  data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_tabaco_frecuencia,
+        sustancia_psicoactiva_tabaco_cantidad:    data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_tabaco_cantidad,
+        sustancia_psicoactiva_otra:                  data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_otra,
+        sustancia_psicoactiva_otra_tipo:             data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_otra_tipo,
+        sustancia_psicoactiva_otra_ultimo_consumo:   data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_otra_ultimo_consumo,
+        sustancia_psicoactiva_otra_frecuencia:       data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_otra_frecuencia,
       })
       //#endregion
 
@@ -386,17 +391,17 @@ export class HistoriaClinicaComponent implements OnInit {
         pac_frec_mens:                          data['pac_antecedentes_data'].GinecoObstrico.pac_frec_mens,
         pac_precencia_dolor_mens:               data['pac_antecedentes_data'].GinecoObstrico.pac_precencia_dolor_mens,
         pac_otras_sec_mens:                     data['pac_antecedentes_data'].GinecoObstrico.pac_otras_sec_mens,
-        pac_vida_sexual_activa:                 data['pac_antecedentes_data'].GinecoObstrico.pac_vida_sexual_activa,
-        pac_inicio_vida_sexual:                 data['pac_antecedentes_data'].GinecoObstrico.pac_inicio_vida_sexual,
-        pac_no_comp_sexuales:                   data['pac_antecedentes_data'].GinecoObstrico.pac_no_comp_sexuales,
-        pac_metodo_anticonceptivo:              data['pac_antecedentes_data'].GinecoObstrico.pac_metodo_anticonceptivo,
-        pac_tipo_relaciones:                    data['pac_antecedentes_data'].GinecoObstrico.pac_tipo_relaciones,
-        pac_ets:                                data['pac_antecedentes_data'].GinecoObstrico.pac_ets,
-        pac_metodo_anticonceptivo_hormonal:     data['pac_antecedentes_data'].GinecoObstrico.pac_metodo_anticonceptivo_hormonal,
-        pac_metodo_anticonceptivo_hormonal_diu: data['pac_antecedentes_data'].GinecoObstrico.pac_metodo_anticonceptivo_hormonal_diu,
-        pac_exam_prostata:                      data['pac_antecedentes_data'].GinecoObstrico.pac_exam_prostata,
-        pac_exam_prostata_fecha:                data['pac_antecedentes_data'].GinecoObstrico.pac_exam_prostata_fecha,
-        pac_exam_prostata_obs:                  data['pac_antecedentes_data'].GinecoObstrico.pac_exam_prostata_obs,
+        androgenico_vida_sexual_activa:                 data['pac_antecedentes_data'].GinecoObstrico.androgenico_vida_sexual_activa,
+        androgenico_inicio_vida_sexual:                 data['pac_antecedentes_data'].GinecoObstrico.androgenico_vida_sexual_activa,
+        androgenico_no_comp_sexuales:                   data['pac_antecedentes_data'].GinecoObstrico.androgenico_no_comp_sexuales,
+        androgenico_metodo_anticonceptivo:              data['pac_antecedentes_data'].GinecoObstrico.androgenico_metodo_anticonceptivo,
+        androgenico_tipo_relaciones:                    data['pac_antecedentes_data'].GinecoObstrico.androgenico_tipo_relaciones,
+        androgenico_ets:                                data['pac_antecedentes_data'].GinecoObstrico.androgenico_ets,
+        androgenico_metodo_anticonceptivo_hormonal:     data['pac_antecedentes_data'].GinecoObstrico.androgenico_metodo_anticonceptivo_hormonal,
+        androgenico_androgenico_pac_metodo_anticonceptivo_hormonal_diu: data['pac_antecedentes_data'].GinecoObstrico.androgenico_androgenico_pac_metodo_anticonceptivo_hormonal_diu,
+        ExamenProstata:                      data['pac_antecedentes_data'].GinecoObstrico.ExamenProstata,
+        fecha_ultimo_Examen_Prostatico:                data['pac_antecedentes_data'].GinecoObstrico.fecha_ultimo_Examen_Prostatico,
+        observaciones_ultimo_examen_prostatico:                  data['pac_antecedentes_data'].GinecoObstrico.observaciones_ultimo_examen_prostatico,
         pac_gestaciones:                        data['pac_antecedentes_data'].GinecoObstrico.pac_gestaciones,
         pac_cant_gestaciones:                   data['pac_antecedentes_data'].GinecoObstrico.pac_cant_gestaciones,
         pac_ultima_gestacion:                   data['pac_antecedentes_data'].GinecoObstrico.pac_ultima_gestacion,
@@ -428,14 +433,14 @@ export class HistoriaClinicaComponent implements OnInit {
   }
 
   onChanges(): void {
-    this.NoPatologicosForm.get("mascota").valueChanges.subscribe(data => {
+   /*  this.NoPatologicosForm.get("mascota").valueChanges.subscribe(data => {
       if (data == "Si"){
         this.NoPatologicosForm.get("pac_mascota_tipo").enable();
       }
       else {
         this.NoPatologicosForm.get("pac_mascota_tipo").disable();
       }
-    })
+    }) */
     this.AlergiasForm.get("alergias").valueChanges.subscribe(data =>{
       if(data == "Si"){
         this.AlergiasForm.get("alergia_tipo").enable()
@@ -458,70 +463,70 @@ export class HistoriaClinicaComponent implements OnInit {
     })
     this.QuirurgicasForm.get("quirurgicas").valueChanges.subscribe(data =>{
       if (data == "Si"){
-        this.QuirurgicasForm.get("quirurgica_fecha").enable();
-        this.QuirurgicasForm.get("quirurgica_causa").enable();
-        this.QuirurgicasForm.get("quirurgica_secuela").enable();
+        this.QuirurgicasForm.get("quirurgico_fecha").enable();
+        this.QuirurgicasForm.get("quirurgico_causa").enable();
+        this.QuirurgicasForm.get("quirurgico_secuela").enable();
       }
       else{
-        this.QuirurgicasForm.get("quirurgica_fecha").disable();
-        this.QuirurgicasForm.get("quirurgica_causa").disable();
-        this.QuirurgicasForm.get("quirurgica_secuela").disable();
+        this.QuirurgicasForm.get("quirurgico_fecha").disable();
+        this.QuirurgicasForm.get("quirurgico_causa").disable();
+        this.QuirurgicasForm.get("quirurgico_secuela").disable();
       }
     })
     this.TraumaticosForm.get('traumaticos').valueChanges.subscribe(data =>{
       if(data == "Si"){
-        this.TraumaticosForm.get("fecha_traumaticos").enable();
-        this.TraumaticosForm.get("tipos_traumaticos").enable();
-        this.TraumaticosForm.get("causas_traumaticos").enable();
-        this.TraumaticosForm.get("secuelas_traumaticos").enable();
+        this.TraumaticosForm.get("traumatismo_fecha").enable();
+        this.TraumaticosForm.get("traumatismo_tipo").enable();
+        this.TraumaticosForm.get("traumatismo_causa").enable();
+        this.TraumaticosForm.get("traumatismo_secuela").enable();
       }
       else{
-        this.TraumaticosForm.get("fecha_traumaticos").disable();
-        this.TraumaticosForm.get("tipos_traumaticos").disable();
-        this.TraumaticosForm.get("causas_traumaticos").disable();
-        this.TraumaticosForm.get("secuelas_traumaticos").disable();
+        this.TraumaticosForm.get("traumatismo_fecha").disable();
+        this.TraumaticosForm.get("traumatismo_tipo").disable();
+        this.TraumaticosForm.get("traumatismo_causa").disable();
+        this.TraumaticosForm.get("traumatismo_secuela").disable();
       }
     })
     this.TransfusionesForm.get("transfusiones").valueChanges.subscribe(data =>{
       if(data == "Si"){
-        this.TransfusionesForm.get('transfusiones_fecha').enable();
-        this.TransfusionesForm.get('transfusiones_causas').enable();
+        this.TransfusionesForm.get('transfusion_fecha').enable();
+        this.TransfusionesForm.get('transfusion_causa').enable();
       }
       else{
-        this.TransfusionesForm.get('transfusiones_fecha').disable();
-        this.TransfusionesForm.get('transfusiones_causas').disable();
+        this.TransfusionesForm.get('transfusion_fecha').disable();
+        this.TransfusionesForm.get('transfusion_causa').disable();
       }
     })
-    this.PsicoactivasForm.get('alcoholismo').valueChanges.subscribe(data =>{
+    this.PsicoactivasForm.get('sustancia_psicoactiva_alcohol').valueChanges.subscribe(data =>{
       if (data == "Si"){
-        this.PsicoactivasForm.get("alcoholismo_frecuencia").enable();
-        this.PsicoactivasForm.get("alcoholismo_cantidad").enable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_alcohol_frecuencia").enable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_alcohol_cantidad").enable();
       }
       else{
-        this.PsicoactivasForm.get("alcoholismo_frecuencia").disable();
-        this.PsicoactivasForm.get("alcoholismo_cantidad").disable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_alcohol_frecuencia").disable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_alcohol_cantidad").disable();
       }
     })
-    this.PsicoactivasForm.get('tabaquismo').valueChanges.subscribe(data =>{
+    this.PsicoactivasForm.get('sustancia_psicoactiva_tabaco').valueChanges.subscribe(data =>{
       if (data == "Si"){
-        this.PsicoactivasForm.get("tabaquismo_frecuencia").enable();
-        this.PsicoactivasForm.get("tabaquismo_cantidad").enable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_tabaco_frecuencia").enable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_tabaco_cantidad").enable();
       }
       else{
-        this.PsicoactivasForm.get("tabaquismo_frecuencia").disable();
-        this.PsicoactivasForm.get("tabaquismo_cantidad").disable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_tabaco_frecuencia").disable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_tabaco_cantidad").disable();
       }
     })
-    this.PsicoactivasForm.get('otras').valueChanges.subscribe(data =>{
+    this.PsicoactivasForm.get('sustancia_psicoactiva_otra').valueChanges.subscribe(data =>{
       if (data == "Si"){
-        this.PsicoactivasForm.get("otras_tipo").enable();
-        this.PsicoactivasForm.get("otras_ultimo_consumo").enable();
-        this.PsicoactivasForm.get("otras_frecuencia").enable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_otra_tipo").enable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_otra_ultimo_consumo").enable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_otra_frecuencia").enable();
       }
       else{
-        this.PsicoactivasForm.get("otras_tipo").disable();
-        this.PsicoactivasForm.get("otras_ultimo_consumo").disable();
-        this.PsicoactivasForm.get("otras_frecuencia").disable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_otra_tipo").disable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_otra_ultimo_consumo").disable();
+        this.PsicoactivasForm.get("sustancia_psicoactiva_otra_frecuencia").disable();
       }
     })
     if(this.bandSexo == 'M'){
@@ -567,34 +572,34 @@ export class HistoriaClinicaComponent implements OnInit {
       this.GinecoObstricoForm.get("pac_partos").enable();
       this.GinecoObstricoForm.get("pac_abortos").enable();
       this.GinecoObstricoForm.get("pac_cesareas").enable();
-      this.GinecoObstricoForm.get("pac_exam_prostata").enable();
-      this.GinecoObstricoForm.get("pac_exam_prostata_fecha").enable();
-      this.GinecoObstricoForm.get("pac_exam_prostata_obs").enable();
+      this.GinecoObstricoForm.get("ExamenProstata").enable();
+      this.GinecoObstricoForm.get("fecha_ultimo_Examen_Prostatico").enable();
+      this.GinecoObstricoForm.get("observaciones_ultimo_examen_prostatico").enable();
 
     }
-    this.GinecoObstricoForm.get('pac_exam_prostata').valueChanges.subscribe(data =>{
+    this.GinecoObstricoForm.get('ExamenProstata').valueChanges.subscribe(data =>{
       if(data == "Si"){
-        this.GinecoObstricoForm.get("pac_exam_prostata_fecha").enable();
-        this.GinecoObstricoForm.get("pac_exam_prostata_obs").enable();
+        this.GinecoObstricoForm.get("fecha_ultimo_Examen_Prostatico").enable();
+        this.GinecoObstricoForm.get("observaciones_ultimo_examen_prostatico").enable();
       }else{
-        this.GinecoObstricoForm.get("pac_exam_prostata_fecha").disable();
-        this.GinecoObstricoForm.get("pac_exam_prostata_obs").disable();
+        this.GinecoObstricoForm.get("fecha_ultimo_Examen_Prostatico").disable();
+        this.GinecoObstricoForm.get("observaciones_ultimo_examen_prostatico").disable();
       }
     })
-    this.GinecoObstricoForm.get('pac_metodo_anticonceptivo').valueChanges.subscribe(data =>{
+    this.GinecoObstricoForm.get('androgenico_metodo_anticonceptivo').valueChanges.subscribe(data =>{
       if(data == 'Hormonal'){
-        this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal').enable();
+        this.GinecoObstricoForm.get('androgenico_metodo_anticonceptivo_hormonal').enable();
       }
       else{
-        this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal').disable();
+        this.GinecoObstricoForm.get('androgenico_metodo_anticonceptivo_hormonal').disable();
       }
     })
-    this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal').valueChanges.subscribe(data =>{
+    this.GinecoObstricoForm.get('androgenico_metodo_anticonceptivo_hormonal').valueChanges.subscribe(data =>{
       if(data == 'DIU'){
-        this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal_diu').enable();
+        this.GinecoObstricoForm.get('androgenico_androgenico_pac_metodo_anticonceptivo_hormonal_diu').enable();
       }
       else{
-        this.GinecoObstricoForm.get('pac_metodo_anticonceptivo_hormonal_diu').disable();
+        this.GinecoObstricoForm.get('androgenico_pac_metodo_anticonceptivo_hormonal_diu').disable();
       }
     })
     this.GinecoObstricoForm.get('pac_gestaciones').valueChanges.subscribe(data =>{
@@ -704,7 +709,6 @@ export class HistoriaClinicaComponent implements OnInit {
     let post = model;
     post['id']= this.idPaciente;
     post['pac_historia_clinica'] = true;
-    this.PacienteService.updatePaciente(post);
     if(this.editar){
       this.alertEditado()
     }
@@ -778,15 +782,186 @@ export class HistoriaClinicaComponent implements OnInit {
 
   addMedicamento(){
     const med = this.fb.group({
-      pac_medicamento: ['', [Validators.required]],
-      pac_frecuencia_consumo: ['', [Validators.required]],
-      pac_inicio_consumo: ['', [Validators.required]],
+      medicamento_nombre: ['', [Validators.required]],
+      medicamento_frecuencia_consumo: ['', [Validators.required]],
+      medicamento_inicio_de_consumo: ['', [Validators.required]],
     })
     this.list_medicamentos.push(med);
   }
 
   deleteMedicamento(medicamentoId: number){
     return this.list_medicamentos.removeAt(medicamentoId);
+  }
+
+  postHistoriaClinica(){
+    let post = {};
+    post['id_register'] = this.AuthService.currentUserId;
+    post['idPaciente'] = this.idPaciente;
+    this.HistoriaClinicaAPIService.postHistoriaClinica(post).subscribe(data => {
+      console.log('HC', data)
+      //this.postNoPatologico(data.idHistoriaClinica);
+      //this.postPatologico(data.idHistoriaClinica);
+      //this.postAndrogenicos(data.idHistoriaClinica);
+      if(this.pac_sexo == 'M'){
+        this.postAntecedenteProstatico(data.idHistoriaClinica);
+      }
+
+    })
+  }
+
+  postNoPatologico(idHistoriaClinica: number):void{
+    console.log('idHistoriaClinica', idHistoriaClinica)
+    let noPat = this.NoPatologicosForm.value;
+    let actividadesFisicas : [] = noPat['Actividades_Fisicas'];
+
+    noPat['idHistoriaClinica'] = idHistoriaClinica;
+    delete noPat['Actividades_Fisicas'];
+    console.log('post', noPat)
+
+    this.HistoriaClinicaAPIService.postNoPatologico(noPat).subscribe(data =>{
+      for(let i = 0; i < actividadesFisicas.length; i++){
+        let actividad = {};
+        actividad['idAntecedenteNoPatologico'] = data.idAntecedenteNoPatologico;
+        actividad['actividad_nombre'] = actividadesFisicas[i]['pac_actividad_fisica'];
+        actividad['actividad_frecuencia'] = actividadesFisicas[i]['pac_actividad_frec'];
+        actividad['estatusActividadFisica'] = true;
+        console.log('actividad [', i, ']', actividad);
+        this.HistoriaClinicaAPIService.postActividadFisica(actividad).subscribe(data => {
+          console.log('data', data)
+        })
+      }
+    });
+  }
+
+  postPatologico(idHistoriaClinica: number): void{
+    let POST = {};
+    POST['idHistoriaClinica'] = idHistoriaClinica;
+    POST['antecedente_patologico_hospitalizacion'] = this.HospitalizacionesForm.value.hospitalizaciones;
+    POST['antecedente_patologico_quirugicas'] = this.QuirurgicasForm.value.quirurgicas;
+    POST['antecedente_patologico_trumatismo'] = this.TraumaticosForm.value.traumaticos;
+    POST['antecedente_patologico_trasnfusion'] = this.TransfusionesForm.value.transfusiones;
+    POST['antecedente_patologico_consumo_de_sustancia_psicoactiva'] = this.PsicoactivasForm.value.consumo_alguna_sustancia;
+    POST['antecedente_patologico_alergias'] = this.AlergiasForm.value.alergias;
+    this.HistoriaClinicaAPIService.postPatologico(POST).subscribe(data =>{
+
+      if(POST['antecedente_patologico_hospitalizacion'] == 'Si'){
+        let hospitalizacion: {} = this.HospitalizacionesForm.value;
+        hospitalizacion['idAntecedentePatologico'] = data.id;
+        delete hospitalizacion['hospitalizaciones'];
+        this.HistoriaClinicaAPIService.postHospitalizacion(hospitalizacion).subscribe(hospitalizacion => {
+          console.log('hospitalizacion', hospitalizacion)
+        })
+      }
+
+      if(POST['antecedente_patologico_alergias'] == 'Si'){
+        let alergia = this.AlergiasForm.value;
+        delete alergia['hospitalizaciones'];
+        alergia['idAntecedentePatologico'] = data.id;
+        this.HistoriaClinicaAPIService.postAlergia(alergia).subscribe(alergia =>{
+          console.log('alergia', alergia)
+        })
+      }
+
+      if(POST['antecedente_patologico_quirugicas'] == 'Si'){
+        let quirurgica = this.QuirurgicasForm.value;
+        delete quirurgica['quirurgicas'];
+        quirurgica['idAntecedentePatologico'] = data.id;
+        this.HistoriaClinicaAPIService.postQuirurgica(quirurgica).subscribe(quirurgica =>{
+          console.log('quirurgica', quirurgica);
+        })
+      }
+
+      if(POST['antecedente_patologico_trumatismo'] == 'Si'){
+        let traumatismo = this.TraumaticosForm.value;
+        delete traumatismo['traumaticos'];
+        traumatismo['idAntecedentePatologico'] = data.id;
+        console.log('traumatismo', traumatismo)
+        this.HistoriaClinicaAPIService.postTraumatismo(traumatismo).subscribe(traumatismo =>{
+          console.log('quirurgica', traumatismo);
+        })
+      }
+
+      if(POST['antecedente_patologico_trasnfusion'] == 'Si'){
+        let transfusion = this.TransfusionesForm.value;
+        delete transfusion['transfusiones'];
+        transfusion['idAntecedentePatologico'] = data.id;
+        console.log('transfusion', transfusion)
+        this.HistoriaClinicaAPIService.postTransfusion(transfusion).subscribe(transfusion =>{
+          console.log('transfusion', transfusion);
+        })
+      }
+
+      if(POST['antecedente_patologico_consumo_de_sustancia_psicoactiva'] == 'Si'){
+        let sustancias = this.PsicoactivasForm.value;
+        sustancias['idAntecedentePatologico'] = data.id;
+        console.log('sustancias', sustancias)
+        this.HistoriaClinicaAPIService.postSustanciasPsicoactivas(sustancias).subscribe(sustancias =>{
+          console.log('sustancia_psicoactiva_otra', sustancias);
+        })
+      }
+
+      let padecimientos: [] = this.PatologiasForm.value.patologias.map((checked, index) => checked ? this.patologicas[index].id : null).filter(value => value !== null);
+      for(let i = 0; i < padecimientos.length; i++){
+        let padecimiento = {};
+        padecimiento['padecimiento'] = padecimientos[i];
+        padecimiento['idAntecedentePatologico'] = data.id;
+        padecimiento['padecimiento_estatus'] = true;
+        this.HistoriaClinicaAPIService.postPadecimiento(padecimiento).subscribe(padecimiento=>{
+          console.log('padecimiento', padecimiento)
+        })
+      }
+
+      console.log('Medicamentos', this.PatologiasForm.value.Medicamento)
+      let medicamentos: [] = this.PatologiasForm.value.Medicamento;
+      if(medicamentos.length > 0){
+        let detalleMedicamento: {} = {};
+        detalleMedicamento['idAntecedentePatologico'] = data.id;
+        this.HistoriaClinicaAPIService.postDetalleMedicamento(detalleMedicamento).subscribe(detalle =>{
+          console.log('detalleMedicamento', detalle)
+          for(let i = 0; i < medicamentos.length; i++){
+            let medicamento: {} = {};
+            medicamento = medicamentos[i];
+            medicamento['idDetalleMedicamento'] = detalle.id
+            this.HistoriaClinicaAPIService.postMedicamento(medicamento).subscribe(medicamento => {
+              console.log('medicamento', medicamento)
+            })
+          }
+        })
+      }
+    })
+  }
+
+  postAndrogenicos(idAntecedentePatologico: number): void {
+    let androgenico:{} = {};
+    androgenico['androgenico_vida_sexual_activa'] = this.GinecoObstricoForm.value.androgenico_vida_sexual_activa;
+    androgenico['androgenico_inicio_vida_sexual'] = this.GinecoObstricoForm.value.androgenico_inicio_vida_sexual;
+    androgenico['androgenico_no_comp_sexuales'] = this.GinecoObstricoForm.value.androgenico_no_comp_sexuales;
+    androgenico['androgenico_metodo_anticonceptivo'] = this.GinecoObstricoForm.value.androgenico_metodo_anticonceptivo;
+    androgenico['androgenico_tipo_relaciones'] = this.GinecoObstricoForm.value.androgenico_tipo_relaciones;
+    androgenico['androgenico_ets'] = this.GinecoObstricoForm.value.androgenico_ets;
+    androgenico['androgenico_metodo_anticonceptivo_hormonal'] = this.GinecoObstricoForm.value.androgenico_metodo_anticonceptivo_hormonal;
+    androgenico['androgenico_metodo_anticonceptivo_hormonal'] = this.GinecoObstricoForm.value.androgenico_metodo_anticonceptivo_hormonal;
+    androgenico['idAntecedentePatologico'] = idAntecedentePatologico;
+    this.HistoriaClinicaAPIService.postAndrogenicos(androgenico).subscribe(androgenico =>{
+      console.log('androgenico', androgenico);
+    })
+  }
+
+  postAntecedenteProstatico(idHistoriaClinica: number): void {
+    let prostatico: {} = {}
+    prostatico['idHistoriaClinica'] = idHistoriaClinica;
+    prostatico['ExamenProstata'] = this.GinecoObstricoForm.value.ExamenProstata;
+    this.HistoriaClinicaAPIService.postAntecedenteProstatico(prostatico).subscribe(prostatico =>{
+      if(prostatico['ExamenProstata'] == 'Si'){
+        let examenProstata = {};
+        examenProstata['fecha_ultimo_Examen_Prostatico'] = this.GinecoObstricoForm.value.fecha_ultimo_Examen_Prostatico;
+        examenProstata['observaciones_ultimo_examen_prostatico'] = this.GinecoObstricoForm.value.observaciones_ultimo_examen_prostatico;
+        examenProstata['idAntecedenteProstatico'] = prostatico.id;
+        this.HistoriaClinicaAPIService.postExamenProstatico(examenProstata).subscribe(examenProstata =>{
+          console.log('examenProstata', examenProstata);
+        })
+      }
+    })
   }
 
 }

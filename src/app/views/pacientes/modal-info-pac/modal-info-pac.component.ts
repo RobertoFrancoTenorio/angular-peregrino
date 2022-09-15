@@ -239,9 +239,9 @@ export class ModalInfoPacComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.currentPaciente['edad'] = this.calcularEdad(this.currentPaciente.pac_f_nacimiento);
-    this.bandSexo= this.currentPaciente.pac_sexo;
+    this.bandSexo= this.currentPaciente.pac_Sexo;
     console.log(this.bandSexo)
-    console.log('Paciente', this.currentPaciente.pac_sexo)
+    console.log('Paciente', this.currentPaciente)
     this.pac_sexo = this.currentPaciente.pac_sexo
     this.id =  this.currentPaciente.id;
     this.firstFormGroup = this.fb.group({

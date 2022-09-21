@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { CitaService } from '../../../service/cita/cita.service';
 import { take } from 'rxjs/operators';
+import { HistoriaClinicaAPIService } from '../../../service/APIServices/HistoriaClinica/historia-clinica-api.service';
 
 @Component({
   selector: 'app-modal-info-pac',
@@ -98,13 +99,15 @@ export class ModalInfoPacComponent implements OnInit {
   ];
   bandEditar: boolean;
   pac_sexo: any;
+  historiaClinica: boolean;
 
   constructor(
     public modalRef: BsModalRef,
     private fb: FormBuilder,
     private PacienteService: PacienteService,
     private router: Router,
-    private citaServ: CitaService
+    private citaServ: CitaService,
+    private HistoriaClinicaAPIService: HistoriaClinicaAPIService
     ) {
     // Va agregando un array para cada campo, todos estan inicializados en false
     this.constructorForms()
@@ -238,12 +241,21 @@ export class ModalInfoPacComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+
     this.currentPaciente['edad'] = this.calcularEdad(this.currentPaciente.pac_f_nacimiento);
     this.bandSexo= this.currentPaciente.pac_Sexo;
-    console.log(this.bandSexo)
-    console.log('Paciente', this.currentPaciente)
-    this.pac_sexo = this.currentPaciente.pac_sexo
-    this.id =  this.currentPaciente.id;
+    console.log('Paciente', this.currentPaciente.idPaciente)
+    this.id =  this.currentPaciente.idPaciente;
+
+    this.HistoriaClinicaAPIService.getHistoriaClinica(this.id).subscribe(data =>{
+      console.log('HistoriaClinica', data.length);
+      if(data.length > 0){
+        this.historiaClinica = true;
+      }
+      else{
+        this.historiaClinica = false;
+      }
+    })
     this.firstFormGroup = this.fb.group({
       firstCtrl: ['', Validators.required]
     });

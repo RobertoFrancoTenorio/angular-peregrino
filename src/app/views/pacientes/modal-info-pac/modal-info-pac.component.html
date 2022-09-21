@@ -112,7 +112,7 @@
               <tabset [justified]="true">
 
                 <tab heading="Antecedentes">
-                  <div *ngIf="!currentPaciente.pac_historia_clinica">
+                  <div *ngIf="historiaClinica == false">
                     <div class="alert alert-warning" role="alert">
                       <h4 class="alert-heading">Paciente sin registro de antecedentes</h4>
                       <p>No exiten registros de antecedentes para este paciente, se recomienda que
@@ -124,7 +124,7 @@
                       </p>
                     </div>
                   </div>
-                  <div *ngIf="currentPaciente.pac_historia_clinica == true">
+                  <div *ngIf="historiaClinica == true">
                     <div class="alert alert-success" role="alert">
                       <h4 class="alert-heading">Este paciente cuenta con registro de antecedentes</h4>
                       <p>Ya existe una historia clíncia asociada a este paciente.</p>

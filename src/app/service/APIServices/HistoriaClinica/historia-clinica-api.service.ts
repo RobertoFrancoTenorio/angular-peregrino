@@ -65,6 +65,10 @@ export class HistoriaClinicaAPIService {
     return this.http.post(this.url + '/api/postPadecimiento', POST, this.httpOptions);
   }
 
+  postPadecimientoHeredoFamiliar(POST): Observable<any>{
+    return this.http.post(this.url + '/api/postPadecimientoHeredoFamiliar', POST, this.httpOptions);
+  }
+
   postDetalleMedicamento(POST): Observable<any>{
     return this.http.post(this.url + '/api/postDetalleMedicamento', POST, this.httpOptions);
   }
@@ -83,6 +87,61 @@ export class HistoriaClinicaAPIService {
 
   postExamenProstatico(POST): Observable<any>{
     return this.http.post(this.url + '/api/postExamenProstata', POST, this.httpOptions);
+  }
+
+  postAntecedenteGinecobstetrico(POST): Observable<any>{
+    return this.http.post(this.url + '/api/postAntecedenteGinecobstetrico', POST, this.httpOptions);
+  }
+
+  postAntecedenteGinecobstetricoMenstruacion(POST): Observable<any>{
+    return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoMenstruacion', POST, this.httpOptions);
+  }
+
+  postAntecedenteGinecobstetricoGestacion(POST): Observable<any>{
+    return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoGestacion', POST, this.httpOptions);
+  }
+
+  postAntecedenteGinecobstetricoParto(POST): Observable<any>{
+    return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoParto', POST, this.httpOptions);
+  }
+
+  postAntecedenteGinecobstetricoAborto(POST): Observable<any>{
+    return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoAborto', POST, this.httpOptions);
+  }
+
+  postAntecedenteGinecobstetricoCesarea(POST): Observable<any>{
+    return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoCesarea', POST, this.httpOptions);
+  }
+
+  postAntecedenteGinecobstetricoTamisDeMama(POST): Observable<any>{
+    return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoTamisDeMama', POST, this.httpOptions);
+  }
+
+  postAntecedenteGinecobstetricoPapanicolau(POST): Observable<any>{
+    return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoPapanicolau', POST, this.httpOptions);
+  }
+
+  //#endregion
+
+  //#region Gets
+  getHistoriaClinica(id: any): Observable<any>{
+    return this.http.get(this.url + '/api/getHistoriaClinica/' + id);
+  }
+
+  getHistoriaAntecedentePatologico(id: any): Observable<any>{
+    return this.http.get(this.url + '/api/getHistoriaClinica_Antecedente_Patologico/' + id);
+  }
+
+  getPadecimientos(id: number): Observable<any> {
+    return this.http.get(this.url + '/api/getPadecimientos/' + id);
+  }
+
+  getPadecimientos_HF(id: number): Observable<any> {
+    return this.http.get(this.url + '/api/getPadecimientos_HF/' + id);
+  }
+
+  getNoPatologico(id: number): Observable<any> {
+    return this.http.get(this.url + '/api/getAntecedenteNoPatologico/' + id)
   }
   //#endregion
 

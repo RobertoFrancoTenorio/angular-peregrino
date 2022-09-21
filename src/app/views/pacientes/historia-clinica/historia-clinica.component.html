@@ -1,7 +1,6 @@
 <mat-horizontal-stepper [linear] #stepper>
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Antecedentes HeredoFamiliares</ng-template>
+  <mat-step [stepControl]="">
+    <ng-template matStepLabel>Antecedentes HeredoFamiliares</ng-template>
       <!-- <form [formGroup]="heredoFamForm" (ngSubmit)="submit()"> -->
         <form [formGroup]="heredoFamForm">
           <table class="table">
@@ -41,15 +40,14 @@
         <div class="col-4"></div>
         <div class="col-3"></div>
         <div class="col-5">
-          <mat-checkbox formControlName="firstCtrl" required>Finalizar Antecedentes HeredoFamiliares</mat-checkbox>
+          <mat-checkbox required>Finalizar Antecedentes HeredoFamiliares</mat-checkbox>
           <button class="btn btn-primary" matStepperNext>Siguiente</button>
         </div>
       </div>
-    </form>
   </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
+
+  <mat-step [stepControl]="">
     <ng-template matStepLabel>No Patologicos</ng-template>
-    <form [formGroup]="secondFormGroup">
       <form [formGroup]="NoPatologicosForm">
         <div class="row">
           <div class="col-2">
@@ -167,20 +165,17 @@
       <br>
       <div id="btns">
         <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
-        <mat-checkbox formControlName="secondCtrl" required>Finalizar No
-          Patologicos</mat-checkbox>
+        <mat-checkbox required>Finalizar No Patologicos</mat-checkbox>
         <button class="btn btn-primary" matStepperNext>Siguiente</button>
       </div>
-    </form>
   </mat-step>
-  <mat-step [stepControl]="thirdFormGroup">
-    <form [formGroup]="thirdFormGroup">
-      <ng-template matStepLabel>Patologicos</ng-template>
+  <mat-step [stepControl]="">
+    <ng-template matStepLabel>Patologicos</ng-template>
       <form action="" [formGroup]="PatologiasForm">
         <div class="row">
           <div class="col-4">
             <form [formGroup]="AlergiasForm">
-              <label for="">Hospitalizaciones</label>
+              <label for="">Alergias</label>
               <br>
               <mat-radio-group formControlName="alergias">
                 <mat-radio-button value="Si">Si</mat-radio-button>
@@ -426,17 +421,25 @@
       <hr class="line">
       <div id="btns">
         <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
-        <mat-checkbox formControlName="thirdControl" required>
+        <mat-checkbox required>
           Finalizar Patologias</mat-checkbox>
         <button class="btn btn-primary" matStepperNext>Siguiente</button>
       </div>
-    </form>
+
   </mat-step>
-  <mat-step [stepControl]="fourthFormGroup" label="Gineco-obstétricos / Androgenicos">
-    <form [formGroup]="fourthFormGroup">
+  <mat-step [stepControl]="" label="Gineco-obstétricos / Androgenicos">
       <form [formGroup]="GinecoObstricoForm">
-        <label for="" *ngIf="pac_sexo == 'F'">Menarquía</label>
-        <input type="text" id="" formControlName="pac_menarquia" *ngIf="pac_sexo == 'F'">
+        <div class="row">
+          <div class="col-6" *ngIf="pac_sexo == 'F'">
+            <label for="">Menarquía</label>
+            <select class="form-control" id="options" formControlName="pac_menarquia">
+              <option value="Si">Si</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+        </div>
+        <br>
+
         <div class="row">
           <div class="col-6" *ngIf="pac_sexo == 'M'">
             <h5>Examen de Prostata</h5>
@@ -453,24 +456,24 @@
                 style="height: 100px" formControlName="observaciones_ultimo_examen_prostatico"></textarea>
             </span>
           </div>
-          <div class="col-6" *ngIf="pac_sexo == 'F'">
+          <div class="col-6" *ngIf="pac_sexo == 'F' && this.GinecoObstricoForm.get('pac_menarquia').value == 'Si'">
             <h5>Características de la menstruación</h5>
             <label class="form-label">Última Menstruación</label>
-            <input type="date" class="form-control" formControlName="pac_carac_mens">
+            <input type="date" class="form-control" formControlName="menstruacion_fecha_Ultima">
             <br>
             <div class="row">
               <div class="col-3">
                 <label for="" class="form-label">Duración (Días):</label>
               </div>
               <div class="col-9">
-                <input type="text" id="" class="form-control" formControlName="pac_dias_mens">
+                <input type="text" id="" class="form-control" formControlName="menstruacion_duracion">
               </div>
             </div>
             <br>
             <div class="row">
               <div class="col-6">
                 <label for="" class="form-label">Cantidad de sangre</label>
-                <select class="form-control" id="options" formControlName="pac_cant_mens">
+                <select class="form-control" id="options" formControlName="menstruacion_cantidad">
                   <option selected value="No especificado">No especificado</option>
                   <option value="Leve">Leve</option>
                   <option value="Moderado">Moderado</option>
@@ -483,7 +486,7 @@
             <div class="row">
               <div class="col-6">
                 <label for="" class="form-label">Frecuencia</label>
-                <select class="form-control" id="options" formControlName="pac_frec_mens">
+                <select class="form-control" id="options" formControlName="menstruacion_frecuencia">
                   <option value="Alta">Alta</option>
                   <option value="Baja">Baja</option>
                   <option value="Moderada">Moderada</option>
@@ -495,7 +498,7 @@
             <div class="row">
               <div class="col-4">
                 <label for="" class="form-label">Presencia de dolor: </label>
-                <select class="form-control" id="options" formControlName="pac_precencia_dolor_mens">
+                <select class="form-control" id="options" formControlName="menstruacion_presencia_De_Dolor">
                   <option value="Si">Si</option>
                   <option value="No">No</option>
                 </select>
@@ -504,7 +507,7 @@
             <br>
             <label for="floatingTextarea2">Presencia de otras secreciones vaginales</label>
             <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-              style="height: 100px" formControlName="pac_otras_sec_mens"></textarea>
+              style="height: 100px" formControlName="menstruacion_otras_secreciones"></textarea>
           </div>
 
           <div class="col-6">
@@ -604,8 +607,13 @@
                 </select>
                 <span *ngIf="this.GinecoObstricoForm.get('pac_gestaciones').value == 'Si'">
                   <label for="" class="form-label">No. de Gestaciones</label>
-                  <input type="number" min="0" max="15" formControlName="pac_cant_gestaciones" id=""
+                  <input type="number" min="0" max="15" formControlName="gestacion_cantidad" id=""
                     class="form-control">
+                  <label for="" class="form-label">Fecha Aproximada del último aborto</label>
+                  <input type="date" class="form-control" formControlName="gestacion_ultima_fecha" id="">
+                  <label for="" class="form-label">Observaciones</label>
+                  <textarea class="form-control" formControlName="gestacion_observacion"
+                    placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
                 </span>
               </div>
             </div>
@@ -620,8 +628,13 @@
                 </select>
                 <span *ngIf="this.GinecoObstricoForm.get('pac_partos').value == 'Si'">
                   <label for="" class="form-label">No. de partos</label>
-                  <input type="number" min="0" max="15" formControlName="pac_cant_partos" id=""
+                  <input type="number" min="0" max="15" formControlName="parto_cantidad" id=""
                     class="form-control">
+                  <label for="" class="form-label">Fecha Aproximada del último parto</label>
+                  <input type="date" class="form-control" formControlName="parto_ultima_fecha" id="">
+                  <label for="" class="form-label">Observaciones</label>
+                  <textarea class="form-control" formControlName="parto_observacion"
+                    placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
                 </span>
               </div>
             </div>
@@ -635,13 +648,13 @@
                   <option value="No">No</option>
                 </select>
                 <span *ngIf="this.GinecoObstricoForm.get('pac_abortos').value == 'Si'">
-                  <label for="" class="form-label">Fecha Aproximada del último aborto</label>
-                  <input type="number" min="0" max="15" formControlName="pac_cant_abortos" id=""
+                  <label for="" class="form-label">Número de abortos</label>
+                  <input type="number" min="0" max="15" formControlName="aboto_cantidad" id=""
                     class="form-control">
                   <label for="" class="form-label">Fecha Aproximada del último aborto</label>
-                  <input type="date" class="form-control" formControlName="pac_ultimo_aborto" id="">
+                  <input type="date" class="form-control" formControlName="aborto_ultima_fecha" id="">
                   <label for="" class="form-label">Observaciones</label>
-                  <textarea class="form-control" formControlName="pac_ultimo_aborto_observacion"
+                  <textarea class="form-control" formControlName="aborto_observacion"
                     placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
                 </span>
               </div>
@@ -657,12 +670,12 @@
                 </select>
                 <span *ngIf="this.GinecoObstricoForm.get('pac_cesareas').value == 'Si'">
                   <label for="" class="form-label">Fecha Aproximada de la última cesarea</label>
-                  <input type="number" min="0" max="15" formControlName="pac_cant_cesareas" id=""
+                  <input type="number" min="0" max="15" formControlName="cesarea_cantidad" id=""
                     class="form-control">
                   <label for="" class="form-label">Fecha Aproximada de la última cesarea</label>
-                  <input type="date" class="form-control" formControlName="pac_ultima_cesarea" id="">
+                  <input type="date" class="form-control" formControlName="cesarea_ultima_fecha" id="">
                   <label for="" class="form-label">Observaciones</label>
-                  <textarea class="form-control" formControlName="pac_ultima_cesarea_observacion"
+                  <textarea class="form-control" formControlName="cesarea_observacion"
                     placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
                 </span>
               </div>
@@ -681,9 +694,9 @@
             <span *ngIf="this.GinecoObstricoForm.get('pac_papanicolau').value == 'Si'">
               <br>
               <label for="" class="form-label">Fecha de realización:</label>
-              <input type="date" formControlName="pac_papanicolau_fecha" id="" class="form-control">
+              <input type="date" formControlName="papanicolau_fecha" id="" class="form-control">
               <label for="" class="form-label">Observaciones:</label>
-              <textarea class="form-control" formControlName="pac_papanicolau_observacion"
+              <textarea class="form-control" formControlName="papanicolau_observacion"
                 placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
             </span>
             <br>
@@ -695,9 +708,9 @@
             <span *ngIf="this.GinecoObstricoForm.get('pac_tamis_mama').value == 'Si'">
               <br>
               <label for="" class="form-label">Fecha de realización:</label>
-              <input type="date" formControlName="pac_tamis_fecha" id="" class="form-control">
+              <input type="date" formControlName="tamis_fecha" id="" class="form-control">
               <label for="" class="form-label">Observaciones:</label>
-              <textarea class="form-control" formControlName="pac_tamis_observacion"
+              <textarea class="form-control" formControlName="tamis_observacion"
                 placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
             </span>
           </div>
@@ -708,11 +721,11 @@
 
       <div id="btns">
         <button class="btn btn-danger" mat-button matStepperPrevious>Back</button>
-        <mat-checkbox formControlName="fourthCtrl" required>Finalizar
+        <mat-checkbox  required>Finalizar
           Gineco-obstétricos</mat-checkbox>
         <button class="btn btn-primary" matStepperNext>Siguiente</button>
       </div>
-    </form>
+
   </mat-step>
 
   <mat-step label="Terminar Historia Clínica">

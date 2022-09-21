@@ -55,6 +55,9 @@ var HistoriaClinicaAPIService = /** @class */ (function () {
     HistoriaClinicaAPIService.prototype.postPadecimiento = function (POST) {
         return this.http.post(this.url + '/api/postPadecimiento', POST, this.httpOptions);
     };
+    HistoriaClinicaAPIService.prototype.postPadecimientoHeredoFamiliar = function (POST) {
+        return this.http.post(this.url + '/api/postPadecimientoHeredoFamiliar', POST, this.httpOptions);
+    };
     HistoriaClinicaAPIService.prototype.postDetalleMedicamento = function (POST) {
         return this.http.post(this.url + '/api/postDetalleMedicamento', POST, this.httpOptions);
     };
@@ -69,6 +72,47 @@ var HistoriaClinicaAPIService = /** @class */ (function () {
     };
     HistoriaClinicaAPIService.prototype.postExamenProstatico = function (POST) {
         return this.http.post(this.url + '/api/postExamenProstata', POST, this.httpOptions);
+    };
+    HistoriaClinicaAPIService.prototype.postAntecedenteGinecobstetrico = function (POST) {
+        return this.http.post(this.url + '/api/postAntecedenteGinecobstetrico', POST, this.httpOptions);
+    };
+    HistoriaClinicaAPIService.prototype.postAntecedenteGinecobstetricoMenstruacion = function (POST) {
+        return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoMenstruacion', POST, this.httpOptions);
+    };
+    HistoriaClinicaAPIService.prototype.postAntecedenteGinecobstetricoGestacion = function (POST) {
+        return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoGestacion', POST, this.httpOptions);
+    };
+    HistoriaClinicaAPIService.prototype.postAntecedenteGinecobstetricoParto = function (POST) {
+        return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoParto', POST, this.httpOptions);
+    };
+    HistoriaClinicaAPIService.prototype.postAntecedenteGinecobstetricoAborto = function (POST) {
+        return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoAborto', POST, this.httpOptions);
+    };
+    HistoriaClinicaAPIService.prototype.postAntecedenteGinecobstetricoCesarea = function (POST) {
+        return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoCesarea', POST, this.httpOptions);
+    };
+    HistoriaClinicaAPIService.prototype.postAntecedenteGinecobstetricoTamisDeMama = function (POST) {
+        return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoTamisDeMama', POST, this.httpOptions);
+    };
+    HistoriaClinicaAPIService.prototype.postAntecedenteGinecobstetricoPapanicolau = function (POST) {
+        return this.http.post(this.url + '/api/postAntecedenteGinecobstetricoPapanicolau', POST, this.httpOptions);
+    };
+    //#endregion
+    //#region Gets
+    HistoriaClinicaAPIService.prototype.getHistoriaClinica = function (id) {
+        return this.http.get(this.url + '/api/getHistoriaClinica/' + id);
+    };
+    HistoriaClinicaAPIService.prototype.getHistoriaAntecedentePatologico = function (id) {
+        return this.http.get(this.url + '/api/getHistoriaClinica_Antecedente_Patologico/' + id);
+    };
+    HistoriaClinicaAPIService.prototype.getPadecimientos = function (id) {
+        return this.http.get(this.url + '/api/getPadecimientos/' + id);
+    };
+    HistoriaClinicaAPIService.prototype.getPadecimientos_HF = function (id) {
+        return this.http.get(this.url + '/api/getPadecimientos_HF/' + id);
+    };
+    HistoriaClinicaAPIService.prototype.getNoPatologico = function (id) {
+        return this.http.get(this.url + '/api/getAntecedenteNoPatologico/' + id);
     };
     HistoriaClinicaAPIService = __decorate([
         core_1.Injectable({

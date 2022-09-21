@@ -55,12 +55,13 @@ var forms_1 = require("@angular/forms");
 var sweetalert2_1 = require("sweetalert2");
 var operators_1 = require("rxjs/operators");
 var ModalInfoPacComponent = /** @class */ (function () {
-    function ModalInfoPacComponent(modalRef, fb, PacienteService, router, citaServ) {
+    function ModalInfoPacComponent(modalRef, fb, PacienteService, router, citaServ, HistoriaClinicaAPIService) {
         this.modalRef = modalRef;
         this.fb = fb;
         this.PacienteService = PacienteService;
         this.router = router;
         this.citaServ = citaServ;
+        this.HistoriaClinicaAPIService = HistoriaClinicaAPIService;
         this.isLinear = true;
         this.currentPaciente = null;
         this.detallesBand = true;
@@ -237,10 +238,17 @@ var ModalInfoPacComponent = /** @class */ (function () {
             return __generator(this, function (_a) {
                 this.currentPaciente['edad'] = this.calcularEdad(this.currentPaciente.pac_f_nacimiento);
                 this.bandSexo = this.currentPaciente.pac_Sexo;
-                console.log(this.bandSexo);
-                console.log('Paciente', this.currentPaciente);
-                this.pac_sexo = this.currentPaciente.pac_sexo;
-                this.id = this.currentPaciente.id;
+                console.log('Paciente', this.currentPaciente.idPaciente);
+                this.id = this.currentPaciente.idPaciente;
+                this.HistoriaClinicaAPIService.getHistoriaClinica(this.id).subscribe(function (data) {
+                    console.log('HistoriaClinica', data.length);
+                    if (data.length > 0) {
+                        _this.historiaClinica = true;
+                    }
+                    else {
+                        _this.historiaClinica = false;
+                    }
+                });
                 this.firstFormGroup = this.fb.group({
                     firstCtrl: ['', forms_1.Validators.required]
                 });

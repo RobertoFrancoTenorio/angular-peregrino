@@ -66,13 +66,7 @@ var HistoriaClinicaComponent = /** @class */ (function () {
             medicamento_frecuencia_consumo: ['', forms_1.Validators.required],
             medicamento_inicio_de_consumo: ['', forms_1.Validators.required]
         });
-        this.dataCitasAll = [];
-        this.isCollapsed = true;
-        this.patologias = true;
-        this.ginecoObstetrico = true;
-        this.heredoPadres = true;
-        this.heredoAbuelos = true;
-        this.otros = true;
+        this.infoHistoriaClinica = [];
         this.enfermedades = [
             { id: 'Diabetes Mellitus', enf: 'Diabetes Mellitus (azúcar alta)' },
             { id: 'Hipertensión Arterial Sistémica', enf: 'Hipertensión Arterial Sistémica (presión alta)' },
@@ -113,27 +107,22 @@ var HistoriaClinicaComponent = /** @class */ (function () {
     HistoriaClinicaComponent.prototype.ngOnInit = function () {
         return __awaiter(this, void 0, Promise, function () {
             return __generator(this, function (_a) {
-                console.log('sexo', this.pac_sexo);
-                if (this.editar) {
-                    this.constructorForms();
-                    this.loadData();
+                switch (_a.label) {
+                    case 0:
+                        console.log('sexo', this.pac_sexo);
+                        if (!this.editar) return [3 /*break*/, 2];
+                        this.constructorForms();
+                        return [4 /*yield*/, this.getData()];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        this.constructorForms();
+                        _a.label = 3;
+                    case 3:
+                        console.log('id', this.idPaciente);
+                        return [2 /*return*/];
                 }
-                else {
-                    this.constructorForms();
-                }
-                this.firstFormGroup = this.fb.group({
-                    firstCtrl: ['', forms_1.Validators.required]
-                });
-                this.secondFormGroup = this.fb.group({
-                    secondCtrl: ['', forms_1.Validators.required]
-                });
-                this.thirdFormGroup = this.fb.group({
-                    thirdControl: ['', forms_1.Validators.required]
-                });
-                this.fourthFormGroup = this.fb.group({
-                    fourthCtrl: ['', forms_1.Validators.required]
-                });
-                return [2 /*return*/];
             });
         });
     };
@@ -195,12 +184,12 @@ var HistoriaClinicaComponent = /** @class */ (function () {
         });
         this.GinecoObstricoForm = this.fb.group({
             pac_menarquia: ['', forms_1.Validators.required],
-            pac_carac_mens: ['', forms_1.Validators.required],
-            pac_dias_mens: ['', forms_1.Validators.required],
-            pac_cant_mens: ['', forms_1.Validators.required],
-            pac_frec_mens: ['', forms_1.Validators.required],
-            pac_precencia_dolor_mens: ['', forms_1.Validators.required],
-            pac_otras_sec_mens: ['', forms_1.Validators.required],
+            menstruacion_fecha_Ultima: ['', forms_1.Validators.required],
+            menstruacion_duracion: ['', forms_1.Validators.required],
+            menstruacion_cantidad: ['', forms_1.Validators.required],
+            menstruacion_frecuencia: ['', forms_1.Validators.required],
+            menstruacion_presencia_De_Dolor: ['', forms_1.Validators.required],
+            menstruacion_otras_secreciones: ['', forms_1.Validators.required],
             androgenico_vida_sexual_activa: ['', forms_1.Validators.required],
             androgenico_inicio_vida_sexual: ['', forms_1.Validators.required],
             androgenico_no_comp_sexuales: ['', forms_1.Validators.required],
@@ -213,27 +202,27 @@ var HistoriaClinicaComponent = /** @class */ (function () {
             fecha_ultimo_Examen_Prostatico: ['', forms_1.Validators.required],
             observaciones_ultimo_examen_prostatico: ['', forms_1.Validators.required],
             pac_gestaciones: ['', forms_1.Validators.required],
-            pac_cant_gestaciones: ['', forms_1.Validators.required],
-            pac_ultima_gestacion: ['', forms_1.Validators.required],
-            pac_ultima_gestacion_observacion: ['', forms_1.Validators.required],
+            gestacion_cantidad: ['', forms_1.Validators.required],
+            gestacion_ultima_fecha: ['', forms_1.Validators.required],
+            gestacion_observacion: ['', forms_1.Validators.required],
             pac_partos: ['', forms_1.Validators.required],
-            pac_cant_partos: ['', forms_1.Validators.required],
-            pac_ultimo_parto: ['', forms_1.Validators.required],
-            pac_ultimo_parto_observacion: ['', forms_1.Validators.required],
+            parto_cantidad: ['', forms_1.Validators.required],
+            parto_ultima_fecha: ['', forms_1.Validators.required],
+            parto_observacion: ['', forms_1.Validators.required],
             pac_abortos: ['', forms_1.Validators.required],
-            pac_cant_abortos: ['', forms_1.Validators.required],
-            pac_ultimo_aborto: ['', forms_1.Validators.required],
-            pac_ultimo_aborto_observacion: ['', forms_1.Validators.required],
+            aboto_cantidad: ['', forms_1.Validators.required],
+            aborto_ultima_fecha: ['', forms_1.Validators.required],
+            aborto_observacion: ['', forms_1.Validators.required],
             pac_cesareas: ['', forms_1.Validators.required],
-            pac_cant_cesareas: ['', forms_1.Validators.required],
-            pac_ultima_cesarea: ['', forms_1.Validators.required],
-            pac_ultima_cesarea_observacion: ['', forms_1.Validators.required],
+            cesarea_cantidad: ['', forms_1.Validators.required],
+            cesarea_ultima_fecha: ['', forms_1.Validators.required],
+            cesarea_observacion: ['', forms_1.Validators.required],
             pac_papanicolau: ['', forms_1.Validators.required],
-            pac_papanicolau_fecha: ['', forms_1.Validators.required],
-            pac_papanicolau_observacion: ['', forms_1.Validators.required],
+            papanicolau_fecha: ['', forms_1.Validators.required],
+            papanicolau_observacion: ['', forms_1.Validators.required],
             pac_tamis_mama: ['', forms_1.Validators.required],
-            pac_tamis_fecha: ['', forms_1.Validators.required],
-            pac_tamis_observacion: ['', forms_1.Validators.required]
+            tamis_fecha: ['', forms_1.Validators.required],
+            tamis_observacion: ['', forms_1.Validators.required]
         });
         this.NoPatologicosForm = this.fb.group({
             pac_mascota: ['', forms_1.Validators.required],
@@ -250,172 +239,19 @@ var HistoriaClinicaComponent = /** @class */ (function () {
             Actividades_Fisicas: this.fb.array([])
         });
     };
-    HistoriaClinicaComponent.prototype.loadData = function () {
-        var _this = this;
-        this.PacienteService.getPacienteData(this.idPaciente).subscribe(function (data) {
-            console.log('Data', data);
-            //#region LoadArrays
-            var varPadre = _this.heredoFamForm.get('padre');
-            for (var i = 0; i < varPadre.length; i++) {
-                if (data['pac_antecedentes_data'].heredo_familiares.padre.includes(_this.enfermedades[i].id)) {
-                    varPadre.at(i).setValue(true);
-                }
-            }
-            var varMadre = _this.heredoFamForm.get('madre');
-            for (var i = 0; i < varMadre.length; i++) {
-                if (data['pac_antecedentes_data'].heredo_familiares.madre.includes(_this.enfermedades[i].id)) {
-                    varMadre.at(i).setValue(true);
-                }
-            }
-            var varAbPat = _this.heredoFamForm.get('abuelosPaternos');
-            for (var i = 0; i < varAbPat.length; i++) {
-                if (data['pac_antecedentes_data'].heredo_familiares.abuelosPaternos.includes(_this.enfermedades[i].id)) {
-                    varAbPat.at(i).setValue(true);
-                }
-            }
-            var varAbMat = _this.heredoFamForm.get('abuelosMaternos');
-            for (var i = 0; i < varAbMat.length; i++) {
-                if (data['pac_antecedentes_data'].heredo_familiares.abuelosMaternos.includes(_this.enfermedades[i].id)) {
-                    varAbMat.at(i).setValue(true);
-                }
-            }
-            var varHmnos = _this.heredoFamForm.get('hermanos');
-            for (var i = 0; i < varHmnos.length; i++) {
-                if (data['pac_antecedentes_data'].heredo_familiares.hermanos.includes(_this.enfermedades[i].id)) {
-                    varHmnos.at(i).setValue(true);
-                }
-            }
-            var varOtros = _this.heredoFamForm.get('otros');
-            for (var i = 0; i < varOtros.length; i++) {
-                if (data['pac_antecedentes_data'].heredo_familiares.otros.includes(_this.enfermedades[i].id)) {
-                    varOtros.at(i).setValue(true);
-                }
-            }
-            var varPatologias = _this.PatologiasForm.get('patologias');
-            for (var i = 0; i < varPatologias.length; i++) {
-                if (data['pac_antecedentes_data'].Patologicos.cronico_degenerativas.includes(_this.patologicas[i].id)) {
-                    varPatologias.at(i).setValue(true);
-                }
-            }
-            //#endregion
-            //#region Patologias
-            _this.heredoFamForm.patchValue({
-                observaciones: data['pac_antecedentes_data'].Observaciones.observaciones_heredoFam
-            });
-            _this.PatologiasForm.patchValue({
-                observaciones: data['pac_antecedentes_data'].Observaciones.observaciones_Patologias
-            });
-            _this.AlergiasForm.patchValue({
-                alergias: data['pac_antecedentes_data'].Patologicos.alergias.alergias,
-                alergia_tipo: data['pac_antecedentes_data'].Patologicos.alergias.alergia_tipo
-            });
-            _this.NoPatologicosForm.patchValue({
-                pac_habitaciones: data['pac_antecedentes_data'].No_Patolgicos.pac_habitaciones,
-                pac_habitantes: data['pac_antecedentes_data'].No_Patolgicos.pac_habitantes,
-                mascota: data['pac_antecedentes_data'].No_Patolgicos.mascota,
-                pac_mascota_tipo: data['pac_antecedentes_data'].No_Patolgicos.pac_mascota_tipo,
-                pac_comidas_al_dia: data['pac_antecedentes_data'].No_Patolgicos.pac_comidas_al_dia,
-                pac_consumo_pan: data['pac_antecedentes_data'].No_Patolgicos.pac_consumo_pan,
-                pac_consumo_refresco: data['pac_antecedentes_data'].No_Patolgicos.pac_consumo_refresco,
-                pac_consumo_sal: data['pac_antecedentes_data'].No_Patolgicos.pac_consumo_sal,
-                pac_gpos_alimenticios: data['pac_antecedentes_data'].No_Patolgicos.pac_gpos_alimenticios,
-                pac_alimentos_capeados: data['pac_antecedentes_data'].No_Patolgicos.pac_alimentos_capeados,
-                observaciones: data['pac_antecedentes_data'].Observaciones.observaciones_NoPatologicos
-            });
-            _this.HospitalizacionesForm.patchValue({
-                hospitalizaciones: data['pac_antecedentes_data'].Patologicos.Hospitalizaciones.hospitalizaciones,
-                hospitalizacion_fecha: data['pac_antecedentes_data'].Patologicos.Hospitalizaciones.hospitalizacion_fecha,
-                hospitalizacion_causa: data['pac_antecedentes_data'].Patologicos.Hospitalizaciones.hospitalizacion_causa,
-                hospitalizacion_secuela: data['pac_antecedentes_data'].Patologicos.Hospitalizaciones.hospitalizacion_secuela
-            });
-            _this.QuirurgicasForm.patchValue({
-                quirurgicas: data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgicas,
-                quirurgico_fecha: data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgico_fecha,
-                quirurgico_causa: data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgico_causa,
-                quirurgico_secuela: data['pac_antecedentes_data'].Patologicos.quirurgicas.quirurgico_secuela
-            });
-            _this.TraumaticosForm.patchValue({
-                traumaticos: data['pac_antecedentes_data'].Patologicos.traumaticos.traumaticos,
-                traumatismo_fecha: data['pac_antecedentes_data'].Patologicos.traumaticos.traumatismo_fecha,
-                traumatismo_tipo: data['pac_antecedentes_data'].Patologicos.traumaticos.traumatismo_tipo,
-                traumatismo_causa: data['pac_antecedentes_data'].Patologicos.traumaticos.traumatismo_causa,
-                traumatismo_secuela: data['pac_antecedentes_data'].Patologicos.traumaticos.traumatismo_secuela
-            });
-            _this.TransfusionesForm.patchValue({
-                transfusiones: data['pac_antecedentes_data'].Patologicos.transfusiones.transfusiones,
-                transfusion_fecha: data['pac_antecedentes_data'].Patologicos.transfusiones.transfusion_fecha,
-                transfusion_causa: data['pac_antecedentes_data'].Patologicos.transfusiones.transfusion_causa
-            });
-            _this.PsicoactivasForm.patchValue({
-                sustancia_psicoactiva_alcohol: data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_alcohol,
-                sustancia_psicoactiva_alcohol_frecuencia: data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_alcohol_frecuencia,
-                sustancia_psicoactiva_alcohol_cantidad: data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_alcohol_cantidad,
-                sustancia_psicoactiva_tabaco: data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_tabaco,
-                sustancia_psicoactiva_tabaco_frecuencia: data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_tabaco_frecuencia,
-                sustancia_psicoactiva_tabaco_cantidad: data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_tabaco_cantidad,
-                sustancia_psicoactiva_otra: data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_otra,
-                sustancia_psicoactiva_otra_tipo: data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_otra_tipo,
-                sustancia_psicoactiva_otra_ultimo_consumo: data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_otra_ultimo_consumo,
-                sustancia_psicoactiva_otra_frecuencia: data['pac_antecedentes_data'].Patologicos.sustancias_psicoactivas.sustancia_psicoactiva_otra_frecuencia
-            });
-            //#endregion
-            _this.GinecoObstricoForm = _this.fb.group({
-                pac_menarquia: data['pac_antecedentes_data'].GinecoObstrico.pac_menarquia,
-                pac_carac_mens: data['pac_antecedentes_data'].GinecoObstrico.pac_carac_mens,
-                pac_dias_mens: data['pac_antecedentes_data'].GinecoObstrico.pac_dias_mens,
-                pac_cant_mens: data['pac_antecedentes_data'].GinecoObstrico.pac_cant_mens,
-                pac_frec_mens: data['pac_antecedentes_data'].GinecoObstrico.pac_frec_mens,
-                pac_precencia_dolor_mens: data['pac_antecedentes_data'].GinecoObstrico.pac_precencia_dolor_mens,
-                pac_otras_sec_mens: data['pac_antecedentes_data'].GinecoObstrico.pac_otras_sec_mens,
-                androgenico_vida_sexual_activa: data['pac_antecedentes_data'].GinecoObstrico.androgenico_vida_sexual_activa,
-                androgenico_inicio_vida_sexual: data['pac_antecedentes_data'].GinecoObstrico.androgenico_vida_sexual_activa,
-                androgenico_no_comp_sexuales: data['pac_antecedentes_data'].GinecoObstrico.androgenico_no_comp_sexuales,
-                androgenico_metodo_anticonceptivo: data['pac_antecedentes_data'].GinecoObstrico.androgenico_metodo_anticonceptivo,
-                androgenico_tipo_relaciones: data['pac_antecedentes_data'].GinecoObstrico.androgenico_tipo_relaciones,
-                androgenico_ets: data['pac_antecedentes_data'].GinecoObstrico.androgenico_ets,
-                androgenico_metodo_anticonceptivo_hormonal: data['pac_antecedentes_data'].GinecoObstrico.androgenico_metodo_anticonceptivo_hormonal,
-                androgenico_androgenico_pac_metodo_anticonceptivo_hormonal_diu: data['pac_antecedentes_data'].GinecoObstrico.androgenico_androgenico_pac_metodo_anticonceptivo_hormonal_diu,
-                ExamenProstata: data['pac_antecedentes_data'].GinecoObstrico.ExamenProstata,
-                fecha_ultimo_Examen_Prostatico: data['pac_antecedentes_data'].GinecoObstrico.fecha_ultimo_Examen_Prostatico,
-                observaciones_ultimo_examen_prostatico: data['pac_antecedentes_data'].GinecoObstrico.observaciones_ultimo_examen_prostatico,
-                pac_gestaciones: data['pac_antecedentes_data'].GinecoObstrico.pac_gestaciones,
-                pac_cant_gestaciones: data['pac_antecedentes_data'].GinecoObstrico.pac_cant_gestaciones,
-                pac_ultima_gestacion: data['pac_antecedentes_data'].GinecoObstrico.pac_ultima_gestacion,
-                pac_ultima_gestacion_observacion: data['pac_antecedentes_data'].GinecoObstrico.pac_ultima_gestacion_observacion,
-                pac_partos: data['pac_antecedentes_data'].GinecoObstrico.pac_partos,
-                pac_cant_partos: data['pac_antecedentes_data'].GinecoObstrico.pac_cant_partos,
-                pac_ultimo_parto: data['pac_antecedentes_data'].GinecoObstrico.pac_ultimo_parto,
-                pac_ultimo_parto_observacion: data['pac_antecedentes_data'].GinecoObstrico.pac_ultimo_parto_observacion,
-                pac_abortos: data['pac_antecedentes_data'].GinecoObstrico.pac_abortos,
-                pac_cant_abortos: data['pac_antecedentes_data'].GinecoObstrico.pac_cant_abortos,
-                pac_ultimo_aborto: data['pac_antecedentes_data'].GinecoObstrico.pac_ultimo_aborto,
-                pac_ultimo_aborto_observacion: data['pac_antecedentes_data'].GinecoObstrico.pac_ultimo_aborto_observacion,
-                pac_cesareas: data['pac_antecedentes_data'].GinecoObstrico.pac_cesareas,
-                pac_cant_cesareas: data['pac_antecedentes_data'].GinecoObstrico.pac_cant_cesareas,
-                pac_ultima_cesarea: data['pac_antecedentes_data'].GinecoObstrico.pac_ultima_cesarea,
-                pac_ultima_cesarea_observacion: data['pac_antecedentes_data'].GinecoObstrico.pac_ultima_cesarea_observacion,
-                pac_papanicolau: data['pac_antecedentes_data'].GinecoObstrico.pac_papanicolau,
-                pac_papanicolau_fecha: data['pac_antecedentes_data'].GinecoObstrico.pac_papanicolau_fecha,
-                pac_papanicolau_observacion: data['pac_antecedentes_data'].GinecoObstrico.pac_papanicolau_observacion,
-                pac_tamis_mama: data['pac_antecedentes_data'].GinecoObstrico.pac_tamis_mama,
-                pac_tamis_fecha: data['pac_antecedentes_data'].GinecoObstrico.pac_tamis_fecha,
-                pac_tamis_observacion: data['pac_antecedentes_data'].GinecoObstrico.pac_tamis_observacion
-            });
-        });
-    };
     HistoriaClinicaComponent.prototype.onSubmit = function () {
         return false;
     };
     HistoriaClinicaComponent.prototype.onChanges = function () {
         var _this = this;
         /*  this.NoPatologicosForm.get("mascota").valueChanges.subscribe(data => {
-           if (data == "Si"){
-             this.NoPatologicosForm.get("pac_mascota_tipo").enable();
-           }
-           else {
-             this.NoPatologicosForm.get("pac_mascota_tipo").disable();
-           }
-         }) */
+            if (data == "Si"){
+              this.NoPatologicosForm.get("pac_mascota_tipo").enable();
+            }
+            else {
+              this.NoPatologicosForm.get("pac_mascota_tipo").disable();
+            }
+          }) */
         this.AlergiasForm.get("alergias").valueChanges.subscribe(function (data) {
             if (data == "Si") {
                 _this.AlergiasForm.get("alergia_tipo").enable();
@@ -506,43 +342,43 @@ var HistoriaClinicaComponent = /** @class */ (function () {
         });
         if (this.bandSexo == 'M') {
             this.GinecoObstricoForm.get("pac_menarquia").disable();
-            this.GinecoObstricoForm.get("pac_carac_mens").disable();
-            this.GinecoObstricoForm.get("pac_dias_mens").disable();
-            this.GinecoObstricoForm.get("pac_frec_mens").disable();
-            this.GinecoObstricoForm.get("pac_cant_mens").disable();
-            this.GinecoObstricoForm.get("pac_precencia_dolor_mens").disable();
-            this.GinecoObstricoForm.get("pac_otras_sec_mens").disable();
+            this.GinecoObstricoForm.get("menstruacion_fecha_Ultima").disable();
+            this.GinecoObstricoForm.get("menstruacion_duracion").disable();
+            this.GinecoObstricoForm.get("menstruacion_frecuencia").disable();
+            this.GinecoObstricoForm.get("menstruacion_cantidad").disable();
+            this.GinecoObstricoForm.get("menstruacion_presencia_De_Dolor").disable();
+            this.GinecoObstricoForm.get("menstruacion_otras_secreciones").disable();
             this.GinecoObstricoForm.get("pac_gestaciones").disable();
             this.GinecoObstricoForm.get("pac_partos").disable();
             this.GinecoObstricoForm.get("pac_abortos").disable();
             this.GinecoObstricoForm.get("pac_cesareas").disable();
-            this.GinecoObstricoForm.get("pac_cant_abortos").disable();
-            this.GinecoObstricoForm.get("pac_cant_cesareas").disable();
-            this.GinecoObstricoForm.get("pac_cant_gestaciones").disable();
-            this.GinecoObstricoForm.get("pac_cant_partos").disable();
+            this.GinecoObstricoForm.get("aboto_cantidad").disable();
+            this.GinecoObstricoForm.get("cesarea_cantidad").disable();
+            this.GinecoObstricoForm.get("gestacion_cantidad").disable();
+            this.GinecoObstricoForm.get("parto_cantidad").disable();
             this.GinecoObstricoForm.get("pac_papanicolau").disable();
-            this.GinecoObstricoForm.get("pac_papanicolau_fecha").disable();
-            this.GinecoObstricoForm.get("pac_papanicolau_observacion").disable();
-            this.GinecoObstricoForm.get("pac_tamis_fecha").disable();
+            this.GinecoObstricoForm.get("papanicolau_fecha").disable();
+            this.GinecoObstricoForm.get("papanicolau_observacion").disable();
+            this.GinecoObstricoForm.get("tamis_fecha").disable();
             this.GinecoObstricoForm.get("pac_tamis_mama").disable();
-            this.GinecoObstricoForm.get("pac_tamis_observacion").disable();
-            this.GinecoObstricoForm.get("pac_ultima_cesarea").disable();
-            this.GinecoObstricoForm.get("pac_ultima_cesarea_observacion").disable();
-            this.GinecoObstricoForm.get("pac_ultima_gestacion").disable();
-            this.GinecoObstricoForm.get("pac_ultima_gestacion_observacion").disable();
-            this.GinecoObstricoForm.get("pac_ultimo_aborto").disable();
-            this.GinecoObstricoForm.get("pac_ultimo_parto").disable();
-            this.GinecoObstricoForm.get("pac_ultimo_parto_observacion").disable();
-            this.GinecoObstricoForm.get("pac_ultimo_aborto_observacion").disable();
+            this.GinecoObstricoForm.get("tamis_observacion").disable();
+            this.GinecoObstricoForm.get("cesarea_ultima_fecha").disable();
+            this.GinecoObstricoForm.get("cesarea_observacion").disable();
+            this.GinecoObstricoForm.get("gestacion_ultima_fecha").disable();
+            this.GinecoObstricoForm.get("gestacion_observacion").disable();
+            this.GinecoObstricoForm.get("aborto_ultima_fecha").disable();
+            this.GinecoObstricoForm.get("parto_ultima_fecha").disable();
+            this.GinecoObstricoForm.get("parto_observacion").disable();
+            this.GinecoObstricoForm.get("aborto_observacion").disable();
         }
         else {
             this.GinecoObstricoForm.get("pac_menarquia").enable();
-            this.GinecoObstricoForm.get("pac_carac_mens").enable();
-            this.GinecoObstricoForm.get("pac_dias_mens").enable();
-            this.GinecoObstricoForm.get("pac_frec_mens").enable();
-            this.GinecoObstricoForm.get("pac_cant_mens").enable();
-            this.GinecoObstricoForm.get("pac_precencia_dolor_mens").enable();
-            this.GinecoObstricoForm.get("pac_otras_sec_mens").enable();
+            this.GinecoObstricoForm.get("menstruacion_fecha_Ultima").enable();
+            this.GinecoObstricoForm.get("menstruacion_duracion").enable();
+            this.GinecoObstricoForm.get("menstruacion_frecuencia").enable();
+            this.GinecoObstricoForm.get("menstruacion_cantidad").enable();
+            this.GinecoObstricoForm.get("menstruacion_presencia_De_Dolor").enable();
+            this.GinecoObstricoForm.get("menstruacion_otras_secreciones").enable();
             this.GinecoObstricoForm.get("pac_gestaciones").enable();
             this.GinecoObstricoForm.get("pac_partos").enable();
             this.GinecoObstricoForm.get("pac_abortos").enable();
@@ -579,117 +415,74 @@ var HistoriaClinicaComponent = /** @class */ (function () {
         });
         this.GinecoObstricoForm.get('pac_gestaciones').valueChanges.subscribe(function (data) {
             if (data == "Si") {
-                _this.GinecoObstricoForm.get('pac_cant_gestaciones').enable();
-                _this.GinecoObstricoForm.get('pac_ultima_gestacion').enable();
-                _this.GinecoObstricoForm.get('pac_ultima_gestacion_observacion').enable();
+                _this.GinecoObstricoForm.get('gestacion_cantidad').enable();
+                _this.GinecoObstricoForm.get('gestacion_ultima_fecha').enable();
+                _this.GinecoObstricoForm.get('gestacion_observacion').enable();
             }
             else {
-                _this.GinecoObstricoForm.get('pac_cant_gestaciones').disable();
-                _this.GinecoObstricoForm.get('pac_ultima_gestacion').disable();
-                _this.GinecoObstricoForm.get('pac_ultima_gestacion_observacion').disable();
+                _this.GinecoObstricoForm.get('gestacion_cantidad').disable();
+                _this.GinecoObstricoForm.get('gestacion_ultima_fecha').disable();
+                _this.GinecoObstricoForm.get('gestacion_observacion').disable();
             }
         });
         this.GinecoObstricoForm.get('pac_partos').valueChanges.subscribe(function (data) {
             if (data == "Si") {
-                _this.GinecoObstricoForm.get('pac_cant_partos').enable();
-                _this.GinecoObstricoForm.get('pac_ultimo_parto').enable();
-                _this.GinecoObstricoForm.get('pac_ultimo_parto_observacion').enable();
+                _this.GinecoObstricoForm.get('parto_cantidad').enable();
+                _this.GinecoObstricoForm.get('parto_ultima_fecha').enable();
+                _this.GinecoObstricoForm.get('parto_observacion').enable();
             }
             else {
-                _this.GinecoObstricoForm.get('pac_cant_partos').disable();
-                _this.GinecoObstricoForm.get('pac_ultimo_parto').disable();
-                _this.GinecoObstricoForm.get('pac_ultimo_parto_observacion').disable();
+                _this.GinecoObstricoForm.get('parto_cantidad').disable();
+                _this.GinecoObstricoForm.get('parto_ultima_fecha').disable();
+                _this.GinecoObstricoForm.get('parto_observacion').disable();
             }
         });
         this.GinecoObstricoForm.get('pac_abortos').valueChanges.subscribe(function (data) {
             if (data == "Si") {
-                _this.GinecoObstricoForm.get('pac_cant_abortos').enable();
-                _this.GinecoObstricoForm.get('pac_ultimo_aborto').enable();
-                _this.GinecoObstricoForm.get('pac_ultimo_aborto_observacion').enable();
+                _this.GinecoObstricoForm.get('aboto_cantidad').enable();
+                _this.GinecoObstricoForm.get('aborto_ultima_fecha').enable();
+                _this.GinecoObstricoForm.get('aborto_observacion').enable();
             }
             else {
-                _this.GinecoObstricoForm.get('pac_cant_abortos').disable();
-                _this.GinecoObstricoForm.get('pac_ultimo_aborto').disable();
-                _this.GinecoObstricoForm.get('pac_ultimo_aborto_observacion').disable();
+                _this.GinecoObstricoForm.get('aboto_cantidad').disable();
+                _this.GinecoObstricoForm.get('aborto_ultima_fecha').disable();
+                _this.GinecoObstricoForm.get('aborto_observacion').disable();
             }
         });
         this.GinecoObstricoForm.get('pac_cesareas').valueChanges.subscribe(function (data) {
             if (data == "Si") {
-                _this.GinecoObstricoForm.get('pac_cant_cesareas').enable();
-                _this.GinecoObstricoForm.get('pac_ultima_cesarea').enable();
-                _this.GinecoObstricoForm.get('pac_ultima_cesarea_observacion').enable();
+                _this.GinecoObstricoForm.get('cesarea_cantidad').enable();
+                _this.GinecoObstricoForm.get('cesarea_ultima_fecha').enable();
+                _this.GinecoObstricoForm.get('cesarea_observacion').enable();
             }
             else {
-                _this.GinecoObstricoForm.get('pac_cant_cesareas').disable();
-                _this.GinecoObstricoForm.get('pac_ultima_cesarea').disable();
-                _this.GinecoObstricoForm.get('pac_ultima_cesarea_observacion').disable();
+                _this.GinecoObstricoForm.get('cesarea_cantidad').disable();
+                _this.GinecoObstricoForm.get('cesarea_ultima_fecha').disable();
+                _this.GinecoObstricoForm.get('cesarea_observacion').disable();
             }
         });
         this.GinecoObstricoForm.get('pac_papanicolau').valueChanges.subscribe(function (data) {
             if (data == "Si") {
-                _this.GinecoObstricoForm.get('pac_papanicolau_fecha').enable();
-                _this.GinecoObstricoForm.get('pac_papanicolau_observacion').enable();
+                _this.GinecoObstricoForm.get('papanicolau_fecha').enable();
+                _this.GinecoObstricoForm.get('papanicolau_observacion').enable();
             }
             else {
-                _this.GinecoObstricoForm.get('pac_papanicolau_fecha').enable();
-                _this.GinecoObstricoForm.get('pac_papanicolau_observacion').enable();
+                _this.GinecoObstricoForm.get('papanicolau_fecha').enable();
+                _this.GinecoObstricoForm.get('papanicolau_observacion').enable();
             }
         });
         this.GinecoObstricoForm.get('pac_tamis_mama').valueChanges.subscribe(function (data) {
             if (data == "Si") {
-                _this.GinecoObstricoForm.get('pac_tamis_fecha').enable();
-                _this.GinecoObstricoForm.get('pac_tamis_observacion').enable();
+                _this.GinecoObstricoForm.get('tamis_fecha').enable();
+                _this.GinecoObstricoForm.get('tamis_observacion').enable();
             }
             else {
-                _this.GinecoObstricoForm.get('pac_tamis_fecha').enable();
-                _this.GinecoObstricoForm.get('pac_tamis_observacion').enable();
+                _this.GinecoObstricoForm.get('tamis_fecha').enable();
+                _this.GinecoObstricoForm.get('tamis_observacion').enable();
             }
         });
     };
     HistoriaClinicaComponent.prototype.submit = function () {
-        this.guardaPatolgiasFam();
-    };
-    HistoriaClinicaComponent.prototype.guardaPatolgiasFam = function () {
-        var _this = this;
-        var model = {
-            pac_antecedentes_data: {
-                heredo_familiares: {
-                    padre: this.heredoFamForm.value.padre.map(function (checked, index) { return checked ? _this.enfermedades[index].id : null; }).filter(function (value) { return value !== null; }),
-                    madre: this.heredoFamForm.value.madre.map(function (checked, index) { return checked ? _this.enfermedades[index].id : null; }).filter(function (value) { return value !== null; }),
-                    abuelosPaternos: this.heredoFamForm.value.abuelosPaternos.map(function (checked, index) { return checked ? _this.enfermedades[index].id : null; }).filter(function (value) { return value !== null; }),
-                    abuelosMaternos: this.heredoFamForm.value.abuelosMaternos.map(function (checked, index) { return checked ? _this.enfermedades[index].id : null; }).filter(function (value) { return value !== null; }),
-                    hermanos: this.heredoFamForm.value.hermanos.map(function (checked, index) { return checked ? _this.enfermedades[index].id : null; }).filter(function (value) { return value !== null; }),
-                    otros: this.heredoFamForm.value.otros.map(function (checked, index) { return checked ? _this.enfermedades[index].id : null; }).filter(function (value) { return value !== null; })
-                },
-                No_Patolgicos: this.NoPatologicosForm.value,
-                Patologicos: {
-                    cronico_degenerativas: this.PatologiasForm.value.patologias.map(function (checked, index) { return checked ? _this.patologicas[index].id : null; }).filter(function (value) { return value !== null; }),
-                    alergias: this.AlergiasForm.value,
-                    Hospitalizaciones: this.HospitalizacionesForm.value,
-                    quirurgicas: this.QuirurgicasForm.value,
-                    traumaticos: this.TraumaticosForm.value,
-                    transfusiones: this.TransfusionesForm.value,
-                    sustancias_psicoactivas: this.PsicoactivasForm.value,
-                    Medicamentos: this.PatologiasForm.value.Medicamento
-                },
-                GinecoObstrico: this.GinecoObstricoForm.value,
-                Observaciones: {
-                    observaciones_heredoFam: this.heredoFamForm.value.observaciones,
-                    observaciones_NoPatologicos: this.NoPatologicosForm.value.observaciones,
-                    observaciones_Patologias: this.PatologiasForm.value.observaciones
-                }
-            }
-        };
-        var post = model;
-        post['id'] = this.idPaciente;
-        post['pac_historia_clinica'] = true;
-        if (this.editar) {
-            this.alertEditado();
-        }
-        else {
-            this.alertGuardado();
-        }
-        this.cerrarModal.emit(true);
     };
     HistoriaClinicaComponent.prototype.alertGuardado = function () {
         var _this = this;
@@ -775,11 +568,14 @@ var HistoriaClinicaComponent = /** @class */ (function () {
         post['idPaciente'] = this.idPaciente;
         this.HistoriaClinicaAPIService.postHistoriaClinica(post).subscribe(function (data) {
             console.log('HC', data);
-            //this.postNoPatologico(data.idHistoriaClinica);
-            //this.postPatologico(data.idHistoriaClinica);
-            //this.postAndrogenicos(data.idHistoriaClinica);
+            _this.postNoPatologico(data.idHistoriaClinica);
+            _this.postPatologico(data.idHistoriaClinica);
+            _this.postAndrogenicos(data.idHistoriaClinica);
             if (_this.pac_sexo == 'M') {
                 _this.postAntecedenteProstatico(data.idHistoriaClinica);
+            }
+            else {
+                _this.postAntecedenteGinecobstetrico(data.idHistoriaClinica);
             }
         });
     };
@@ -816,6 +612,7 @@ var HistoriaClinicaComponent = /** @class */ (function () {
         POST['antecedente_patologico_consumo_de_sustancia_psicoactiva'] = this.PsicoactivasForm.value.consumo_alguna_sustancia;
         POST['antecedente_patologico_alergias'] = this.AlergiasForm.value.alergias;
         this.HistoriaClinicaAPIService.postPatologico(POST).subscribe(function (data) {
+            _this.postHeredoFamiliares(data.id);
             if (POST['antecedente_patologico_hospitalizacion'] == 'Si') {
                 var hospitalizacion = _this.HospitalizacionesForm.value;
                 hospitalizacion['idAntecedentePatologico'] = data.id;
@@ -876,7 +673,6 @@ var HistoriaClinicaComponent = /** @class */ (function () {
                     console.log('padecimiento', padecimiento);
                 });
             }
-            console.log('Medicamentos', _this.PatologiasForm.value.Medicamento);
             var medicamentos = _this.PatologiasForm.value.Medicamento;
             if (medicamentos.length > 0) {
                 var detalleMedicamento = {};
@@ -895,7 +691,7 @@ var HistoriaClinicaComponent = /** @class */ (function () {
             }
         });
     };
-    HistoriaClinicaComponent.prototype.postAndrogenicos = function (idAntecedentePatologico) {
+    HistoriaClinicaComponent.prototype.postAndrogenicos = function (idHistoriaClinica) {
         var androgenico = {};
         androgenico['androgenico_vida_sexual_activa'] = this.GinecoObstricoForm.value.androgenico_vida_sexual_activa;
         androgenico['androgenico_inicio_vida_sexual'] = this.GinecoObstricoForm.value.androgenico_inicio_vida_sexual;
@@ -905,7 +701,7 @@ var HistoriaClinicaComponent = /** @class */ (function () {
         androgenico['androgenico_ets'] = this.GinecoObstricoForm.value.androgenico_ets;
         androgenico['androgenico_metodo_anticonceptivo_hormonal'] = this.GinecoObstricoForm.value.androgenico_metodo_anticonceptivo_hormonal;
         androgenico['androgenico_metodo_anticonceptivo_hormonal'] = this.GinecoObstricoForm.value.androgenico_metodo_anticonceptivo_hormonal;
-        androgenico['idAntecedentePatologico'] = idAntecedentePatologico;
+        androgenico['idHistoriaClinica'] = idHistoriaClinica;
         this.HistoriaClinicaAPIService.postAndrogenicos(androgenico).subscribe(function (androgenico) {
             console.log('androgenico', androgenico);
         });
@@ -924,6 +720,208 @@ var HistoriaClinicaComponent = /** @class */ (function () {
                 _this.HistoriaClinicaAPIService.postExamenProstatico(examenProstata).subscribe(function (examenProstata) {
                     console.log('examenProstata', examenProstata);
                 });
+            }
+        });
+    };
+    HistoriaClinicaComponent.prototype.postAntecedenteGinecobstetrico = function (idHistoriaClinica) {
+        var _this = this;
+        var antecedente = {};
+        antecedente['idHistoriaClinica'] = idHistoriaClinica;
+        antecedente['menarquia'] = this.GinecoObstricoForm.value.pac_menarquia;
+        antecedente['papanicolau'] = this.GinecoObstricoForm.value.pac_papanicolau;
+        antecedente['tamisDeMama'] = this.GinecoObstricoForm.value.pac_tamis_mama;
+        antecedente['aborto'] = this.GinecoObstricoForm.value.pac_abortos;
+        antecedente['parto'] = this.GinecoObstricoForm.value.pac_partos;
+        antecedente['cesarea'] = this.GinecoObstricoForm.value.pac_cesareas;
+        antecedente['gestacion'] = this.GinecoObstricoForm.value.pac_gestaciones;
+        this.HistoriaClinicaAPIService.postAntecedenteGinecobstetrico(antecedente).subscribe(function (antecedente) {
+            console.log('antecedente', antecedente);
+            _this.postGinecoObstetricos(antecedente.id, antecedente);
+        });
+    };
+    HistoriaClinicaComponent.prototype.postGinecoObstetricos = function (idAntecedenteGO, data) {
+        if (data['menarquia'] == 'Si') {
+            var antecedente = {};
+            antecedente['idAntecedenteGinecobstetrico'] = idAntecedenteGO;
+            antecedente['menstruacion_frecuencia'] = this.GinecoObstricoForm.value.menstruacion_frecuencia;
+            antecedente['menstruacion_cantidad'] = this.GinecoObstricoForm.value.menstruacion_cantidad;
+            antecedente['menstruacion_duracion'] = this.GinecoObstricoForm.value.menstruacion_duracion;
+            antecedente['menstruacion_presencia_De_Dolor'] = this.GinecoObstricoForm.value.menstruacion_presencia_De_Dolor;
+            antecedente['menstruacion_fecha_Ultima'] = this.GinecoObstricoForm.value.menstruacion_fecha_Ultima;
+            antecedente['menstruacion_otras_secreciones'] = this.GinecoObstricoForm.value.menstruacion_otras_secreciones;
+            this.HistoriaClinicaAPIService.postAntecedenteGinecobstetricoMenstruacion(antecedente).subscribe(function (antecedente) {
+                console.log('antecedente', antecedente);
+            });
+        }
+        if (data['gestacion'] == 'Si') {
+            var antecedente = {};
+            antecedente['idAntecedenteGinecobstetrico'] = idAntecedenteGO;
+            antecedente['gestacion_cantidad'] = this.GinecoObstricoForm.value.gestacion_cantidad;
+            antecedente['gestacion_ultima_fecha'] = this.GinecoObstricoForm.value.gestacion_ultima_fecha;
+            antecedente['gestacion_observacion'] = this.GinecoObstricoForm.value.gestacion_observacion;
+            this.HistoriaClinicaAPIService.postAntecedenteGinecobstetricoGestacion(antecedente).subscribe(function (antecedente) {
+                console.log('antecedente', antecedente);
+            });
+        }
+        if (data['parto'] == 'Si') {
+            var antecedente = {};
+            antecedente['idAntecedenteGinecobstetrico'] = idAntecedenteGO;
+            antecedente['parto_cantidad'] = this.GinecoObstricoForm.value.parto_cantidad;
+            antecedente['parto_ultima_fecha'] = this.GinecoObstricoForm.value.parto_ultima_fecha;
+            antecedente['parto_observacion'] = this.GinecoObstricoForm.value.parto_observacion;
+            this.HistoriaClinicaAPIService.postAntecedenteGinecobstetricoParto(antecedente).subscribe(function (antecedente) {
+                console.log('antecedente', antecedente);
+            });
+        }
+        if (data['aborto'] == 'Si') {
+            var antecedente = {};
+            antecedente['idAntecedenteGinecobstetrico'] = idAntecedenteGO;
+            antecedente['aboto_cantidad'] = this.GinecoObstricoForm.value.aboto_cantidad;
+            antecedente['aborto_ultima_fecha'] = this.GinecoObstricoForm.value.aborto_ultima_fecha;
+            antecedente['aborto_observacion'] = this.GinecoObstricoForm.value.aborto_observacion;
+            this.HistoriaClinicaAPIService.postAntecedenteGinecobstetricoAborto(antecedente).subscribe(function (antecedente) {
+                console.log('antecedente', antecedente);
+            });
+        }
+        if (data['cesarea'] == 'Si') {
+            var antecedente = {};
+            antecedente['idAntecedenteGinecobstetrico'] = idAntecedenteGO;
+            antecedente['cesarea_cantidad'] = this.GinecoObstricoForm.value.cesarea_cantidad;
+            antecedente['cesarea_ultima_fecha'] = this.GinecoObstricoForm.value.cesarea_ultima_fecha;
+            antecedente['cesarea_observacion'] = this.GinecoObstricoForm.value.cesarea_observacion;
+            this.HistoriaClinicaAPIService.postAntecedenteGinecobstetricoCesarea(antecedente).subscribe(function (antecedente) {
+                console.log('antecedente', antecedente);
+            });
+        }
+        if (data['tamisDeMama'] == 'Si') {
+            var antecedente = {};
+            antecedente['idAntecedenteGinecobstetrico'] = idAntecedenteGO;
+            antecedente['tamis_fecha'] = this.GinecoObstricoForm.value.tamis_fecha;
+            antecedente['tamis_observacion'] = this.GinecoObstricoForm.value.tamis_observacion;
+            this.HistoriaClinicaAPIService.postAntecedenteGinecobstetricoTamisDeMama(antecedente).subscribe(function (antecedente) {
+                console.log('antecedente', antecedente);
+            });
+        }
+        if (data['papanicolau'] == 'Si') {
+            var antecedente = {};
+            antecedente['idAntecedenteGinecobstetrico'] = idAntecedenteGO;
+            antecedente['papanicolau_fecha'] = this.GinecoObstricoForm.value.papanicolau_fecha;
+            antecedente['papanicolau_observacion'] = this.GinecoObstricoForm.value.papanicolau_observacion;
+            this.HistoriaClinicaAPIService.postAntecedenteGinecobstetricoPapanicolau(antecedente).subscribe(function (antecedente) {
+                console.log('antecedente', antecedente);
+            });
+        }
+    };
+    HistoriaClinicaComponent.prototype.postHeredoFamiliares = function (idAntecedentePatologico) {
+        var _this = this;
+        var padre = this.heredoFamForm.value.padre.map(function (checked, index) { return checked ? _this.enfermedades[index].id : null; }).filter(function (value) { return value !== null; });
+        console.log('padre', padre);
+        for (var i = 0; i < padre.length; i++) {
+            var padecimiento = {};
+            padecimiento['idAntecedentePatologico'] = idAntecedentePatologico;
+            padecimiento['padecimiento_hf_parentesco'] = 'Padre';
+            padecimiento['padecimiento'] = padre[i];
+            this.HistoriaClinicaAPIService.postPadecimientoHeredoFamiliar(padecimiento).subscribe(function (padecimiento) {
+                console.log('padecimiento', padecimiento);
+            });
+        }
+        var madre = this.heredoFamForm.value.madre.map(function (checked, index) { return checked ? _this.enfermedades[index].id : null; }).filter(function (value) { return value !== null; });
+        console.log('madre', madre);
+        for (var i = 0; i < madre.length; i++) {
+            var padecimiento = {};
+            padecimiento['idAntecedentePatologico'] = idAntecedentePatologico;
+            padecimiento['padecimiento_hf_parentesco'] = 'Madre';
+            padecimiento['padecimiento'] = madre[i];
+            this.HistoriaClinicaAPIService.postPadecimientoHeredoFamiliar(padecimiento).subscribe(function (padecimiento) {
+                console.log('padecimiento', padecimiento);
+            });
+        }
+        var abuelosPaternos = this.heredoFamForm.value.abuelosPaternos.map(function (checked, index) { return checked ? _this.enfermedades[index].id : null; }).filter(function (value) { return value !== null; });
+        console.log('abuelosPaternos', abuelosPaternos);
+        for (var i = 0; i < abuelosPaternos.length; i++) {
+            var padecimiento = {};
+            padecimiento['idAntecedentePatologico'] = idAntecedentePatologico;
+            padecimiento['padecimiento_hf_parentesco'] = 'Abuelos Paternos';
+            padecimiento['padecimiento'] = abuelosPaternos[i];
+            this.HistoriaClinicaAPIService.postPadecimientoHeredoFamiliar(padecimiento).subscribe(function (padecimiento) {
+                console.log('padecimiento', padecimiento);
+            });
+        }
+        var abuelosMaternos = this.heredoFamForm.value.abuelosMaternos.map(function (checked, index) { return checked ? _this.enfermedades[index].id : null; }).filter(function (value) { return value !== null; });
+        console.log('abuelosMaternos', abuelosMaternos);
+        for (var i = 0; i < abuelosMaternos.length; i++) {
+            var padecimiento = {};
+            padecimiento['idAntecedentePatologico'] = idAntecedentePatologico;
+            padecimiento['padecimiento_hf_parentesco'] = 'Abuelos Maternos';
+            padecimiento['padecimiento'] = abuelosMaternos[i];
+            this.HistoriaClinicaAPIService.postPadecimientoHeredoFamiliar(padecimiento).subscribe(function (padecimiento) {
+                console.log('padecimiento', padecimiento);
+            });
+        }
+        var hermanos = this.heredoFamForm.value.hermanos.map(function (checked, index) { return checked ? _this.enfermedades[index].id : null; }).filter(function (value) { return value !== null; });
+        console.log('abuelosMaternos', hermanos);
+        for (var i = 0; i < hermanos.length; i++) {
+            var padecimiento = {};
+            padecimiento['idAntecedentePatologico'] = idAntecedentePatologico;
+            padecimiento['padecimiento_hf_parentesco'] = 'Hermanos';
+            padecimiento['padecimiento'] = hermanos[i];
+            this.HistoriaClinicaAPIService.postPadecimientoHeredoFamiliar(padecimiento).subscribe(function (padecimiento) {
+                console.log('padecimiento', padecimiento);
+            });
+        }
+        var otros = this.heredoFamForm.value.otros.map(function (checked, index) { return checked ? _this.enfermedades[index].id : null; }).filter(function (value) { return value !== null; });
+        console.log('otros', otros);
+        for (var i = 0; i < otros.length; i++) {
+            var padecimiento = {};
+            padecimiento['idAntecedentePatologico'] = idAntecedentePatologico;
+            padecimiento['padecimiento_hf_parentesco'] = 'Otros';
+            padecimiento['padecimiento'] = otros[i];
+            this.HistoriaClinicaAPIService.postPadecimientoHeredoFamiliar(padecimiento).subscribe(function (padecimiento) {
+                console.log('padecimiento', padecimiento);
+            });
+        }
+    };
+    //#region LoadData
+    HistoriaClinicaComponent.prototype.getData = function () {
+        var _this = this;
+        this.HistoriaClinicaAPIService.getHistoriaClinica(this.idPaciente).subscribe(function (data) {
+            _this.HistoriaClinicaAPIService.getHistoriaAntecedentePatologico(data[0].idHistoriaClinica).subscribe(function (patologico) {
+                console.log('patologico', patologico);
+                _this.getPatologicos(patologico[0].idAntecedentePatologico);
+                _this.HospitalizacionesForm = _this.fb.group({
+                    hospitalizaciones: patologico[0].antecedente_patologico_hospitalizacion
+                });
+            });
+            _this.HistoriaClinicaAPIService.getNoPatologico(data[0].idHistoriaClinica).subscribe(function (noPatologico) {
+                console.log('noPatologico', noPatologico);
+                _this.NoPatologicosForm = _this.fb.group({
+                    pac_mascota: noPatologico[0].pac_mascota,
+                    pac_mascota_tipo: noPatologico[0].pac_mascota_tipo,
+                    pac_NumeroHabitaciones: noPatologico[0].pac_mascota,
+                    pac_NumeroHabitantes: noPatologico[0].pac_NumeroHabitaciones,
+                    pac_ConsumoDeAlimentosCapeados: noPatologico[0].pac_ConsumoDeAlimentosCapeados,
+                    pac_GruposAlimenticios: noPatologico[0].pac_GruposAlimenticios,
+                    pac_CantidadDeComidasAlDia: noPatologico[0].pac_CantidadDeComidasAlDia,
+                    pac_ConsumoDePan: noPatologico[0].pac_ConsumoDePan,
+                    pac_ConsumoDeSal: noPatologico[0].pac_ConsumoDeSal,
+                    pac_ConsumoDeRefresco: noPatologico[0].pac_ConsumoDeRefresco,
+                    observaciones: noPatologico[0].observaciones,
+                    Actividades_Fisicas: _this.fb.array([])
+                });
+            });
+        });
+        console.log('data', this.infoHistoriaClinica);
+    };
+    HistoriaClinicaComponent.prototype.getPatologicos = function (idAntecedentePatologico) {
+        var _this = this;
+        this.HistoriaClinicaAPIService.getPadecimientos(idAntecedentePatologico).subscribe(function (padecimientos) {
+            for (var i = 0; i < padecimientos.length; i++) {
+                _this.infoHistoriaClinica[2] = padecimientos[i];
+            }
+        });
+        this.HistoriaClinicaAPIService.getPadecimientos_HF(idAntecedentePatologico).subscribe(function (padecimientos) {
+            for (var i = 0; i < padecimientos.length; i++) {
+                _this.infoHistoriaClinica[3] = padecimientos[i];
             }
         });
     };
